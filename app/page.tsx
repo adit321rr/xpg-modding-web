@@ -29,7 +29,7 @@ export default async function Home() {
         {/* === BACKGROUND GAMBAR === */}
         <div className="absolute inset-0 z-0">
           <Image 
-            src="/images/hero-bg.jpg" 
+            src="/images/bg-hero.jpg" 
             alt="XPG Mod Battle Background"
             fill
             className="object-cover object-top opacity-30" 
