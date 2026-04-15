@@ -22,12 +22,14 @@ export default async function Home() {
       {/* 2. PANGGIL NAVBAR DI SINI (Paling Atas) */}
       <Navbar />
       
-      {/* 1. HERO SECTION (Gradasi Cahaya & Elegan) */}
-      <section className="relative pt-32 pb-24 px-4 overflow-hidden">
-        {/* Efek Cahaya Latar Belakang */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-red-900/30 blur-[120px] rounded-full pointer-events-none"></div>
+      {/* 1. HERO SECTION (Gradasi Cahaya & Elegan - SEKARANG FULL SCREEN) */}
+      {/* PERUBAHAN: Tambah min-h-screen, flex, flex-col, items-center, justify-center */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden pt-20">
         
-        <div className="max-w-5xl mx-auto text-center relative z-10">
+        {/* Efek Cahaya Latar Belakang (Disesuaikan agar posisinya tepat di tengah layar) */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-red-900/30 blur-[120px] rounded-full pointer-events-none"></div>
+        
+        <div className="max-w-5xl mx-auto text-center relative z-10 w-full">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-red-500/50 bg-red-500/10 text-red-400 text-xs font-bold tracking-[0.2em] mb-8 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
             ADATA XPG OFFICIAL EVENT
