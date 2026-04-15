@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #050505;
+  --color-foreground: #ffffff;
+}
+
+/* Memaksa background menjadi gelap gulita ala Gaming */
+html, body {
+  background-color: #050505 !important;
+  color: #ffffff !important;
+  scroll-behavior: smooth;
+}
+
+/* Animasi tambahan untuk efek cahaya */
+@keyframes glow {
+  0% { box-shadow: 0 0 10px rgba(220, 38, 38, 0.2); }
+  50% { box-shadow: 0 0 25px rgba(220, 38, 38, 0.6); }
+  100% { box-shadow: 0 0 10px rgba(220, 38, 38, 0.2); }
+}
+.neon-glow {
+  animation: glow 3s infinite alternate;
+}
