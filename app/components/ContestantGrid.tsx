@@ -6,11 +6,8 @@ import Image from 'next/image';
 import VoteButton from './VoteButton';
 
 export default function ContestantGrid({ contestants }: { contestants: any[] }) {
-  // State untuk menyimpan video yang sedang aktif diputar (jika null = pop-up tertutup)
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
-  // LINK VIDEO SEMENTARA (Kamu bisa ganti ID YouTube-nya nanti)
-  // Formatnya harus embed: https://www.youtube.com/embed/ID_VIDEO?autoplay=1
   const dummyVideoUrl = "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1";
 
   return (
@@ -35,11 +32,18 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
 
             {/* Gambar (Bisa Di-Klik untuk Membuka Video) */}
             <div 
-              onClick={() => setActiveVideo(dummyVideoUrl)} // <-- FUNGSI BUKA VIDEO
+              onClick={() => setActiveVideo(dummyVideoUrl)}
               className="relative h-[320px] w-full mb-8 overflow-hidden rounded-2xl bg-black cursor-pointer shadow-inner"
             >
               <Image 
-                src={`/images/${c.id === 1 ? 'kim.jpg' : c.id === 2 ? 'raka.jpg' : c.id === 3 ? 'wimodz.jpg' : c.id === 4 ? 'helix.jpg' : 'mons.jpg'}`} 
+                /* PERUBAHAN: URUTAN GAMBAR SUDAH DISESUAIKAN DENGAN ID PESERTA */
+                src={`/images/${
+                  c.id === 1 ? 'kim.jpg' : 
+                  c.id === 2 ? 'raka.jpg' : 
+                  c.id === 3 ? 'wira.jpg' : 
+                  c.id === 4 ? 'helix.jpg' : 
+                  'mons.jpg'
+                }`} 
                 alt={c.name} 
                 fill 
                 className="object-cover grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all duration-700 ease-in-out group-hover:scale-110" 
@@ -48,7 +52,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80 z-10 pointer-events-none"></div>
               
-              {/* Tombol Play Kaca */}
               <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
                 <div className="bg-white/10 backdrop-blur-md p-5 rounded-full border border-white/20 shadow-2xl scale-90 group-hover:scale-100 group-hover:bg-red-600/90 transition-all duration-500 ease-out">
                   <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
@@ -58,7 +61,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               </div>
             </div>
             
-            {/* Detail Info */}
             <div className="mt-auto relative z-20">
               <h2 className="text-3xl font-bold text-white mb-1 tracking-tight group-hover:text-red-400 transition-colors">{c.name}</h2>
               <p className="text-red-500 font-medium mb-6 text-sm uppercase tracking-widest">{c.theme}</p>
@@ -69,9 +71,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                    <span className="text-4xl font-black text-white leading-none">{c.vote_count}</span>
                  </div>
                  
-                 {/* Tombol PLAY VIDEO (Juga bisa diklik) */}
                  <button 
-                    onClick={() => setActiveVideo(dummyVideoUrl)} // <-- FUNGSI BUKA VIDEO
+                    onClick={() => setActiveVideo(dummyVideoUrl)} 
                     className="flex items-center gap-2 text-xs font-bold text-white/70 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-4 py-2 rounded-lg cursor-pointer relative z-30"
                   >
                    ▶ PLAY VIDEO
@@ -85,9 +86,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         ))}
       </motion.div>
 
-      {/* ========================================= */}
-      {/* BAGIAN POP-UP MODAL VIDEO (MUNCUL JIKA DIKLIK) */}
-      {/* ========================================= */}
       <AnimatePresence>
         {activeVideo && (
           <motion.div
@@ -95,9 +93,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
-            onClick={() => setActiveVideo(null)} // Tutup kalau background hitam diklik
+            onClick={() => setActiveVideo(null)} 
           >
-            {/* Tombol Close (X) */}
             <button
               className="absolute top-6 right-6 text-white/50 hover:text-red-500 transition-colors p-2 z-[110]"
               onClick={() => setActiveVideo(null)}
@@ -107,13 +104,12 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               </svg>
             </button>
 
-            {/* Kotak Video Pemutar */}
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               className="w-full max-w-6xl aspect-video bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.4)] border border-red-500/20 relative z-[105]"
-              onClick={(e) => e.stopPropagation()} // Supaya klik di area video tidak menutup popup
+              onClick={(e) => e.stopPropagation()} 
             >
               <iframe
                 width="100%"

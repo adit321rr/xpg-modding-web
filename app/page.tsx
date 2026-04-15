@@ -2,6 +2,7 @@ import { supabase } from '../lib/supabase';
 import ContestantGrid from './components/ContestantGrid';
 import Leaderboard from './components/Leaderboard';
 import Navbar from './components/Navbar';
+import Image from 'next/image'; 
 
 export const revalidate = 0;
 
@@ -19,38 +20,62 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-600 selection:text-white">
       
-      {/* 2. PANGGIL NAVBAR DI SINI (Paling Atas) */}
+      {/* PANGGIL NAVBAR DI SINI (Paling Atas) */}
       <Navbar />
       
-      {/* 1. HERO SECTION (Gradasi Cahaya & Elegan - SEKARANG FULL SCREEN) */}
-      {/* PERUBAHAN: Tambah min-h-screen, flex, flex-col, items-center, justify-center */}
+      {/* 1. HERO SECTION */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden pt-20">
         
-        {/* Efek Cahaya Latar Belakang (Disesuaikan agar posisinya tepat di tengah layar) */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-red-900/30 blur-[120px] rounded-full pointer-events-none"></div>
+        {/* === BACKGROUND GAMBAR === */}
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src="/images/hero-bg.jpg" 
+            alt="XPG Mod Battle Background"
+            fill
+            className="object-cover object-top opacity-30" 
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/40 via-[#050505]/60 to-[#050505]"></div>
+        </div>
+
+        {/* Efek Cahaya Latar Belakang */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-red-900/30 blur-[120px] rounded-full pointer-events-none z-0"></div>
         
-        <div className="max-w-5xl mx-auto text-center relative z-10 w-full">
+        <div className="max-w-5xl mx-auto text-center relative z-10 w-full flex flex-col items-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-red-500/50 bg-red-500/10 text-red-400 text-xs font-bold tracking-[0.2em] mb-8 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
             ADATA XPG OFFICIAL EVENT
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-black mb-6 tracking-tighter uppercase drop-shadow-2xl">
-            PC MOD <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-br from-red-500 via-red-600 to-red-900 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)]">
-              BATTLE 2026
-            </span>
-          </h1>
+          {/* Image Logo MTE25 */}
+          <div className="relative mb-8 drop-shadow-[0_0_25px_rgba(220,38,38,0.3)] flex justify-center">
+             <Image 
+                src="/images/mte25-logo.jpg" 
+                alt="Mod To Xtreme 2026 Logo"
+                width={600}
+                height={300}
+                className="w-[350px] md:w-[600px] h-auto object-contain" 
+                priority
+             />
+          </div>
           
-          <p className="text-gray-400 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed font-light">
-            Six visionary builders. One ultimate crown. Watch the extreme builds, cast your vote, and decide the champion.
-          </p>
+          {/* ======================================================= */}
+          {/* PERUBAHAN: Teks Hadiah yang Bold, Italic & Mencolok */}
+          {/* ======================================================= */}
+          <h2 className="text-3xl md:text-5xl font-black uppercase italic tracking-wider mb-12 mt-2 drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
+            <span className="text-white">Vote & Win </span>
+            {/* Tag <br> ini akan membuat enter ke bawah KHUSUS di layar HP agar tidak bertumpuk */}
+            <br className="md:hidden" /> 
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400 drop-shadow-[0_0_25px_rgba(220,38,38,0.6)]">
+              IDR 16 Million!
+            </span>
+          </h2>
           
           <div className="flex flex-col sm:flex-row justify-center gap-6">
-            <a href="#vote-section" className="neon-glow bg-red-600 hover:bg-red-500 text-white font-bold py-4 px-10 rounded-xl transition-all active:scale-95 text-center tracking-wide">
+            <a href="#vote-section" className="neon-glow bg-red-600 hover:bg-red-500 text-white font-bold py-4 px-10 rounded-xl transition-all active:scale-95 text-center tracking-wide shadow-2xl">
               WATCH & VOTE
             </a>
-            <a href="#leaderboard-section" className="bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 text-white font-bold py-4 px-10 rounded-xl transition-all active:scale-95 text-center tracking-wide">
+            <a href="#leaderboard-section" className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white font-bold py-4 px-10 rounded-xl transition-all active:scale-95 text-center tracking-wide">
               LIVE RESULTS
             </a>
           </div>
