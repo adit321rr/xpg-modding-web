@@ -82,7 +82,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                  </button>
               </div>
 
-              <VoteButton contestantId={c.id} contestantName={c.name} />
+              <VoteButton contestantId={c.id} contestantName={c.name} contestantTheme={c.theme} />
             </div>
 
           </motion.div>
