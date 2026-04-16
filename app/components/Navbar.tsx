@@ -35,7 +35,7 @@ export default function Navbar() {
           />
         </div>
 
-         {/* ========================================= */}
+        {/* ========================================= */}
         {/* MENU DESKTOP (Tersembunyi di HP) */}
         {/* ========================================= */}
         <div className="hidden md:flex items-center gap-8">
