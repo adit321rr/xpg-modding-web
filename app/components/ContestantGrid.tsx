@@ -8,7 +8,7 @@ import VoteButton from './VoteButton';
 export default function ContestantGrid({ contestants }: { contestants: any[] }) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
-  const dummyVideoUrl = "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1";
+// const dummyVideoUrl = "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1";
 
   return (
     <>
@@ -32,7 +32,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
 
             {/* Gambar (Bisa Di-Klik untuk Membuka Video) */}
             <div 
-              onClick={() => setActiveVideo(dummyVideoUrl)}
+              onClick={() => setActiveVideo(c.video_url)}
               className="relative h-[320px] w-full mb-8 overflow-hidden rounded-2xl bg-black cursor-pointer shadow-inner"
             >
               <Image 
@@ -75,7 +75,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                  </div>
                  
                  <button 
-                    onClick={() => setActiveVideo(dummyVideoUrl)} 
+                    onClick={() => setActiveVideo(c.video_url)}
                     className="flex items-center gap-2 text-xs font-bold text-white/70 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-4 py-2 rounded-lg cursor-pointer relative z-30"
                   >
                    ▶ PLAY VIDEO
