@@ -36,7 +36,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               className="relative h-[320px] w-full mb-8 overflow-hidden rounded-2xl bg-black cursor-pointer shadow-inner"
             >
               <Image 
-                /* PERUBAHAN: URUTAN GAMBAR SUDAH DISESUAIKAN DENGAN ID PESERTA */
                 src={`/images/${
                   c.id === 1 ? 'kim.jpg' : 
                   c.id === 2 ? 'raka.jpg' : 
@@ -46,7 +45,11 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                 }`} 
                 alt={c.name} 
                 fill 
-                className="object-cover grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all duration-700 ease-in-out group-hover:scale-110" 
+                /* PERUBAHAN: Penyesuaian Responsif (HP vs Layar Besar) */
+                className="object-cover transition-all duration-700 ease-in-out
+                           grayscale-0 opacity-100 scale-100 
+                           md:grayscale md:opacity-70 
+                           group-hover:grayscale-0 group-hover:opacity-100 md:group-hover:scale-110" 
                 sizes="(max-w-7xl) 100vw, 33vw" 
                 priority={index === 0} 
               />
