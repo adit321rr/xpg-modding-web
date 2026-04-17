@@ -208,7 +208,7 @@ export default async function Home() {
               </div>
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
                 <p className="text-white font-bold text-sm uppercase tracking-wider">Voted By</p>
-                <p className="text-gray-400 text-xs mt-1">The Community</p>
+                <p className="text-gray-400 text-xs mt-1">XPG ADATA</p>
               </div>
             </div>
           </div>
