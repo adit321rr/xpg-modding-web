@@ -77,9 +77,11 @@ export default function VoteButton({ contestantId, contestantName, contestantThe
       {/* TOMBOL VOTE UTAMA DI GRID */}
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full bg-red-600 hover:bg-red-500 text-white py-3 rounded-lg font-bold tracking-widest uppercase transition-all active:scale-95 shadow-[0_0_15px_rgba(220,38,38,0.3)]"
+        className="w-full bg-red-600 hover:bg-red-500 text-white py-3 font-black text-sm tracking-widest uppercase transition-all flex items-center justify-center gap-2 group/vote"
+        style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%)' }}
       >
-        VOTE
+        <svg className="w-4 h-4 text-white group-hover/vote:-translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" /></svg>
+        VOTE FOR THIS
       </button>
 
       {/* POP-UP MODAL (Hanya muncul jika isOpen === true) */}

@@ -90,9 +90,9 @@ export default async function Home() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. SECTION JUDGES & MENTORS (Diubah jadi 1 Slot Super Premium) */}
+      {/* 3. SECTION JUDGES & MENTORS (PERBAIKAN KARTU WAROQ AGAR PROPOSIONAL) */}
       {/* ========================================================================= */}
-      <section id="judges-section" className="py-24 px-4 relative z-10 bg-[#0a0a0a] border-t border-white/5">
+      <section id="judges-section" className="py-32 px-4 relative z-10 bg-[#0a0a0a] border-t border-white/5">
         <div className="max-w-6xl mx-auto">
           
           {/* Header Judges */}
@@ -106,39 +106,33 @@ export default async function Home() {
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">Expert evaluators overseeing the modding contest with years of experience.</p>
           </div>
 
-          {/* Single Premium Card */}
-          <div className="max-w-md mx-auto">
-             <div className="bg-[#050505] border border-red-600/50 rounded-2xl p-10 flex flex-col items-center text-center relative overflow-hidden shadow-[0_0_40px_rgba(220,38,38,0.2)] group hover:border-red-500 hover:shadow-[0_0_60px_rgba(220,38,38,0.3)] transition-all duration-500">
-                
-                {/* Garis Merah Atas */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent opacity-70"></div>
-                
-                {/* Badge Head Judge */}
-                <div className="absolute top-5 right-5 border border-red-500 text-red-500 text-[10px] font-bold px-3 py-1 uppercase tracking-widest bg-red-500/10 rounded-sm flex items-center gap-1">
-                   ★ JUDGE
-                </div>
-                
-                {/* Efek Titik-titik (Dot Pattern) di belakang foto */}
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)] bg-[length:20px_20px] pointer-events-none"></div>
+          {/* Single Premium Image Card */}
+          <div className="w-[320px] md:w-[400px] mx-auto relative group mt-10">
+            
+            {/* Efek Glow Merah di Belakang Kartu */}
+            <div className="absolute inset-0 bg-red-600 rounded-[2rem] blur-[30px] md:blur-[40px] opacity-30 group-hover:opacity-50 transition-opacity duration-700 pointer-events-none"></div>
 
-                {/* Lingkaran Avatar / Tameng */}
-                <div className="w-48 h-48 rounded-full border-2 border-red-500/40 mb-8 bg-[#0a0a0a] flex flex-col items-center justify-center relative z-10 shadow-[0_0_30px_rgba(220,38,38,0.2)] group-hover:scale-105 group-hover:border-red-500 transition-all duration-500">
-                   <svg className="w-14 h-14 text-red-800 mb-3 group-hover:text-red-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                   <span className="text-[10px] text-gray-500 tracking-widest uppercase font-bold group-hover:text-gray-400">Photo Coming Soon</span>
-                </div>
-                
-                {/* Detail Juri */}
-                <h3 className="text-3xl font-black text-white mb-2 tracking-wider uppercase relative z-10 group-hover:text-red-500 transition-colors">WaroQ</h3>
-                <p className="text-red-600 text-sm font-bold uppercase tracking-widest mb-3 relative z-10">Head Judge & Mentor</p>
-                <p className="text-gray-500 text-sm mb-10 relative z-10">PC Modding Expert</p>
+            {/* Container Gambar Kartu (w-full h-auto akan mengikuti proporsi gambar secara otomatis) */}
+            <div className="relative w-full rounded-[1.5rem] md:rounded-[2rem] overflow-hidden transform group-hover:-translate-y-4 group-hover:scale-[1.02] transition-all duration-500 drop-shadow-[0_20px_40px_rgba(220,38,38,0.4)] cursor-crosshair">
+              
+              {/* Efek Kilau/Reflection putih saat di-hover */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transform -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-in-out z-20 pointer-events-none"></div>
 
-                {/* Indikator Keahlian (Build, Cable, Aesth) */}
-                <div className="flex gap-3 relative z-10 w-full justify-center">
-                  <div className="px-5 py-2 border border-red-900/50 bg-red-900/10 text-xs text-gray-300 font-mono tracking-widest rounded shadow-inner">BUILD</div>
-                  <div className="px-5 py-2 border border-red-900/50 bg-red-900/10 text-xs text-gray-300 font-mono tracking-widest rounded shadow-inner">CABLE</div>
-                  <div className="px-5 py-2 border border-red-900/50 bg-red-900/10 text-xs text-gray-300 font-mono tracking-widest rounded shadow-inner">AESTH</div>
-                </div>
-             </div>
+              <Image 
+                src="/images/waroq-card.webp" 
+                alt="WaroQ Head Judge Card"
+                width={800}  /* Rasio Lebar Standar */
+                height={1200} /* Rasio Tinggi Standar */
+                className="w-full h-auto object-cover block" 
+                priority
+              />
+            </div>
+
+            {/* Tambahan kosmetik: Teks "Head Judge" melayang di bawah kartu */}
+            <div className="absolute -bottom-12 left-0 right-0 text-center opacity-50 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-y-2">
+               <p className="text-xs tracking-[0.4em] font-bold text-red-500 uppercase">Head Judge</p>
+            </div>
+            
           </div>
 
         </div>
@@ -161,7 +155,7 @@ export default async function Home() {
           <div>
             <div className="mb-6">
               <Image
-                  src="/images/mte26-logo.webp" 
+                  src="/images/mte25-logo.webp" 
                   alt="MTE26 Logo"
                   width={190}   
                   height={40}   
@@ -177,14 +171,14 @@ export default async function Home() {
           <div>
             <h4 className="text-red-600 font-bold tracking-widest mb-6 uppercase text-sm">Follow Us</h4>
             <div className="flex flex-col gap-3">
-              <a href="#" className="flex justify-between items-center p-4 bg-white/5 border border-white/5 rounded-lg hover:border-red-500/50 hover:bg-white/10 transition-all group">
+              <a href="https://www.instagram.com/adataxpgindonesia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" className="flex justify-between items-center p-4 bg-white/5 border border-white/5 rounded-lg hover:border-red-500/50 hover:bg-white/10 transition-all group">
                 <div>
                   <p className="text-white font-bold text-sm">Instagram</p>
                   <p className="text-gray-500 text-xs mt-1">@adataxpgindonesia</p>
                 </div>
                 <svg className="w-4 h-4 text-gray-500 group-hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
               </a>
-              <a href="#" className="flex justify-between items-center p-4 bg-white/5 border border-white/5 rounded-lg hover:border-red-500/50 hover:bg-white/10 transition-all group">
+              <a href="https://www.tiktok.com/@adataxpg.id?is_from_webapp=1&sender_device=pc" className="flex justify-between items-center p-4 bg-white/5 border border-white/5 rounded-lg hover:border-red-500/50 hover:bg-white/10 transition-all group">
                 <div>
                   <p className="text-white font-bold text-sm">TikTok</p>
                   <p className="text-gray-500 text-xs mt-1">@adataxpg.id</p>
