@@ -26,7 +26,7 @@ export default function Navbar() {
           }} 
         >
           <Image
-              src="/images/mte26-logo.jpg" 
+              src="/images/mte26-logo.webp" 
               alt="MTE26 Logo"
               width={100}   /* Lebar logo kita tetapkan langsung */
               height={40}   /* Tinggi logo kita tetapkan langsung */
