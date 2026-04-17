@@ -155,7 +155,7 @@ export default async function Home() {
           <div>
             <div className="mb-6">
               <Image
-                  src="/images/mte25-logo.webp" 
+                  src="/images/mte26-logo.webp" 
                   alt="MTE26 Logo"
                   width={190}   
                   height={40}   
