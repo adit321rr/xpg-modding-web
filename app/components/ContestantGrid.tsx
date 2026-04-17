@@ -327,7 +327,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
       </AnimatePresence>
 
       {/* ========================================== */}
-      {/* 4. POP-UP MODAL VIDEO (Tetap Sama) */}
+      {/* 4. POP-UP MODAL VIDEO (Support YouTube & IG) */}
       {/* ========================================== */}
       <AnimatePresence>
         {activeVideo && (
@@ -341,9 +341,30 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
             <button className="absolute top-6 right-6 text-white/50 hover:text-red-500 transition-colors p-2 z-[10000]" onClick={() => setActiveVideo(null)}>
               <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
-            <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }} className="w-full max-w-6xl aspect-video bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.4)] border border-red-500/20 relative z-[9999]" onClick={(e) => e.stopPropagation()}>
-              <iframe width="100%" height="100%" src={activeVideo} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+            
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }} 
+              animate={{ scale: 1, y: 0 }} 
+              exit={{ scale: 0.9, y: 20 }} 
+              // PERUBAHAN UTAMA: Pengecekan otomatis jenis link (IG vs YouTube)
+              className={`w-full bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.4)] border border-red-500/20 relative z-[9999] ${
+                activeVideo.includes('instagram') 
+                  ? 'max-w-[450px] h-[85vh]' // Jika Instagram: Kotak Vertikal Tinggi (seperti HP)
+                  : 'max-w-6xl aspect-video' // Jika YouTube: Kotak Horizontal Lebar (seperti TV)
+              }`} 
+              onClick={(e) => e.stopPropagation()}
+            >
+              <iframe 
+                width="100%" 
+                height="100%" 
+                src={activeVideo} 
+                title="Video player" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen
+              ></iframe>
             </motion.div>
+
           </motion.div>
         )}
       </AnimatePresence>
