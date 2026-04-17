@@ -31,7 +31,7 @@ export default async function Home() {
         {/* === BACKGROUND GAMBAR KHUSUS HERO === */}
         <div className="absolute inset-0 z-0">
           <Image 
-            src="/images/bg-hero.jpg" 
+            src="/images/bg-hero.webp" 
             alt="XPG Mod Battle Background"
             fill
             className="object-cover object-top opacity-30" 
@@ -51,7 +51,7 @@ export default async function Home() {
           
           <div className="relative mb-8 drop-shadow-[0_0_25px_rgba(220,38,38,0.3)] flex justify-center">
              <Image 
-                src="/images/mte25-logo.jpg" 
+                src="/images/mte25-logo.webp" 
                 alt="Mod To Xtreme 2026 Logo"
                 width={600}
                 height={300}
@@ -161,7 +161,7 @@ export default async function Home() {
           <div>
             <div className="mb-6">
               <Image
-                  src="/images/mte26-logo.jpg" 
+                  src="/images/mte26-logo.webp" 
                   alt="MTE26 Logo"
                   width={190}   
                   height={40}   
