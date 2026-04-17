@@ -31,11 +31,11 @@ export default function Leaderboard({ contestants }: { contestants: any[] }) {
             <div className="w-12 h-12 relative rounded-md overflow-hidden bg-black flex-shrink-0">
               <Image 
                 src={`/images/${
-                  c.id === 1 ? 'kim.jpg' : 
-                  c.id === 2 ? 'raka.jpg' : 
-                  c.id === 3 ? 'wira.jpg' : 
-                  c.id === 4 ? 'helix.jpg' : 
-                  'mons.jpg'
+                  c.id === 1 ? 'kim.webp' : 
+                  c.id === 2 ? 'raka.webp' : 
+                  c.id === 3 ? 'wira.webp' : 
+                  c.id === 4 ? 'helix.webp' :
+                  'mons.webp'
                 }`} 
                 alt={c.name} fill className="object-cover" sizes="48px"
               />
