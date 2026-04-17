@@ -75,9 +75,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         {contestants?.map((c, index) => {
           const votePercentage = totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
           
-          // Tentukan gambar utama
-          const mainImg = `/images/${c.id === 1 ? 'kim.jpg' : c.id === 2 ? 'raka.jpg' : c.id === 3 ? 'wira.jpg' : c.id === 4 ? 'helix.jpg' : 'mons.jpg'}`;
-          
+          // Tentukan gambar utama (Ambil dari Supabase, kalau kosong baru pakai fallback .webp)
+          const mainImg = c.image_url || `/images/${c.id === 1 ? 'kim.webp' : c.id === 2 ? 'raka.webp' : c.id === 3 ? 'wira.webp' : c.id === 4 ? 'helix.webp' : 'mons.webp'}`;
           // MENGAMBIL DATA FOTO DARI DATABASE:
           // Kita filter(Boolean) untuk membuang data yang kosong/null.
           const dbGallery = [c.gallery_1, c.gallery_2, c.gallery_3, c.gallery_4, c.gallery_5].filter(Boolean);
