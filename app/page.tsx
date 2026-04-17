@@ -185,7 +185,7 @@ export default async function Home() {
                 </div>
                 <svg className="w-4 h-4 text-gray-500 group-hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
               </a>
-              <a href="#" className="flex justify-between items-center p-4 bg-white/5 border border-white/5 rounded-lg hover:border-red-500/50 hover:bg-white/10 transition-all group">
+              <a href="https://www.facebook.com/share/1DvjkLg1Dz/?mibextid=wwXIfr" className="flex justify-between items-center p-4 bg-white/5 border border-white/5 rounded-lg hover:border-red-500/50 hover:bg-white/10 transition-all group">
                 <div>
                   <p className="text-white font-bold text-sm">Facebook</p>
                   <p className="text-gray-500 text-xs mt-1">ADATAINDONESIA</p>
