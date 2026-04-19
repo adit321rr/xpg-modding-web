@@ -13,22 +13,36 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [activeGallery, setActiveGallery] = useState<{ images: string[], index: number } | null>(null);
   
-  // STATES UNTUK VOTE
+  // STATES UNTUK VOTE & UI/UX CUSTOM
   const [activeVote, setActiveVote] = useState<{ id: number, name: string, theme: string, image: string } | null>(null);
   const [igUsername, setIgUsername] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [voteSuccess, setVoteSuccess] = useState(false); // State baru untuk layar Sukses
+  const [errorMessage, setErrorMessage] = useState(''); // State baru untuk layar Error
 
   // Menghitung Vote Share
   const totalVotes = contestants.reduce((acc, curr) => acc + (curr.vote_count || 0), 0);
 
+  // Fungsi untuk menutup modal vote & mereset form dengan jeda animasi
+  const handleCloseVoteModal = () => {
+    setActiveVote(null);
+    setTimeout(() => {
+      setVoteSuccess(false);
+      setErrorMessage('');
+      setIgUsername('');
+      setIsChecked(false);
+    }, 500); // Tunggu modal hilang baru direset
+  };
+
   // ==========================================
-  // FUNGSI SUBMIT VOTE
+  // FUNGSI SUBMIT VOTE (TANPA ALERT BAWAAN BROWSER)
   // ==========================================
   const handleVoteSubmit = async () => {
+    setErrorMessage(''); // Reset error sebelumnya
     if (!activeVote) return;
-    if (!igUsername.trim()) return alert("Mohon masukkan username Instagram kamu!");
-    if (!isChecked) return alert("Kamu harus menyetujui persyaratan (centang kotak) untuk melanjutkan!");
+    if (!igUsername.trim()) return setErrorMessage("Please enter your Instagram username.");
+    if (!isChecked) return setErrorMessage("You must agree to the rules to continue.");
 
     setLoading(true);
     const cleanIgUsername = igUsername.replace('@', '').trim().toLowerCase();
@@ -41,7 +55,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         .single();
 
       if (existingVote) {
-        alert('Maaf, Username Instagram ini sudah pernah digunakan untuk voting!');
+        setErrorMessage('This Instagram account has already been used to vote!');
         setLoading(false);
         return;
       }
@@ -52,15 +66,13 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
 
       if (error) throw error;
 
-      alert(`Berhasil memberikan vote untuk ${activeVote.name}!`);
-      setActiveVote(null); // Tutup pop-up
-      setIgUsername('');
-      setIsChecked(false);
+      // JIKA BERHASIL (Memicu animasi sukses)
+      setVoteSuccess(true);
       router.refresh(); 
       
     } catch (err) {
       console.error(err);
-      alert('Gagal memproses vote. Pastikan koneksi internet stabil.');
+      setErrorMessage('Failed to submit vote. Please check your connection.');
     } finally {
       setLoading(false);
     }
@@ -71,37 +83,29 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
       {/* ========================================== */}
       {/* 1. GRID CARD PESERTA UTAMA */}
       {/* ========================================== */}
-      <motion.div layout className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-6 relative z-10">
+      <motion.div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-6 relative z-10 items-stretch">
         {contestants?.map((c, index) => {
           const votePercentage = totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
-          
-          // Tentukan gambar utama (Ambil dari Supabase, kalau kosong baru pakai fallback .webp)
           const mainImg = c.image_url || `/images/${c.id === 1 ? 'kim.webp' : c.id === 2 ? 'raka.webp' : c.id === 3 ? 'wira.webp' : c.id === 4 ? 'helix.webp' : 'mons.webp'}`;
-          // MENGAMBIL DATA FOTO DARI DATABASE:
-          // Kita filter(Boolean) untuk membuang data yang kosong/null.
           const dbGallery = [c.gallery_1, c.gallery_2, c.gallery_3, c.gallery_4, c.gallery_5].filter(Boolean);
-          
-          // Jika di database ternyata belum ada foto sama sekali, pakai foto utama sebagai pajangan.
-          // Tapi kalau ada, gunakan foto dari database.
           const galleryList = dbGallery.length > 0 ? dbGallery : [mainImg];
           
           return (
             <motion.div
-              layout 
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               key={c.id} 
-              className="group relative bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col justify-between transition-all duration-500 shadow-2xl"
+              className="group relative h-full bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl"
               style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%)' }}
             >
               
-              <div onClick={() => setActiveVideo(c.video_url)} className="relative h-[220px] w-full bg-black cursor-pointer overflow-hidden">
+              <div onClick={() => setActiveVideo(c.video_url)} className="relative h-[220px] w-full bg-black cursor-pointer overflow-hidden shrink-0">
                 <div className={`absolute top-0 left-0 z-20 px-3 py-1 font-black text-sm text-white ${index === 0 ? 'bg-red-600' : 'bg-[#1f2235]'}`} style={{ clipPath: 'polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%)' }}>
                   {index === 0 ? '🏆 #1' : `#${index + 1}`}
                 </div>
-                <Image src={mainImg} alt={c.name} fill className="object-cover transition-transform duration-700 group-hover:scale-110" sizes="20vw" priority={index === 0} />
+                <Image src={mainImg} alt={c.name} fill sizes="(max-width: 768px) 100vw, 20vw" className="object-cover transition-transform duration-700 group-hover:scale-110" priority={index === 0} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b12] via-transparent to-transparent z-10 pointer-events-none"></div>
               </div>
               
@@ -127,9 +131,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                 </div>
 
-                {/* ============================================================== */}
-                {/* GALLERY MINI (DENGAN BATAS 4 KOTAK & EFEK + SISA FOTO)         */}
-                {/* ============================================================== */}
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-3">
                     <div className="w-4 h-[1px] bg-red-600"></div>
@@ -137,23 +138,14 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                   
                   <div className="grid grid-cols-4 gap-2">
-                    {/* Kita paksa hanya map 4 gambar saja (0 sampai 3) */}
                     {galleryList.slice(0, 4).map((imgSrc, i) => {
-                      // Cek apakah ini kotak ke-4 (index 3) dan apakah total fotonya lebih dari 4
                       const isLastBox = i === 3;
                       const hasMore = galleryList.length > 4;
                       const remainingCount = galleryList.length - 4;
 
                       return (
-                        <div 
-                          key={i} 
-                          // Saat diklik, lempar SELURUH galleryList (semua fotonya) ke slider
-                          onClick={() => setActiveGallery({ images: galleryList, index: i })} 
-                          className="aspect-square relative rounded border border-[#1f2235] overflow-hidden bg-black opacity-70 hover:opacity-100 cursor-pointer transition-all hover:border-red-500"
-                        >
-                           <Image src={imgSrc} alt={`gallery ${i}`} fill className="object-cover" />
-                           
-                           {/* Menambahkan efek layar gelap dengan tulisan +1, +2 dst khusus di kotak terakhir */}
+                        <div key={i} onClick={() => setActiveGallery({ images: galleryList, index: i })} className="aspect-square relative rounded border border-[#1f2235] overflow-hidden bg-black opacity-70 hover:opacity-100 cursor-pointer transition-all hover:border-red-500">
+                           <Image src={imgSrc} alt={`gallery ${i}`} fill sizes="(max-width: 768px) 25vw, 10vw" className="object-cover" />
                            {isLastBox && hasMore && (
                              <div className="absolute inset-0 bg-black/70 flex items-center justify-center backdrop-blur-[2px]">
                                <span className="text-white text-xs font-black">+{remainingCount}</span>
@@ -165,7 +157,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                 </div>
 
-                <button onClick={() => setActiveVideo(c.video_url)} className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-2 rounded-lg mb-3 group/btn text-left">
+                <button onClick={() => setActiveVideo(c.video_url)} className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-2 rounded-lg mb-3 group/btn text-left mt-auto">
                   <div className="w-10 h-10 bg-red-600 flex items-center justify-center rounded shrink-0 shadow-[0_0_10px_rgba(220,38,38,0.3)] group-hover/btn:scale-105 transition-transform">
                     <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                   </div>
@@ -175,10 +167,9 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                 </button>
 
-                {/* TOMBOL MENGAKTIFKAN MODAL VOTE */}
                 <button
                   onClick={() => setActiveVote({ id: c.id, name: c.name, theme: c.theme, image: mainImg })}
-                  className="w-full mt-auto bg-red-600 hover:bg-red-500 text-white py-3 font-black text-sm tracking-widest uppercase transition-all flex items-center justify-center gap-2 group/vote"
+                  className="w-full mt-2 bg-red-600 hover:bg-red-500 text-white py-3 font-black text-sm tracking-widest uppercase transition-all flex items-center justify-center gap-2 group/vote shrink-0"
                   style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%)' }}
                 >
                   <svg className="w-4 h-4 text-white group-hover/vote:-translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" /></svg>
@@ -192,7 +183,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
       </motion.div>
 
       {/* ========================================== */}
-      {/* 2. POP-UP MODAL VOTE (Diluar Grid) */}
+      {/* 2. POP-UP MODAL VOTE DENGAN UI/UX BARU */}
       {/* ========================================== */}
       <AnimatePresence>
         {activeVote && (
@@ -200,70 +191,115 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-md p-4"
           >
-            <div className="absolute inset-0" onClick={() => setActiveVote(null)}></div>
+            <div className="absolute inset-0" onClick={handleCloseVoteModal}></div>
             <motion.div
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
-              className="relative w-full max-w-[450px] bg-[#0a0b10] border border-white/10 rounded-xl p-6 md:p-8 shadow-[0_0_50px_rgba(220,38,38,0.2)] z-10"
+              className="relative w-full max-w-[450px] bg-[#0a0b10] border border-white/10 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.2)] z-10 flex flex-col min-h-[350px]"
               style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)' }}
             >
-              <button onClick={() => setActiveVote(null)} className="absolute top-5 right-5 text-gray-500 hover:text-white transition-colors">
+              <button onClick={handleCloseVoteModal} className="absolute top-5 right-5 text-gray-500 hover:text-white transition-colors z-50">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
 
-              <div className="mb-6">
-                <h2 className="text-2xl font-black text-white uppercase tracking-wider">Cast Your Vote</h2>
-                <p className="text-gray-500 text-sm">XPG ADATA PC Modding Contest 2026</p>
-              </div>
+              {/* TRANSISI HALUS ANTARA FORM VOTE DAN LAYAR SUKSES */}
+              <AnimatePresence mode="wait">
+                {!voteSuccess ? (
+                  // --- LAYAR FORM VOTE ---
+                  <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: -50 }} className="p-6 md:p-8 flex-grow flex flex-col">
+                    <div className="mb-6">
+                      <h2 className="text-2xl font-black text-white uppercase tracking-wider">Cast Your Vote</h2>
+                      <p className="text-gray-500 text-sm">XPG ADATA PC Modding Contest 2026</p>
+                    </div>
 
-              <div className="flex items-center gap-4 bg-[#12141d] border border-white/5 p-4 rounded-lg mb-6">
-                <div className="w-16 h-16 relative rounded-md overflow-hidden bg-black flex-shrink-0">
-                  <Image src={activeVote.image} alt={activeVote.name} fill className="object-cover" sizes="64px" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-white text-lg leading-tight">{activeVote.name}</h3>
-                  <p className="text-red-500 text-sm font-medium">{activeVote.theme}</p>
-                </div>
-              </div>
+                    <div className="flex items-center gap-4 bg-[#12141d] border border-white/5 p-4 rounded-lg mb-6">
+                      <div className="w-16 h-16 relative rounded-md overflow-hidden bg-black flex-shrink-0">
+                        <Image src={activeVote.image} alt={activeVote.name} fill sizes="64px" className="object-cover" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-white text-lg leading-tight">{activeVote.name}</h3>
+                        <p className="text-red-500 text-sm font-medium">{activeVote.theme}</p>
+                      </div>
+                    </div>
 
-              <div className="mb-6">
-                <label className="block text-gray-400 text-sm font-bold tracking-widest uppercase mb-2">Instagram Username</label>
-                <input
-                  type="text"
-                  placeholder="yourusername"
-                  value={igUsername}
-                  onChange={(e) => setIgUsername(e.target.value)}
-                  className="w-full bg-[#12141d] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-red-500 transition-colors"
-                />
-                <p className="text-gray-500 text-xs mt-2">Enter without @ symbol</p>
-              </div>
+                    {/* Muncul jika ada pesan Error */}
+                    {errorMessage && (
+                      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 bg-red-900/20 border border-red-500/50 text-red-400 p-3 rounded-lg text-sm flex items-start gap-2">
+                        <svg className="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                        <p>{errorMessage}</p>
+                      </motion.div>
+                    )}
 
-              <div className="flex items-start gap-3 mb-6">
-                <div className="pt-1">
-                  <input
-                    type="checkbox"
-                    id="consent"
-                    checked={isChecked}
-                    onChange={(e) => setIsChecked(e.target.checked)}
-                    className="w-5 h-5 accent-red-600 bg-[#12141d] border-white/10 rounded cursor-pointer"
-                  />
-                </div>
-                <label htmlFor="consent" className="text-gray-300 text-sm cursor-pointer leading-relaxed">
-                  I have read and agree to the <span className="text-red-500 underline">contest rules</span> and confirm I follow XPG ADATA on all required social platforms.
-                </label>
-              </div>
+                    <div className="mb-6 mt-auto">
+                      <label className="block text-gray-400 text-sm font-bold tracking-widest uppercase mb-2">Instagram Username</label>
+                      <input
+                        type="text"
+                        placeholder="yourusername"
+                        value={igUsername}
+                        onChange={(e) => setIgUsername(e.target.value)}
+                        className="w-full bg-[#12141d] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-red-500 transition-colors"
+                      />
+                      <p className="text-gray-500 text-xs mt-2">Enter without @ symbol</p>
+                    </div>
 
-              <button
-                onClick={handleVoteSubmit}
-                disabled={loading}
-                className="w-full bg-red-900/40 hover:bg-red-600 border border-red-500/50 text-white py-4 font-black tracking-widest uppercase transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ clipPath: 'polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)' }}
-              >
-                {loading ? 'SUBMITTING...' : 'SUBMIT VOTE'}
-              </button>
+                    <div className="flex items-start gap-3 mb-6">
+                      <div className="pt-1">
+                        <input
+                          type="checkbox"
+                          id="consent"
+                          checked={isChecked}
+                          onChange={(e) => setIsChecked(e.target.checked)}
+                          className="w-5 h-5 accent-red-600 bg-[#12141d] border-white/10 rounded cursor-pointer"
+                        />
+                      </div>
+                      <label htmlFor="consent" className="text-gray-300 text-sm cursor-pointer leading-relaxed">
+                        I have read and agree to the <span className="text-red-500 underline">contest rules</span> and confirm I follow XPG ADATA on all required social platforms.
+                      </label>
+                    </div>
+
+                    <button
+                      onClick={handleVoteSubmit}
+                      disabled={loading}
+                      className="w-full mt-auto bg-red-900/40 hover:bg-red-600 border border-red-500/50 text-white py-4 font-black tracking-widest uppercase transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{ clipPath: 'polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)' }}
+                    >
+                      {loading ? 'SUBMITTING...' : 'SUBMIT VOTE'}
+                    </button>
+                  </motion.div>
+                ) : (
+                  // --- LAYAR SUKSES BERHASIL VOTE ---
+                  <motion.div key="success" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="p-8 flex-grow flex flex-col items-center justify-center text-center">
+                    
+                    {/* Animasi Lingkaran Checkmark Hijau Neon */}
+                    <motion.div 
+                      initial={{ scale: 0 }} 
+                      animate={{ scale: 1, rotate: 360 }} 
+                      transition={{ type: "spring", damping: 20, stiffness: 100 }}
+                      className="w-24 h-24 rounded-full bg-green-500/10 border-2 border-green-500 flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(34,197,94,0.4)] relative"
+                    >
+                      {/* Efek Ping */}
+                      <span className="absolute inset-0 rounded-full border-2 border-green-500 animate-ping opacity-50"></span>
+                      <svg className="w-12 h-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                    </motion.div>
+
+                    <h2 className="text-3xl font-black text-white uppercase tracking-widest mb-3">VOTE CONFIRMED!</h2>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-8">
+                      Thank you! Your vote for <span className="text-white font-bold">{activeVote.name}</span> has been securely recorded to the leaderboard.
+                    </p>
+
+                    <button
+                      onClick={handleCloseVoteModal}
+                      className="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white py-4 font-bold tracking-widest uppercase transition-all rounded-lg"
+                    >
+                      RETURN TO GALLERY
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
             </motion.div>
           </motion.div>
         )}
@@ -286,7 +322,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
 
-            {/* Tombol Kiri */}
             <button 
               onClick={() => setActiveGallery(prev => prev ? { ...prev, index: (prev.index - 1 + prev.images.length) % prev.images.length } : null)}
               className="absolute left-4 md:left-10 text-white/50 hover:text-white p-4 z-[10000] bg-black/50 rounded-full hover:bg-red-600 transition-all"
@@ -294,7 +329,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             </button>
 
-            {/* Gambar yang ditampilkan */}
             <motion.div
               key={activeGallery.index}
               initial={{ opacity: 0, scale: 0.95 }}
@@ -304,10 +338,9 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               className="relative w-full max-w-5xl aspect-video rounded-xl overflow-hidden shadow-2xl z-[9999] border border-white/10"
               onClick={(e) => e.stopPropagation()} 
             >
-              <Image src={activeGallery.images[activeGallery.index]} alt="Gallery" fill className="object-contain bg-[#050505]" />
+              <Image src={activeGallery.images[activeGallery.index]} alt="Gallery" fill sizes="100vw" className="object-contain bg-[#050505]" />
             </motion.div>
 
-            {/* Tombol Kanan */}
             <button 
               onClick={() => setActiveGallery(prev => prev ? { ...prev, index: (prev.index + 1) % prev.images.length } : null)}
               className="absolute right-4 md:right-10 text-white/50 hover:text-white p-4 z-[10000] bg-black/50 rounded-full hover:bg-red-600 transition-all"
@@ -315,13 +348,11 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </button>
             
-            {/* Indikator Titik */}
             <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex gap-3 z-[10000]">
               {activeGallery.images.map((_, i) => (
                  <div key={i} className={`w-3 h-3 rounded-full transition-all ${i === activeGallery.index ? 'bg-red-600 scale-125' : 'bg-white/30'}`}></div>
               ))}
             </div>
-
           </motion.div>
         )}
       </AnimatePresence>
@@ -346,11 +377,10 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               initial={{ scale: 0.9, y: 20 }} 
               animate={{ scale: 1, y: 0 }} 
               exit={{ scale: 0.9, y: 20 }} 
-              // PERUBAHAN UTAMA: Pengecekan otomatis jenis link (IG vs YouTube)
               className={`w-full bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.4)] border border-red-500/20 relative z-[9999] ${
                 activeVideo.includes('instagram') 
-                  ? 'max-w-[450px] h-[85vh]' // Jika Instagram: Kotak Vertikal Tinggi (seperti HP)
-                  : 'max-w-6xl aspect-video' // Jika YouTube: Kotak Horizontal Lebar (seperti TV)
+                  ? 'max-w-[450px] h-[85vh]' 
+                  : 'max-w-6xl aspect-video' 
               }`} 
               onClick={(e) => e.stopPropagation()}
             >
@@ -364,7 +394,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                 allowFullScreen
               ></iframe>
             </motion.div>
-
           </motion.div>
         )}
       </AnimatePresence>
