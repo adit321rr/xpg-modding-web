@@ -18,8 +18,9 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
   const [igUsername, setIgUsername] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [voteSuccess, setVoteSuccess] = useState(false); // State baru untuk layar Sukses
-  const [errorMessage, setErrorMessage] = useState(''); // State baru untuk layar Error
+  const [voteSuccess, setVoteSuccess] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState(''); 
+  const [showRules, setShowRules] = useState(false); // STATE BARU UNTUK MENAMPILKAN RULES
 
   // Menghitung Vote Share
   const totalVotes = contestants.reduce((acc, curr) => acc + (curr.vote_count || 0), 0);
@@ -29,17 +30,18 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
     setActiveVote(null);
     setTimeout(() => {
       setVoteSuccess(false);
+      setShowRules(false); // Reset rules
       setErrorMessage('');
       setIgUsername('');
       setIsChecked(false);
-    }, 500); // Tunggu modal hilang baru direset
+    }, 500); 
   };
 
   // ==========================================
-  // FUNGSI SUBMIT VOTE (TANPA ALERT BAWAAN BROWSER)
+  // FUNGSI SUBMIT VOTE
   // ==========================================
   const handleVoteSubmit = async () => {
-    setErrorMessage(''); // Reset error sebelumnya
+    setErrorMessage(''); 
     if (!activeVote) return;
     if (!igUsername.trim()) return setErrorMessage("Please enter your Instagram username.");
     if (!isChecked) return setErrorMessage("You must agree to the rules to continue.");
@@ -66,7 +68,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
 
       if (error) throw error;
 
-      // JIKA BERHASIL (Memicu animasi sukses)
       setVoteSuccess(true);
       router.refresh(); 
       
@@ -191,7 +192,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-md p-4"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
           >
             <div className="absolute inset-0" onClick={handleCloseVoteModal}></div>
             <motion.div
@@ -205,17 +206,40 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
 
-              {/* TRANSISI HALUS ANTARA FORM VOTE DAN LAYAR SUKSES */}
+              {/* TRANSISI 3 LAYAR: FORM -> RULES -> SUCCESS */}
               <AnimatePresence mode="wait">
-                {!voteSuccess ? (
-                  // --- LAYAR FORM VOTE ---
-                  <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: -50 }} className="p-6 md:p-8 flex-grow flex flex-col">
+                
+                {/* --- LAYAR RULES (MUNCUL JIKA SHOWRULES = TRUE) --- */}
+                {showRules && !voteSuccess && (
+                  <motion.div key="rules" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} className="p-6 md:p-8 flex-grow flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar">
+                    <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">Official Rules</h2>
+                    
+                    <div className="text-gray-400 text-sm space-y-4 my-4 leading-relaxed">
+                      <p><strong className="text-white">1. Eligibility:</strong> Voting is open to everyone. You must use a valid, active Instagram account. Fake accounts or bot voting will result in disqualification of the votes.</p>
+                      <p><strong className="text-white">2. One Vote Per Account:</strong> Each Instagram username can only cast <strong>ONE</strong> vote during the entire contest period. Choose your champion wisely!</p>
+                      <p><strong className="text-white">3. Social Media Requirement:</strong> To validate your vote and be eligible for the IDR 16 Million prize pool draw, you <strong>MUST follow</strong> XPG ADATA Indonesia on Instagram, TikTok, and Facebook.</p>
+                      <p><strong className="text-white">4. Winner Announcement:</strong> The lucky voters who win the giveaway will be contacted directly via Instagram DM by the official @adataxpgindonesia account.</p>
+                      <p><strong className="text-white">5. Organizer Rights:</strong> XPG ADATA reserves the right to cancel or deduct votes that are proven to be fraudulent. The judges' and organizer's decisions are final.</p>
+                    </div>
+
+                    <button
+                      onClick={() => setShowRules(false)}
+                      className="w-full mt-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white py-3 font-bold tracking-widest uppercase transition-all rounded-lg shrink-0"
+                    >
+                      I Understand, Back to Vote
+                    </button>
+                  </motion.div>
+                )}
+
+                {/* --- LAYAR FORM VOTE UTAMA --- */}
+                {!showRules && !voteSuccess && (
+                  <motion.div key="form" initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} className="p-6 md:p-8 flex-grow flex flex-col">
                     <div className="mb-6">
                       <h2 className="text-2xl font-black text-white uppercase tracking-wider">Cast Your Vote</h2>
                       <p className="text-gray-500 text-sm">XPG ADATA PC Modding Contest 2026</p>
                     </div>
 
-                    <div className="flex items-center gap-4 bg-[#12141d] border border-white/5 p-4 rounded-lg mb-6">
+                    <div className="flex items-center gap-4 bg-[#12141d] border border-white/5 p-4 rounded-lg mb-6 shrink-0">
                       <div className="w-16 h-16 relative rounded-md overflow-hidden bg-black flex-shrink-0">
                         <Image src={activeVote.image} alt={activeVote.name} fill sizes="64px" className="object-cover" />
                       </div>
@@ -256,43 +280,48 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                         />
                       </div>
                       <label htmlFor="consent" className="text-gray-300 text-sm cursor-pointer leading-relaxed">
-                        I have read and agree to the <span className="text-red-500 underline">contest rules</span> and confirm I follow XPG ADATA on all required social platforms.
+                        I have read and agree to the 
+                        {/* TOMBOL PENGAKTIF RULES */}
+                        <button type="button" onClick={() => setShowRules(true)} className="text-red-500 underline hover:text-red-400 mx-1 focus:outline-none">
+                          contest rules
+                        </button> 
+                        and confirm I follow XPG ADATA on all required social platforms.
                       </label>
                     </div>
 
                     <button
                       onClick={handleVoteSubmit}
                       disabled={loading}
-                      className="w-full mt-auto bg-red-900/40 hover:bg-red-600 border border-red-500/50 text-white py-4 font-black tracking-widest uppercase transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full mt-auto bg-red-900/40 hover:bg-red-600 border border-red-500/50 text-white py-4 font-black tracking-widest uppercase transition-all disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                       style={{ clipPath: 'polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)' }}
                     >
                       {loading ? 'SUBMITTING...' : 'SUBMIT VOTE'}
                     </button>
                   </motion.div>
-                ) : (
-                  // --- LAYAR SUKSES BERHASIL VOTE ---
+                )}
+
+                {/* --- LAYAR SUKSES BERHASIL VOTE --- */}
+                {voteSuccess && (
                   <motion.div key="success" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="p-8 flex-grow flex flex-col items-center justify-center text-center">
                     
-                    {/* Animasi Lingkaran Checkmark Hijau Neon */}
                     <motion.div 
                       initial={{ scale: 0 }} 
                       animate={{ scale: 1, rotate: 360 }} 
                       transition={{ type: "spring", damping: 20, stiffness: 100 }}
                       className="w-24 h-24 rounded-full bg-green-500/10 border-2 border-green-500 flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(34,197,94,0.4)] relative"
                     >
-                      {/* Efek Ping */}
                       <span className="absolute inset-0 rounded-full border-2 border-green-500 animate-ping opacity-50"></span>
                       <svg className="w-12 h-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                     </motion.div>
 
                     <h2 className="text-3xl font-black text-white uppercase tracking-widest mb-3">VOTE CONFIRMED!</h2>
                     <p className="text-gray-400 text-sm leading-relaxed mb-8">
-                      Thank you! Your vote for <span className="text-white font-bold">{activeVote.name}</span> has been securely recorded to the leaderboard.
+                      Thank you! Your vote for <span className="text-white font-bold">{activeVote?.name}</span> has been securely recorded to the leaderboard.
                     </p>
 
                     <button
                       onClick={handleCloseVoteModal}
-                      className="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white py-4 font-bold tracking-widest uppercase transition-all rounded-lg"
+                      className="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white py-4 font-bold tracking-widest uppercase transition-all rounded-lg shrink-0"
                     >
                       RETURN TO GALLERY
                     </button>
