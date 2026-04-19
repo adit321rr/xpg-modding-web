@@ -24,7 +24,7 @@ export default async function Home() {
       <Navbar />
       
       {/* ========================================================================= */}
-      {/* 1. HERO SECTION (Background kembali hanya di sini) */}
+      {/* 1. HERO SECTION */}
       {/* ========================================================================= */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden pt-20">
         
@@ -79,8 +79,10 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 2. SECTION VOTE */}
-      <section id="vote-section" className="py-24 px-4 relative z-10 bg-[#050505]">
+      {/* ========================================================================= */}
+      {/* 2. SECTION VOTE (Disatukan alurnya dengan section Juri) */}
+      {/* ========================================================================= */}
+      <section id="vote-section" className="pt-24 pb-12 px-4 relative z-10 bg-[#050505]">
         <div className="max-w-7xl mx-auto mb-16 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">The Contestants</h2>
           <p className="text-gray-500 text-lg">Witness the craftsmanship. Your single vote matters.</p>
@@ -90,14 +92,14 @@ export default async function Home() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. SECTION JUDGES & MENTORS (PERBAIKAN KARTU WAROQ AGAR PROPOSIONAL) */}
+      {/* 3. SECTION JUDGES & MENTORS (Background & Jarak disesuaikan agar menyatu) */}
       {/* ========================================================================= */}
-      <section id="judges-section" className="py-32 px-4 relative z-10 bg-[#0a0a0a] border-t border-white/5">
+      <section id="judges-section" className="pt-12 pb-24 px-4 relative z-10 bg-[#050505]">
         <div className="max-w-6xl mx-auto">
           
           {/* Header Judges */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg border border-red-500/30 bg-red-500/10 mb-6 shadow-[0_0_15px_rgba(220,38,38,0.3)]">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg border border-red-500/30 bg-red-500/10 mb-6 shadow-[0_0_15px_rgba(220,38,38,0.3)] mt-10">
                <svg className="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
             </div>
             <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tight uppercase">
@@ -112,7 +114,7 @@ export default async function Home() {
             {/* Efek Glow Merah di Belakang Kartu */}
             <div className="absolute inset-0 bg-red-600 rounded-[2rem] blur-[30px] md:blur-[40px] opacity-30 group-hover:opacity-50 transition-opacity duration-700 pointer-events-none"></div>
 
-            {/* Container Gambar Kartu (w-full h-auto akan mengikuti proporsi gambar secara otomatis) */}
+            {/* Container Gambar Kartu */}
             <div className="relative w-full rounded-[1.5rem] md:rounded-[2rem] overflow-hidden transform group-hover:-translate-y-4 group-hover:scale-[1.02] transition-all duration-500 drop-shadow-[0_20px_40px_rgba(220,38,38,0.4)] cursor-crosshair">
               
               {/* Efek Kilau/Reflection putih saat di-hover */}
@@ -121,8 +123,8 @@ export default async function Home() {
               <Image 
                 src="/images/waroq-card.webp" 
                 alt="WaroQ Head Judge Card"
-                width={800}  /* Rasio Lebar Standar */
-                height={1200} /* Rasio Tinggi Standar */
+                width={800} 
+                height={1200}
                 className="w-full h-auto object-cover block" 
                 priority
               />
@@ -138,8 +140,10 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* ========================================================================= */}
       {/* 4. SECTION LEADERBOARD */}
-      <section id="leaderboard-section" className="py-24 px-4 bg-[#050505] border-t border-white/5 relative z-10">
+      {/* ========================================================================= */}
+      <section id="leaderboard-section" className="py-24 px-4 bg-[#0a0a0a] border-t border-white/5 relative z-10">
         <div className="max-w-4xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Live Leaderboard</h2>
           <p className="text-gray-500 text-lg">Real-time voting results.</p>
@@ -148,14 +152,16 @@ export default async function Home() {
         <Leaderboard contestants={contestants || []} />
       </section>
 
+      {/* ========================================================================= */}
       {/* 5. FOOTER SECTION */}
+      {/* ========================================================================= */}
       <footer className="bg-[#0a0a0a] border-t border-red-900/30 pt-20 pb-8 px-4 relative z-10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 mb-16">
           
           <div>
             <div className="mb-6">
               <Image
-                  src="/images/mte26-logo.webp" 
+                  src="/images/mte25-logo.webp" 
                   alt="MTE26 Logo"
                   width={190}   
                   height={40}   
