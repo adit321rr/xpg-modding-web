@@ -67,6 +67,12 @@ export default async function Home() {
               IDR 16 Million!
             </span>
           </h2>
+
+          <div className="mb-12 inline-block border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-2 rounded-full">
+            <p className="text-white font-bold tracking-[0.2em] uppercase text-sm md:text-base">
+              7 - 18 MAY 2026
+            </p>
+          </div>
           
           <div className="flex flex-col sm:flex-row justify-center gap-6">
             <a href="#vote-section" className="neon-glow bg-red-600 hover:bg-red-500 text-white font-bold py-4 px-10 rounded-xl transition-all active:scale-95 text-center tracking-wide shadow-2xl">

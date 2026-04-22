@@ -308,20 +308,24 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                       initial={{ scale: 0 }} 
                       animate={{ scale: 1, rotate: 360 }} 
                       transition={{ type: "spring", damping: 20, stiffness: 100 }}
-                      className="w-24 h-24 rounded-full bg-green-500/10 border-2 border-green-500 flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(34,197,94,0.4)] relative"
+                      className="w-24 h-24 rounded-full bg-green-500/10 border-2 border-green-500 flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(34,197,94,0.4)] relative shrink-0"
                     >
                       <span className="absolute inset-0 rounded-full border-2 border-green-500 animate-ping opacity-50"></span>
                       <svg className="w-12 h-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                     </motion.div>
 
-                    <h2 className="text-3xl font-black text-white uppercase tracking-widest mb-3">VOTE CONFIRMED!</h2>
-                    <p className="text-gray-400 text-sm leading-relaxed mb-8">
-                      Thank you! Your vote for <span className="text-white font-bold">{activeVote?.name}</span> has been securely recorded to the leaderboard.
-                    </p>
+                    <h2 className="text-2xl font-black text-white uppercase tracking-widest mb-4">VOTE CONFIRMED!</h2>
+                    
+                    {/* TEKS REVISI DARI KETUA */}
+                    <div className="text-gray-400 text-xs md:text-sm leading-relaxed mb-8 space-y-3">
+                      <p>Thank you for taking part in the voting.</p>
+                      <p>Feel free to invite your friends to join, as voting will remain open until <strong className="text-white">May 18, 2026.</strong></p>
+                      <p>Lucky voters will receive a total of <strong className="text-red-500">IDR 16 million</strong> and will be announced on May 25, 2026, via ADATA XPG’s official social media channels.</p>
+                    </div>
 
                     <button
                       onClick={handleCloseVoteModal}
-                      className="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white py-4 font-bold tracking-widest uppercase transition-all rounded-lg shrink-0"
+                      className="w-full mt-auto bg-white/10 hover:bg-white/20 border border-white/20 text-white py-4 font-bold tracking-widest uppercase transition-all rounded-lg shrink-0"
                     >
                       RETURN TO GALLERY
                     </button>
