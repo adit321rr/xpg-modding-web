@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   
   // TINGGAL TAMBAHKAN BLOK ICONS INI
   icons: {
-    icon: '/images/mte26-logo.webp', // Logo untuk tab browser PC
-    apple: '/images/mte26-logo.webp', // Logo kalau webnya di-save ke Homescreen iPhone
+    icon: '/images/favicon.png', // Logo untuk tab browser PC
+    apple: '/images/favicon.png', // Logo kalau webnya di-save ke Homescreen iPhone
   },
 
   openGraph: {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     siteName: 'XPG ADATA Mod To Xtreme',
     images: [
       {
-        url: '/images/mte25-logo.webp', 
+        url: '/images/favicon.png', 
         width: 1200,
         height: 630,
         alt: 'XPG Mod To Xtreme Cover',
