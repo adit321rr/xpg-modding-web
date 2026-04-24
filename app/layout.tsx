@@ -11,14 +11,21 @@ export const metadata: Metadata = {
   title: 'XPG ADATA - Mod To Xtreme 2026',
   description: 'The premier PC modding competition in Indonesia. Vote your favorite elite modder and win IDR 16 Million!',
   keywords: 'xpg, adata, pc modding, lomba pc, mod to xtreme, gaming pc indonesia',
+  
+  // TINGGAL TAMBAHKAN BLOK ICONS INI
+  icons: {
+    icon: '/images/mte26-logo.webp', // Logo untuk tab browser PC
+    apple: '/images/mte26-logo.webp', // Logo kalau webnya di-save ke Homescreen iPhone
+  },
+
   openGraph: {
     title: 'XPG ADATA - Mod To Xtreme 2026',
     description: 'Vote for your favorite elite modder and win IDR 16 Million!',
-    url: 'https://xpg-modding2026.com', /* Ganti dengan domain aslimu nanti */
+    url: 'https://xpg-modding2026.com', 
     siteName: 'XPG ADATA Mod To Xtreme',
     images: [
       {
-        url: '/images/mte25-logo.jpg', /* Gambar yang akan muncul pas link di-share */
+        url: '/images/mte25-logo.webp', 
         width: 1200,
         height: 630,
         alt: 'XPG Mod To Xtreme Cover',
