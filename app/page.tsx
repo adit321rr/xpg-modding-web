@@ -244,3 +244,8 @@ export default async function Home() {
     </main>
   );
 }
+
+// Catatan: Kode ini adalah file utama untuk halaman depan (Home) dari situs web kontes modding PC.
+// Di dalamnya, kita memanggil komponen Navbar, ContestantGrid, dan Leaderboard yang sudah dibuat sebelumnya.
+// Data contestant diambil dari Supabase dan diteruskan ke komponen yang membutuhkan.
+// Setiap section memiliki styling dan layout yang disesuaikan agar sesuai dengan tema gelap dan estetika futuristik.
