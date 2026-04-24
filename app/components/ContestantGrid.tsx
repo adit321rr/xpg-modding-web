@@ -20,26 +20,22 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
   const [loading, setLoading] = useState(false);
   const [voteSuccess, setVoteSuccess] = useState(false); 
   const [errorMessage, setErrorMessage] = useState(''); 
-  const [showRules, setShowRules] = useState(false); // STATE BARU UNTUK MENAMPILKAN RULES
+  const [showRules, setShowRules] = useState(false);
 
   // Menghitung Vote Share
   const totalVotes = contestants.reduce((acc, curr) => acc + (curr.vote_count || 0), 0);
 
-  // Fungsi untuk menutup modal vote & mereset form dengan jeda animasi
   const handleCloseVoteModal = () => {
     setActiveVote(null);
     setTimeout(() => {
       setVoteSuccess(false);
-      setShowRules(false); // Reset rules
+      setShowRules(false); 
       setErrorMessage('');
       setIgUsername('');
       setIsChecked(false);
     }, 500); 
   };
 
-  // ==========================================
-  // FUNGSI SUBMIT VOTE
-  // ==========================================
   const handleVoteSubmit = async () => {
     setErrorMessage(''); 
     if (!activeVote) return;
@@ -88,7 +84,14 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         {contestants?.map((c, index) => {
           const votePercentage = totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
           const mainImg = c.image_url || `/images/${c.id === 1 ? 'kim.webp' : c.id === 2 ? 'raka.webp' : c.id === 3 ? 'wira.webp' : c.id === 4 ? 'helix.webp' : 'mons.webp'}`;
-          const dbGallery = [c.gallery_1, c.gallery_2, c.gallery_3, c.gallery_4, c.gallery_5].filter(Boolean);
+          
+          // PERUBAHAN UTAMA: Memanggil SEMUA kolom gallery dari 1 sampai 13
+          const dbGallery = [
+            c.gallery_1, c.gallery_2, c.gallery_3, c.gallery_4, c.gallery_5,
+            c.gallery_6, c.gallery_7, c.gallery_8, c.gallery_9, c.gallery_10,
+            c.gallery_11, c.gallery_12, c.gallery_13
+          ].filter(Boolean);
+          
           const galleryList = dbGallery.length > 0 ? dbGallery : [mainImg];
           
           return (
@@ -142,6 +145,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                     {galleryList.slice(0, 4).map((imgSrc, i) => {
                       const isLastBox = i === 3;
                       const hasMore = galleryList.length > 4;
+                      // Rumus ini akan otomatis menyesuaikan! Jika ada 13 foto, 13 - 4 = +9.
                       const remainingCount = galleryList.length - 4;
 
                       return (
@@ -206,10 +210,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
 
-              {/* TRANSISI 3 LAYAR: FORM -> RULES -> SUCCESS */}
               <AnimatePresence mode="wait">
-                
-                {/* --- LAYAR RULES (MUNCUL JIKA SHOWRULES = TRUE) --- */}
+                {/* --- LAYAR RULES --- */}
                 {showRules && !voteSuccess && (
                   <motion.div key="rules" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} className="p-6 md:p-8 flex-grow flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar">
                     <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">Official Rules</h2>
@@ -249,7 +251,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                       </div>
                     </div>
 
-                    {/* Muncul jika ada pesan Error */}
                     {errorMessage && (
                       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 bg-red-900/20 border border-red-500/50 text-red-400 p-3 rounded-lg text-sm flex items-start gap-2">
                         <svg className="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
@@ -281,7 +282,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                       </div>
                       <label htmlFor="consent" className="text-gray-300 text-sm cursor-pointer leading-relaxed">
                         I have read and agree to the 
-                        {/* TOMBOL PENGAKTIF RULES */}
                         <button type="button" onClick={() => setShowRules(true)} className="text-red-500 underline hover:text-red-400 mx-1 focus:outline-none">
                           contest rules
                         </button> 
@@ -316,7 +316,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
 
                     <h2 className="text-2xl font-black text-white uppercase tracking-widest mb-4">VOTE CONFIRMED!</h2>
                     
-                    {/* TEKS REVISI DARI KETUA */}
                     <div className="text-gray-400 text-xs md:text-sm leading-relaxed mb-8 space-y-3">
                       <p>Thank you for taking part in the voting.</p>
                       <p>Feel free to invite your friends to join, as voting will remain open until <strong className="text-white">May 18, 2026.</strong></p>
@@ -381,9 +380,10 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </button>
             
-            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex gap-3 z-[10000]">
+            {/* Supaya titik slider tidak kepanjangan kalau foto ada 13, kita buat scrollable sedikit secara horizontal jika melebihi layar */}
+            <div className="absolute bottom-6 md:bottom-10 left-1/2 transform -translate-x-1/2 flex gap-3 z-[10000] max-w-[80vw] overflow-x-auto custom-scrollbar p-2">
               {activeGallery.images.map((_, i) => (
-                 <div key={i} className={`w-3 h-3 rounded-full transition-all ${i === activeGallery.index ? 'bg-red-600 scale-125' : 'bg-white/30'}`}></div>
+                 <div key={i} className={`w-3 h-3 rounded-full shrink-0 transition-all ${i === activeGallery.index ? 'bg-red-600 scale-125' : 'bg-white/30'}`}></div>
               ))}
             </div>
           </motion.div>
