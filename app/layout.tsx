@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     siteName: 'XPG ADATA Mod To Xtreme',
     images: [
       {
-        url: '/images/mte26-logo.webp', // Biarkan ini untuk cover share WhatsApp
+        url: '/images/mte26-logo.webp', 
         width: 1200,
         height: 630,
         alt: 'XPG Mod To Xtreme Cover',
