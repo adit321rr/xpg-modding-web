@@ -3,6 +3,7 @@ import ContestantGrid from './components/ContestantGrid';
 import Leaderboard from './components/Leaderboard';
 import Navbar from './components/Navbar';
 import Image from 'next/image'; 
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const revalidate = 0;
 
