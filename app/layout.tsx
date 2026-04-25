@@ -30,7 +30,7 @@ export const metadata: Metadata = {
         height: 630,
         alt: 'XPG Mod To Xtreme Cover',
       },
-    ],
+    ],  
     locale: 'id_ID',
     type: 'website',
   },
