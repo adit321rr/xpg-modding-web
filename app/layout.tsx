@@ -12,8 +12,11 @@ export const metadata: Metadata = {
   description: 'The premier PC modding competition in Indonesia. Vote your favorite elite modder and win IDR 16 Million!',
   keywords: 'xpg, adata, pc modding, lomba pc, mod to xtreme, gaming pc indonesia',
   
-  // KITA HAPUS BLOK ICONS MANUALNYA. 
-  // Next.js akan mendeteksi file "icon.png" di dalam folder "app" secara otomatis!
+  // JURUS PAMUNGKAS: Panggil nama file yang 100% baru!
+  icons: {
+    icon: '/logo-xpg-final.png',
+    apple: '/logo-xpg-final.png',
+  },
 
   openGraph: {
     title: 'XPG ADATA - Mod To Xtreme 2026',
