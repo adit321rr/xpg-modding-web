@@ -12,10 +12,10 @@ export const metadata: Metadata = {
   description: 'The premier PC modding competition in Indonesia. Vote your favorite elite modder and win IDR 16 Million!',
   keywords: 'xpg, adata, pc modding, lomba pc, mod to xtreme, gaming pc indonesia',
   
-  // JURUS PAKSA: Kita tembak langsung ke file yang ada di folder public
+  // JURUS TIPUAN (CACHE BUSTING): Tambahkan ?v=1 agar browser mengira ini file baru!
   icons: {
-    icon: '/favicon.png',
-    apple: '/favicon.png',
+    icon: '/favicon.png?v=1',
+    apple: '/favicon.png?v=1',
   },
 
   openGraph: {
