@@ -78,14 +78,27 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
   return (
     <>
       {/* ========================================== */}
-      {/* 1. GRID CARD PESERTA UTAMA */}
+      {/* 1. GRID CARD PESERTA UTAMA (RESPONSIVE)    */}
       {/* ========================================== */}
-      <motion.div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-6 relative z-10 items-stretch">
+      
+      {/* PETUNJUK SWIPE KHUSUS MOBILE */}
+      <div className="md:hidden flex items-center justify-center gap-2 mb-6 text-red-500/70 text-xs font-bold uppercase tracking-widest animate-pulse">
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+        Swipe To View More
+      </div>
+
+      {/* PERUBAHAN UTAMA CONTAINER:
+        - Di HP: flex + overflow-x-auto + snap-x (Jadi Slider Horizontal)
+        - Di PC: md:grid (Kembali jadi Kotak-kotak berjajar)
+        - [scrollbar-width:none] dll: Menyembunyikan scrollbar jelek di HP
+      */}
+      <motion.div className="max-w-[1400px] mx-auto flex md:grid md:grid-cols-3 xl:grid-cols-5 gap-6 relative z-10 items-stretch overflow-x-auto snap-x snap-mandatory pb-8 md:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {contestants?.map((c, index) => {
           const votePercentage = totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
           const mainImg = c.image_url || `/images/${c.id === 1 ? 'kim.webp' : c.id === 2 ? 'raka.webp' : c.id === 3 ? 'wira.webp' : c.id === 4 ? 'helix.webp' : 'mons.webp'}`;
           
-          // PERUBAHAN UTAMA: Memanggil SEMUA kolom gallery dari 1 sampai 13
           const dbGallery = [
             c.gallery_1, c.gallery_2, c.gallery_3, c.gallery_4, c.gallery_5,
             c.gallery_6, c.gallery_7, c.gallery_8, c.gallery_9, c.gallery_10,
@@ -101,7 +114,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               key={c.id} 
-              className="group relative h-full bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl"
+              // PERUBAHAN UTAMA CARD: w-full shrink-0 snap-center agar selebar layar HP penuh!
+              className="group relative h-full w-full shrink-0 snap-center md:w-auto bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl"
               style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%)' }}
             >
               
@@ -145,7 +159,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                     {galleryList.slice(0, 4).map((imgSrc, i) => {
                       const isLastBox = i === 3;
                       const hasMore = galleryList.length > 4;
-                      // Rumus ini akan otomatis menyesuaikan! Jika ada 13 foto, 13 - 4 = +9.
                       const remainingCount = galleryList.length - 4;
 
                       return (
@@ -380,7 +393,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </button>
             
-            {/* Supaya titik slider tidak kepanjangan kalau foto ada 13, kita buat scrollable sedikit secara horizontal jika melebihi layar */}
             <div className="absolute bottom-6 md:bottom-10 left-1/2 transform -translate-x-1/2 flex gap-3 z-[10000] max-w-[80vw] overflow-x-auto custom-scrollbar p-2">
               {activeGallery.images.map((_, i) => (
                  <div key={i} className={`w-3 h-3 rounded-full shrink-0 transition-all ${i === activeGallery.index ? 'bg-red-600 scale-125' : 'bg-white/30'}`}></div>
