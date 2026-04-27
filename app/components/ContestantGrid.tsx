@@ -82,7 +82,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         Geser Untuk Melihat Lebih
       </div>
 
-      <motion.div className="max-w-[1400px] mx-auto flex md:grid md:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 px-4 md:px-0 relative z-10 items-stretch overflow-x-auto snap-x snap-mandatory pb-8 md:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {/* PERUBAHAN UI SWIPE: Ditambah scroll-pl-4 agar snap-nya pas di padding kiri */}
+      <motion.div className="max-w-[1400px] mx-auto flex md:grid md:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 px-4 md:px-0 relative z-10 items-stretch overflow-x-auto snap-x snap-mandatory pb-8 md:pb-0 scroll-pl-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {contestants?.map((c, index) => {
           const votePercentage = totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
           const mainImg = c.image_url || `/images/${c.id === 1 ? 'kim.webp' : c.id === 2 ? 'raka.webp' : c.id === 3 ? 'wira.webp' : c.id === 4 ? 'helix.webp' : 'mons.webp'}`;
@@ -102,11 +103,11 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               key={c.id} 
-              className="group relative h-full w-[85vw] md:w-auto shrink-0 snap-center bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl"
+              // PERUBAHAN UI CARD: w-[80vw] dan snap-start agar kartu selalu rapat ke kiri dan menyisakan banyak ruang untuk ngintip di kanan
+              className="group relative h-full w-[80vw] md:w-auto shrink-0 snap-start bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl"
               style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%)' }}
             >
               
-              {/* PERUBAHAN UI: h-[220px] diubah jadi h-[350px]. Ditambahkan object-top pada Image agar kepala tidak terpotong */}
               <div onClick={() => setActiveGallery({ images: galleryList, index: 0 })} className="relative h-[350px] md:h-[280px] xl:h-[350px] w-full bg-black cursor-pointer overflow-hidden shrink-0">
                 <div className={`absolute top-0 left-0 z-20 px-3 py-1 font-black text-sm text-white ${index === 0 ? 'bg-red-600' : 'bg-[#1f2235]'}`} style={{ clipPath: 'polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%)' }}>
                   {index === 0 ? '🏆 #1' : `#${index + 1}`}
@@ -137,7 +138,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                 </div>
 
-                {/* PERUBAHAN UI: Galeri foto diubah menjadi Tombol Aksi Keren berdampingan dengan Video */}
                 <div className="grid grid-cols-2 gap-3 mb-4 mt-2">
                   <button onClick={() => setActiveGallery({ images: galleryList, index: 0 })} className="w-full flex flex-col items-center justify-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-lg group/btn">
                     <svg className="w-6 h-6 text-red-600 mb-2 group-hover/btn:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -339,13 +339,14 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             </button>
 
+            {/* PERUBAHAN UI GALERI: Menggunakan h-[70vh] di layar HP agar gambar tampil sebesar mungkin! */}
             <motion.div
               key={activeGallery.index}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="relative w-full max-w-5xl aspect-video rounded-xl overflow-hidden shadow-2xl z-[9999] border border-white/10"
+              className="relative w-full max-w-5xl h-[70vh] md:h-[80vh] rounded-xl overflow-hidden shadow-2xl z-[9999] border border-white/10"
               onClick={(e) => e.stopPropagation()} 
             >
               <Image src={activeGallery.images[activeGallery.index]} alt="Gallery" fill sizes="100vw" className="object-contain bg-[#050505]" />
