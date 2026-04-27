@@ -74,16 +74,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
 
   return (
     <>
-      {/* PETUNJUK SWIPE KHUSUS MOBILE */}
-      <div className="md:hidden flex items-center justify-center gap-2 mb-6 text-red-500/70 text-xs font-bold uppercase tracking-widest animate-pulse">
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-        </svg>
-        Geser Untuk Melihat Lebih
-      </div>
-
-      {/* PERUBAHAN UI SWIPE: Ditambah scroll-pl-4 agar snap-nya pas di padding kiri */}
-      <motion.div className="max-w-[1400px] mx-auto flex md:grid md:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 px-4 md:px-0 relative z-10 items-stretch overflow-x-auto snap-x snap-mandatory pb-8 md:pb-0 scroll-pl-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {/* PERUBAHAN UI: Scroll Vertical (Bawah) -> md:grid-cols-3 xl:grid-cols-5 */}
+      <motion.div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-8 relative z-10 items-stretch">
         {contestants?.map((c, index) => {
           const votePercentage = totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
           const mainImg = c.image_url || `/images/${c.id === 1 ? 'kim.webp' : c.id === 2 ? 'raka.webp' : c.id === 3 ? 'wira.webp' : c.id === 4 ? 'helix.webp' : 'mons.webp'}`;
@@ -103,16 +95,17 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               key={c.id} 
-              // PERUBAHAN UI CARD: w-[80vw] dan snap-start agar kartu selalu rapat ke kiri dan menyisakan banyak ruang untuk ngintip di kanan
-              className="group relative h-full w-[80vw] md:w-auto shrink-0 snap-start bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl"
+              // PERUBAHAN UI CARD: w-full karena sudah jadi vertical scroll
+              className="group relative h-full w-full bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl"
               style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%)' }}
             >
               
+              {/* h-[350px] agar foto peserta terlihat full body / setengah badan dengan jelas */}
               <div onClick={() => setActiveGallery({ images: galleryList, index: 0 })} className="relative h-[350px] md:h-[280px] xl:h-[350px] w-full bg-black cursor-pointer overflow-hidden shrink-0">
                 <div className={`absolute top-0 left-0 z-20 px-3 py-1 font-black text-sm text-white ${index === 0 ? 'bg-red-600' : 'bg-[#1f2235]'}`} style={{ clipPath: 'polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%)' }}>
                   {index === 0 ? '🏆 #1' : `#${index + 1}`}
                 </div>
-                <Image src={mainImg} alt={c.name} fill sizes="(max-width: 768px) 85vw, 20vw" className="object-cover object-top transition-transform duration-700 group-hover:scale-110" priority={index === 0} />
+                <Image src={mainImg} alt={c.name} fill sizes="(max-width: 768px) 100vw, 20vw" className="object-cover object-top transition-transform duration-700 group-hover:scale-110" priority={index === 0} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b12] via-transparent to-transparent z-10 pointer-events-none"></div>
               </div>
               
@@ -324,29 +317,32 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
+            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
           >
             <div className="absolute inset-0" onClick={() => setActiveGallery(null)}></div>
             
-            <button onClick={() => setActiveGallery(null)} className="absolute top-6 right-6 text-white/50 hover:text-red-500 transition-colors p-2 z-[10000]">
-              <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
+            {/* PERUBAHAN UI GALERI: Tombol silang diperbesar dan diletakkan di posisi paling mudah diakses. Ditambahkan teks "TUTUP" agar lebih jelas di HP */}
+            <div className="absolute top-4 right-4 z-[10000] flex gap-2">
+               <button onClick={() => setActiveGallery(null)} className="flex items-center gap-2 bg-white/10 hover:bg-red-600 text-white px-4 py-2 rounded-full transition-all backdrop-blur-md border border-white/20">
+                 <span className="text-xs font-bold uppercase tracking-widest hidden md:block">TUTUP GALERI</span>
+                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+               </button>
+            </div>
 
             <button 
               onClick={() => setActiveGallery(prev => prev ? { ...prev, index: (prev.index - 1 + prev.images.length) % prev.images.length } : null)}
-              className="absolute left-4 md:left-10 text-white/50 hover:text-white p-4 z-[10000] bg-black/50 rounded-full hover:bg-red-600 transition-all"
+              className="absolute left-2 md:left-10 text-white/50 hover:text-white p-3 z-[10000] bg-black/50 rounded-full hover:bg-red-600 transition-all border border-white/10"
             >
-              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+              <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             </button>
 
-            {/* PERUBAHAN UI GALERI: Menggunakan h-[70vh] di layar HP agar gambar tampil sebesar mungkin! */}
             <motion.div
               key={activeGallery.index}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="relative w-full max-w-5xl h-[70vh] md:h-[80vh] rounded-xl overflow-hidden shadow-2xl z-[9999] border border-white/10"
+              className="relative w-full max-w-5xl h-[65vh] md:h-[80vh] rounded-xl overflow-hidden shadow-2xl z-[9999] border border-white/10"
               onClick={(e) => e.stopPropagation()} 
             >
               <Image src={activeGallery.images[activeGallery.index]} alt="Gallery" fill sizes="100vw" className="object-contain bg-[#050505]" />
@@ -354,14 +350,14 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
 
             <button 
               onClick={() => setActiveGallery(prev => prev ? { ...prev, index: (prev.index + 1) % prev.images.length } : null)}
-              className="absolute right-4 md:right-10 text-white/50 hover:text-white p-4 z-[10000] bg-black/50 rounded-full hover:bg-red-600 transition-all"
+              className="absolute right-2 md:right-10 text-white/50 hover:text-white p-3 z-[10000] bg-black/50 rounded-full hover:bg-red-600 transition-all border border-white/10"
             >
-              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </button>
             
-            <div className="absolute bottom-6 md:bottom-10 left-1/2 transform -translate-x-1/2 flex gap-3 z-[10000] max-w-[80vw] overflow-x-auto custom-scrollbar p-2">
+            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-3 z-[10000] max-w-[80vw] overflow-x-auto custom-scrollbar p-2 bg-black/50 backdrop-blur-md rounded-full border border-white/10">
               {activeGallery.images.map((_, i) => (
-                 <div key={i} className={`w-3 h-3 rounded-full shrink-0 transition-all ${i === activeGallery.index ? 'bg-red-600 scale-125' : 'bg-white/30'}`}></div>
+                 <div key={i} className={`w-2.5 h-2.5 rounded-full shrink-0 transition-all ${i === activeGallery.index ? 'bg-red-600 scale-125' : 'bg-white/30'}`}></div>
               ))}
             </div>
           </motion.div>
@@ -380,9 +376,13 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
             className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
             onClick={() => setActiveVideo(null)} 
           >
-            <button className="absolute top-6 right-6 text-white/50 hover:text-red-500 transition-colors p-2 z-[10000]" onClick={() => setActiveVideo(null)}>
-              <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
+            {/* Tombol Close Video */}
+            <div className="absolute top-4 right-4 z-[10000] flex gap-2">
+               <button onClick={() => setActiveVideo(null)} className="flex items-center gap-2 bg-white/10 hover:bg-red-600 text-white px-4 py-2 rounded-full transition-all backdrop-blur-md border border-white/20">
+                 <span className="text-xs font-bold uppercase tracking-widest hidden md:block">TUTUP VIDEO</span>
+                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+               </button>
+            </div>
             
             <motion.div 
               initial={{ scale: 0.9, y: 20 }} 
