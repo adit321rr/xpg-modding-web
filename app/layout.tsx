@@ -9,10 +9,9 @@ const inter = Inter({ subsets: ['latin'] });
 // =========================================================================
 export const metadata: Metadata = {
   title: 'XPG ADATA - Mod To Xtreme 2026',
-  description: 'The premier PC modding competition in Indonesia. Vote your favorite elite modder and win IDR 16 Million!',
+  description: 'Kompetisi PC modding paling bergengsi di Indonesia. Dukung modder elit favoritmu dan menangkan total hadiah Rp 16 Juta!',
   keywords: 'xpg, adata, pc modding, lomba pc, mod to xtreme, gaming pc indonesia',
   
-  // JURUS PAMUNGKAS: Panggil nama file yang 100% baru!
   icons: {
     icon: '/logo-xpg-final.png',
     apple: '/logo-xpg-final.png',
@@ -20,7 +19,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     title: 'XPG ADATA - Mod To Xtreme 2026',
-    description: 'Vote for your favorite elite modder and win IDR 16 Million!',
+    description: 'Dukung modder elit favoritmu dan menangkan total hadiah Rp 16 Juta!',
     url: 'https://xpg-modding2026.com', 
     siteName: 'XPG ADATA Mod To Xtreme',
     images: [
@@ -28,7 +27,7 @@ export const metadata: Metadata = {
         url: '/images/mte26-logo.webp', // Cover share WhatsApp
         width: 1200,
         height: 630,
-        alt: 'XPG Mod To Xtreme Cover',
+        alt: 'Cover XPG Mod To Xtreme',
       },
     ],
     locale: 'id_ID',
@@ -42,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="id" className="scroll-smooth">
       <body className={inter.className}>{children}</body>
     </html>
   );

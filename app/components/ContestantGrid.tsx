@@ -9,11 +9,9 @@ import { useRouter } from 'next/navigation';
 export default function ContestantGrid({ contestants }: { contestants: any[] }) {
   const router = useRouter();
 
-  // STATES UNTUK POP-UP MODAL
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [activeGallery, setActiveGallery] = useState<{ images: string[], index: number } | null>(null);
   
-  // STATES UNTUK VOTE & UI/UX CUSTOM
   const [activeVote, setActiveVote] = useState<{ id: number, name: string, theme: string, image: string } | null>(null);
   const [igUsername, setIgUsername] = useState('');
   const [isChecked, setIsChecked] = useState(false);
@@ -22,7 +20,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
   const [errorMessage, setErrorMessage] = useState(''); 
   const [showRules, setShowRules] = useState(false);
 
-  // Menghitung Vote Share
   const totalVotes = contestants.reduce((acc, curr) => acc + (curr.vote_count || 0), 0);
 
   const handleCloseVoteModal = () => {
@@ -39,8 +36,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
   const handleVoteSubmit = async () => {
     setErrorMessage(''); 
     if (!activeVote) return;
-    if (!igUsername.trim()) return setErrorMessage("Please enter your Instagram username.");
-    if (!isChecked) return setErrorMessage("You must agree to the rules to continue.");
+    if (!igUsername.trim()) return setErrorMessage("Tolong masukkan username Instagram kamu.");
+    if (!isChecked) return setErrorMessage("Kamu harus menyetujui persyaratan untuk melanjutkan.");
 
     setLoading(true);
     const cleanIgUsername = igUsername.replace('@', '').trim().toLowerCase();
@@ -53,7 +50,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         .single();
 
       if (existingVote) {
-        setErrorMessage('This Instagram account has already been used to vote!');
+        setErrorMessage('Akun Instagram ini sudah pernah digunakan untuk voting!');
         setLoading(false);
         return;
       }
@@ -69,7 +66,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
       
     } catch (err) {
       console.error(err);
-      setErrorMessage('Failed to submit vote. Please check your connection.');
+      setErrorMessage('Gagal mengirim vote. Pastikan koneksi internet stabil.');
     } finally {
       setLoading(false);
     }
@@ -77,24 +74,15 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
 
   return (
     <>
-      {/* ========================================== */}
-      {/* 1. GRID CARD PESERTA UTAMA (RESPONSIVE)    */}
-      {/* ========================================== */}
-      
       {/* PETUNJUK SWIPE KHUSUS MOBILE */}
       <div className="md:hidden flex items-center justify-center gap-2 mb-6 text-red-500/70 text-xs font-bold uppercase tracking-widest animate-pulse">
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
         </svg>
-        Swipe To View More
+        Geser Untuk Melihat Lebih
       </div>
 
-      {/* PERUBAHAN UTAMA CONTAINER:
-        - Di HP: flex + overflow-x-auto + snap-x (Jadi Slider Horizontal)
-        - Di PC: md:grid (Kembali jadi Kotak-kotak berjajar)
-        - [scrollbar-width:none] dll: Menyembunyikan scrollbar jelek di HP
-      */}
-      <motion.div className="max-w-[1400px] mx-auto flex md:grid md:grid-cols-3 xl:grid-cols-5 gap-6 relative z-10 items-stretch overflow-x-auto snap-x snap-mandatory pb-8 md:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <motion.div className="max-w-[1400px] mx-auto flex md:grid md:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 px-4 md:px-0 relative z-10 items-stretch overflow-x-auto snap-x snap-mandatory pb-8 md:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {contestants?.map((c, index) => {
           const votePercentage = totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
           const mainImg = c.image_url || `/images/${c.id === 1 ? 'kim.webp' : c.id === 2 ? 'raka.webp' : c.id === 3 ? 'wira.webp' : c.id === 4 ? 'helix.webp' : 'mons.webp'}`;
@@ -114,16 +102,16 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               key={c.id} 
-              // PERUBAHAN UTAMA CARD: w-full shrink-0 snap-center agar selebar layar HP penuh!
-              className="group relative h-full w-full shrink-0 snap-center md:w-auto bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl"
+              className="group relative h-full w-[85vw] md:w-auto shrink-0 snap-center bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl"
               style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%)' }}
             >
               
-              <div onClick={() => setActiveVideo(c.video_url)} className="relative h-[220px] w-full bg-black cursor-pointer overflow-hidden shrink-0">
+              {/* PERUBAHAN UI: h-[220px] diubah jadi h-[350px]. Ditambahkan object-top pada Image agar kepala tidak terpotong */}
+              <div onClick={() => setActiveGallery({ images: galleryList, index: 0 })} className="relative h-[350px] md:h-[280px] xl:h-[350px] w-full bg-black cursor-pointer overflow-hidden shrink-0">
                 <div className={`absolute top-0 left-0 z-20 px-3 py-1 font-black text-sm text-white ${index === 0 ? 'bg-red-600' : 'bg-[#1f2235]'}`} style={{ clipPath: 'polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%)' }}>
                   {index === 0 ? '🏆 #1' : `#${index + 1}`}
                 </div>
-                <Image src={mainImg} alt={c.name} fill sizes="(max-width: 768px) 100vw, 20vw" className="object-cover transition-transform duration-700 group-hover:scale-110" priority={index === 0} />
+                <Image src={mainImg} alt={c.name} fill sizes="(max-width: 768px) 85vw, 20vw" className="object-cover object-top transition-transform duration-700 group-hover:scale-110" priority={index === 0} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b12] via-transparent to-transparent z-10 pointer-events-none"></div>
               </div>
               
@@ -135,13 +123,13 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                   <div className="text-right">
                     <span className="text-2xl font-black text-white leading-none">{c.vote_count}</span>
-                    <p className="text-gray-500 text-[9px] font-bold uppercase tracking-widest mt-1">VOTES</p>
+                    <p className="text-gray-500 text-[9px] font-bold uppercase tracking-widest mt-1">SUARA</p>
                   </div>
                 </div>
 
-                <div className="mb-6">
+                <div className="mb-4">
                   <div className="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                    <span>Vote Share</span>
+                    <span>Persentase</span>
                     <span className="text-white">{votePercentage}%</span>
                   </div>
                   <div className="w-full h-1 bg-[#1f2235] rounded-full overflow-hidden">
@@ -149,49 +137,28 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                 </div>
 
-                <div className="mb-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-4 h-[1px] bg-red-600"></div>
-                    <span className="text-red-600 text-[10px] font-bold uppercase tracking-widest">GALLERY</span>
-                  </div>
-                  
-                  <div className="grid grid-cols-4 gap-2">
-                    {galleryList.slice(0, 4).map((imgSrc, i) => {
-                      const isLastBox = i === 3;
-                      const hasMore = galleryList.length > 4;
-                      const remainingCount = galleryList.length - 4;
+                {/* PERUBAHAN UI: Galeri foto diubah menjadi Tombol Aksi Keren berdampingan dengan Video */}
+                <div className="grid grid-cols-2 gap-3 mb-4 mt-2">
+                  <button onClick={() => setActiveGallery({ images: galleryList, index: 0 })} className="w-full flex flex-col items-center justify-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-lg group/btn">
+                    <svg className="w-6 h-6 text-red-600 mb-2 group-hover/btn:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    <div className="text-white text-[10px] font-bold uppercase tracking-wider">GALERI</div>
+                    <div className="text-gray-500 text-[8px] uppercase tracking-widest">{galleryList.length} Foto</div>
+                  </button>
 
-                      return (
-                        <div key={i} onClick={() => setActiveGallery({ images: galleryList, index: i })} className="aspect-square relative rounded border border-[#1f2235] overflow-hidden bg-black opacity-70 hover:opacity-100 cursor-pointer transition-all hover:border-red-500">
-                           <Image src={imgSrc} alt={`gallery ${i}`} fill sizes="(max-width: 768px) 25vw, 10vw" className="object-cover" />
-                           {isLastBox && hasMore && (
-                             <div className="absolute inset-0 bg-black/70 flex items-center justify-center backdrop-blur-[2px]">
-                               <span className="text-white text-xs font-black">+{remainingCount}</span>
-                             </div>
-                           )}
-                        </div>
-                      )
-                    })}
-                  </div>
+                  <button onClick={() => setActiveVideo(c.video_url)} className="w-full flex flex-col items-center justify-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-lg group/btn">
+                    <svg className="w-6 h-6 text-red-600 mb-2 group-hover/btn:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <div className="text-white text-[10px] font-bold uppercase tracking-wider">VIDEO</div>
+                    <div className="text-gray-500 text-[8px] uppercase tracking-widest">Proses Rakit</div>
+                  </button>
                 </div>
-
-                <button onClick={() => setActiveVideo(c.video_url)} className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-2 rounded-lg mb-3 group/btn text-left mt-auto">
-                  <div className="w-10 h-10 bg-red-600 flex items-center justify-center rounded shrink-0 shadow-[0_0_10px_rgba(220,38,38,0.3)] group-hover/btn:scale-105 transition-transform">
-                    <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                  </div>
-                  <div className="ml-3">
-                    <div className="text-white text-xs font-bold uppercase tracking-wider">WATCH VIDEO</div>
-                    <div className="text-gray-500 text-[9px] uppercase tracking-widest">Build process & showcase</div>
-                  </div>
-                </button>
 
                 <button
                   onClick={() => setActiveVote({ id: c.id, name: c.name, theme: c.theme, image: mainImg })}
-                  className="w-full mt-2 bg-red-600 hover:bg-red-500 text-white py-3 font-black text-sm tracking-widest uppercase transition-all flex items-center justify-center gap-2 group/vote shrink-0"
+                  className="w-full mt-auto bg-red-600 hover:bg-red-500 text-white py-3 font-black text-sm tracking-widest uppercase transition-all flex items-center justify-center gap-2 group/vote shrink-0"
                   style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%)' }}
                 >
                   <svg className="w-4 h-4 text-white group-hover/vote:-translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" /></svg>
-                  VOTE FOR THIS
+                  VOTE PESERTA INI
                 </button>
               </div>
 
@@ -200,9 +167,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         })}
       </motion.div>
 
-      {/* ========================================== */}
-      {/* 2. POP-UP MODAL VOTE DENGAN UI/UX BARU */}
-      {/* ========================================== */}
+      {/* POP-UP MODAL VOTE */}
       <AnimatePresence>
         {activeVote && (
           <motion.div
@@ -227,21 +192,21 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                 {/* --- LAYAR RULES --- */}
                 {showRules && !voteSuccess && (
                   <motion.div key="rules" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} className="p-6 md:p-8 flex-grow flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar">
-                    <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">Official Rules</h2>
+                    <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">Peraturan Resmi</h2>
                     
                     <div className="text-gray-400 text-sm space-y-4 my-4 leading-relaxed">
-                      <p><strong className="text-white">1. Eligibility:</strong> Voting is open to everyone. You must use a valid, active Instagram account. Fake accounts or bot voting will result in disqualification of the votes.</p>
-                      <p><strong className="text-white">2. One Vote Per Account:</strong> Each Instagram username can only cast <strong>ONE</strong> vote during the entire contest period. Choose your champion wisely!</p>
-                      <p><strong className="text-white">3. Social Media Requirement:</strong> To validate your vote and be eligible for the IDR 16 Million prize pool draw, you <strong>MUST follow</strong> XPG ADATA Indonesia on Instagram, TikTok, and Facebook.</p>
-                      <p><strong className="text-white">4. Winner Announcement:</strong> The lucky voters who win the giveaway will be contacted directly via Instagram DM by the official @adataxpgindonesia account.</p>
-                      <p><strong className="text-white">5. Organizer Rights:</strong> XPG ADATA reserves the right to cancel or deduct votes that are proven to be fraudulent. The judges' and organizer's decisions are final.</p>
+                      <p><strong className="text-white">1. Kelayakan:</strong> Voting terbuka untuk umum. Kamu wajib menggunakan akun Instagram yang aktif dan asli. Penggunaan akun palsu atau bot akan mengakibatkan diskualifikasi suara.</p>
+                      <p><strong className="text-white">2. Satu Akun Satu Vote:</strong> Setiap username Instagram hanya bisa memberikan <strong>SATU</strong> suara selama periode kontes berlangsung. Pilih jagoanmu dengan bijak!</p>
+                      <p><strong className="text-white">3. Syarat Sosial Media:</strong> Untuk mengesahkan suaramu dan berhak mengikuti undian hadiah Rp 16 Juta, kamu <strong>WAJIB mem-follow</strong> XPG ADATA Indonesia di Instagram, TikTok, dan Facebook.</p>
+                      <p><strong className="text-white">4. Pengumuman Pemenang:</strong> Pemilih beruntung yang memenangkan undian akan dihubungi langsung melalui DM Instagram oleh akun resmi @adataxpgindonesia.</p>
+                      <p><strong className="text-white">5. Hak Penyelenggara:</strong> XPG ADATA berhak membatalkan atau mengurangi suara yang terbukti curang. Keputusan juri dan penyelenggara adalah mutlak.</p>
                     </div>
 
                     <button
                       onClick={() => setShowRules(false)}
                       className="w-full mt-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white py-3 font-bold tracking-widest uppercase transition-all rounded-lg shrink-0"
                     >
-                      I Understand, Back to Vote
+                      Saya Mengerti, Kembali ke Vote
                     </button>
                   </motion.div>
                 )}
@@ -250,7 +215,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                 {!showRules && !voteSuccess && (
                   <motion.div key="form" initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} className="p-6 md:p-8 flex-grow flex flex-col">
                     <div className="mb-6">
-                      <h2 className="text-2xl font-black text-white uppercase tracking-wider">Cast Your Vote</h2>
+                      <h2 className="text-2xl font-black text-white uppercase tracking-wider">Berikan Suaramu</h2>
                       <p className="text-gray-500 text-sm">XPG ADATA PC Modding Contest 2026</p>
                     </div>
 
@@ -272,15 +237,15 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                     )}
 
                     <div className="mb-6 mt-auto">
-                      <label className="block text-gray-400 text-sm font-bold tracking-widest uppercase mb-2">Instagram Username</label>
+                      <label className="block text-gray-400 text-sm font-bold tracking-widest uppercase mb-2">Username Instagram</label>
                       <input
                         type="text"
-                        placeholder="yourusername"
+                        placeholder="usernamekamu"
                         value={igUsername}
                         onChange={(e) => setIgUsername(e.target.value)}
                         className="w-full bg-[#12141d] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-red-500 transition-colors"
                       />
-                      <p className="text-gray-500 text-xs mt-2">Enter without @ symbol</p>
+                      <p className="text-gray-500 text-xs mt-2">Masukkan tanpa simbol @</p>
                     </div>
 
                     <div className="flex items-start gap-3 mb-6">
@@ -294,11 +259,11 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                         />
                       </div>
                       <label htmlFor="consent" className="text-gray-300 text-sm cursor-pointer leading-relaxed">
-                        I have read and agree to the 
+                        Saya telah membaca dan menyetujui
                         <button type="button" onClick={() => setShowRules(true)} className="text-red-500 underline hover:text-red-400 mx-1 focus:outline-none">
-                          contest rules
+                          peraturan kontes
                         </button> 
-                        and confirm I follow XPG ADATA on all required social platforms.
+                        serta mengonfirmasi bahwa saya mem-follow XPG ADATA di semua platform media sosial yang disyaratkan.
                       </label>
                     </div>
 
@@ -308,7 +273,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                       className="w-full mt-auto bg-red-900/40 hover:bg-red-600 border border-red-500/50 text-white py-4 font-black tracking-widest uppercase transition-all disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                       style={{ clipPath: 'polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)' }}
                     >
-                      {loading ? 'SUBMITTING...' : 'SUBMIT VOTE'}
+                      {loading ? 'MENGIRIM...' : 'KIRIM VOTE'}
                     </button>
                   </motion.div>
                 )}
@@ -327,19 +292,19 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                       <svg className="w-12 h-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                     </motion.div>
 
-                    <h2 className="text-2xl font-black text-white uppercase tracking-widest mb-4">VOTE CONFIRMED!</h2>
+                    <h2 className="text-2xl font-black text-white uppercase tracking-widest mb-4">VOTE BERHASIL!</h2>
                     
                     <div className="text-gray-400 text-xs md:text-sm leading-relaxed mb-8 space-y-3">
-                      <p>Thank you for taking part in the voting.</p>
-                      <p>Feel free to invite your friends to join, as voting will remain open until <strong className="text-white">May 18, 2026.</strong></p>
-                      <p>Lucky voters will receive a total of <strong className="text-red-500">IDR 16 million</strong> and will be announced on May 25, 2026, via ADATA XPG’s official social media channels.</p>
+                      <p>Terima kasih telah berpartisipasi dalam pemungutan suara.</p>
+                      <p>Ajak teman-temanmu untuk ikut memilih, pemungutan suara akan tetap dibuka hingga <strong className="text-white">18 Mei 2026.</strong></p>
+                      <p>Pemilih yang beruntung akan mendapatkan total hadiah <strong className="text-red-500">Rp 16 Juta</strong> dan akan diumumkan pada tanggal 25 Mei 2026 melalui kanal media sosial resmi XPG ADATA.</p>
                     </div>
 
                     <button
                       onClick={handleCloseVoteModal}
                       className="w-full mt-auto bg-white/10 hover:bg-white/20 border border-white/20 text-white py-4 font-bold tracking-widest uppercase transition-all rounded-lg shrink-0"
                     >
-                      RETURN TO GALLERY
+                      KEMBALI KE GALERI
                     </button>
                   </motion.div>
                 )}
@@ -403,7 +368,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
       </AnimatePresence>
 
       {/* ========================================== */}
-      {/* 4. POP-UP MODAL VIDEO (Support YouTube & IG) */}
+      {/* 4. POP-UP MODAL VIDEO */}
       {/* ========================================== */}
       <AnimatePresence>
         {activeVideo && (

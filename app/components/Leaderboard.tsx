@@ -27,7 +27,6 @@ export default function Leaderboard({ contestants }: { contestants: any[] }) {
               {index === 0 && c.vote_count > 0 ? '🏆' : `#${index + 1}`}
             </div>
 
-            {/* PERUBAHAN: URUTAN GAMBAR KECIL JUGA SUDAH DISESUAIKAN */}
             <div className="w-12 h-12 relative rounded-md overflow-hidden bg-black flex-shrink-0">
               <Image 
                 src={`/images/${
@@ -49,7 +48,7 @@ export default function Leaderboard({ contestants }: { contestants: any[] }) {
                 </div>
                 <div className="text-right">
                   <span className="font-bold text-xl text-white">{c.vote_count}</span>
-                  <span className="text-gray-500 text-xs ml-1 uppercase">Votes</span>
+                  <span className="text-gray-500 text-xs ml-1 uppercase">SUARA</span>
                 </div>
               </div>
               
