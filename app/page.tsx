@@ -128,7 +128,7 @@ export default async function Home() {
                <svg className="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
             </div>
             <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tight uppercase">
-              Juri & <span className="text-red-600 drop-shadow-[0_0_20px_rgba(220,38,38,0.6)]">Mentor</span>
+              Juri & <span className="text-red-600 drop-shadow-[0_0_20px_rgba(220,38,38,0.6)]">Mentor</span>: WAROQ
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">Para ahli berpengalaman yang mengevaluasi dan mengawasi jalannya kontes modding.</p>
           </div>
@@ -162,11 +162,11 @@ export default async function Home() {
       {/* ========================================================================= */}
       <section id="leaderboard-section" className="py-24 px-4 bg-[#0a0a0a] border-t border-white/5 relative z-10">
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Papan Klasemen Langsung</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Papan Peringkat</h2>
           <p className="text-gray-500 text-lg">Hasil pemungutan suara secara real-time.</p>
         </div>
         
-        {/* Jangan lupa Leaderboardnya diurutkan berdasarkan VOTE agar tetap jadi klasemen asli! */}
+        {/* Jangan lupa Leaderboardnya diurutkan berdasarkan VOTE agar tetap jadiPAPAN PERINGKAT asli! */}
         <Leaderboard contestants={contestants?.sort((a,b) => b.vote_count - a.vote_count) || []} />
       </section>
 
@@ -188,7 +188,7 @@ export default async function Home() {
               />
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pr-4 mt-2">
-              Kompetisi modding PC paling bergengsi di Indonesia. Menampilkan kreativitas, keahlian, dan rakitan ekstrem yang disponsori oleh XPG ADATA.
+              Kompetisi PC modding di Indonesia yang disponsori oleh XPG ADATA. Menampilkan kreativitas dan keahlian 5 kontestan dalam menciptakan modifikasi PC unik. 
             </p>
           </div>
 
@@ -224,15 +224,27 @@ export default async function Home() {
             <div className="flex flex-col gap-3">
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
                 <p className="text-white font-bold text-sm uppercase tracking-wider">Total Hadiah</p>
-                <p className="text-red-500 text-xs mt-1 font-mono tracking-widest">Rp 16.000.000</p>
+                <p className="text-red-500 text-xs mt-1 font-mono tracking-widest">Rp 16.000.000 untuk 32 pemenang</p>
               </div>
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
                 <p className="text-white font-bold text-sm uppercase tracking-wider">Peserta</p>
-                <p className="text-gray-400 text-xs mt-1">5 Modder Elit</p>
+                <p className="text-gray-400 text-xs mt-1">5 Modders Profesional</p>
               </div>
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
-                <p className="text-white font-bold text-sm uppercase tracking-wider">Dipilih Oleh</p>
-                <p className="text-gray-400 text-xs mt-1">XPG ADATA</p>
+                <p className="text-white font-bold text-sm uppercase tracking-wider">Peserta</p>
+                <p className="text-gray-400 text-xs mt-1">5 Modders Profesional</p>
+              </div>
+              <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
+                <p className="text-white font-bold text-sm uppercase tracking-wider">PERIODE VOTING</p>
+                <p className="text-gray-400 text-xs mt-1">7-18 Mei 2026</p>
+              </div>
+              <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
+                <p className="text-white font-bold text-sm uppercase tracking-wider">PENGUMUMAN PEMENANG</p>
+                <p className="text-gray-400 text-xs mt-1">25 Mei 2026 di media sosial XPG ADATA</p>
+              </div>
+               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
+                <p className="text-white font-bold text-sm uppercase tracking-wider">SYARAT DAPAT HADIAH</p>
+                <p className="text-gray-400 text-xs mt-1">Publish bukti voting di Instagram Story Klaim hadiah maksimal 1 bulan setelah pengumuman pemenang</p>
               </div>
             </div>
           </div>
