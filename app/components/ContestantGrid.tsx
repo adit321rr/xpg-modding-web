@@ -95,25 +95,23 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               key={c.id} 
-              className="group relative h-full w-full bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
+              // PERUBAHAN UI CARD: w-full (Penuh layar)
+              className="group relative h-full w-full bg-[#0a0b12] border border-white/10 rounded-[1.5rem] overflow-hidden flex flex-col transition-all duration-500 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:border-red-500/50"
             >
               
-              {/* GAMBAR HERO PESERTA */}
               <div onClick={() => setActiveGallery({ images: galleryList, index: 0 })} className="relative h-[350px] md:h-[300px] xl:h-[350px] w-full bg-black cursor-pointer overflow-hidden shrink-0">
-                <div className={`absolute top-0 left-0 z-20 px-4 py-2 font-black text-sm text-white ${index === 0 ? 'bg-red-600' : 'bg-[#1f2235]'}`} style={{ clipPath: 'polygon(0 0, 100% 0, calc(100% - 15px) 100%, 0 100%)' }}>
-                  {index === 0 ? '🏆 #1' : `#${index + 1}`}
+                <div className={`absolute top-4 left-4 z-20 px-3 py-1.5 rounded-lg font-black text-sm md:text-base backdrop-blur-md border ${index === 0 ? 'bg-gradient-to-r from-yellow-500 to-amber-600 border-yellow-300 text-black shadow-[0_0_15px_rgba(245,158,11,0.6)]' : 'bg-black/50 border-white/20 text-white'}`}>
+                  {index === 0 ? '🏆 JUARA 1' : `#${index + 1}`}
                 </div>
                 <Image src={mainImg} alt={c.name} fill sizes="(max-width: 768px) 100vw, 20vw" className="object-cover object-top transition-transform duration-700 group-hover:scale-105" priority={index === 0} />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b12] via-transparent to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b12] via-[#0a0b12]/60 to-transparent z-10 pointer-events-none"></div>
                 <div className="absolute bottom-4 left-5 right-5 z-20">
                   <h2 className="text-3xl font-black text-white leading-tight tracking-wide mb-1">{c.name}</h2>
                   <p className="text-[#00ffff] font-medium text-xs md:text-sm uppercase tracking-widest">{c.theme}</p>
                 </div>
               </div>
               
-              <div className="p-5 flex-grow flex flex-col z-20 relative -mt-2">
-                
-                {/* PERSENTASE & SUARA */}
+              <div className="p-5 flex-grow flex flex-col z-20">
                 <div className="flex justify-between items-center mb-5">
                   <div className="flex-grow mr-4">
                     <div className="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
@@ -130,42 +128,31 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                 </div>
 
-                {/* 3D STACK GALLERY */}
-                <div className="mb-6 mt-2">
+                <div className="mb-4">
                   <div className="flex items-center gap-2 mb-3">
                     <div className="w-4 h-[1px] bg-red-600"></div>
-                    <span className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">GALERI</span>
+                    <span className="text-red-600 text-[10px] font-bold uppercase tracking-widest">GALERI</span>
                   </div>
+                  <div className="grid grid-cols-4 gap-2">
+                    {galleryList.slice(0, 4).map((imgSrc, i) => {
+                      const isLastBox = i === 3;
+                      const hasMore = galleryList.length > 4;
+                      const remainingCount = galleryList.length - 4;
 
-                  <div 
-                    onClick={() => setActiveGallery({ images: galleryList, index: 0 })}
-                    className="relative w-full h-[140px] flex justify-center items-center cursor-pointer group/stack"
-                  >
-                    {/* Gambar Kiri */}
-                    {galleryList.length > 1 && (
-                      <div className="absolute left-[5%] w-[40%] h-[70%] rounded-xl overflow-hidden shadow-xl opacity-60 group-hover/stack:opacity-100 group-hover/stack:-translate-x-4 transition-all duration-500 z-10 grayscale-[50%] border border-white/5">
-                        <Image src={galleryList[1]} alt="Gallery 2" fill className="object-cover" />
-                      </div>
-                    )}
-                    
-                    {/* Gambar Kanan */}
-                    {galleryList.length > 2 && (
-                      <div className="absolute right-[5%] w-[40%] h-[70%] rounded-xl overflow-hidden shadow-xl opacity-60 group-hover/stack:opacity-100 group-hover/stack:translate-x-4 transition-all duration-500 z-10 grayscale-[50%] border border-white/5">
-                        <Image src={galleryList[2]} alt="Gallery 3" fill className="object-cover" />
-                      </div>
-                    )}
-
-                    {/* Gambar Tengah */}
-                    <div className="absolute w-[50%] h-[90%] rounded-xl overflow-hidden shadow-2xl z-20 border-2 border-[#0a0b12] group-hover/stack:border-red-500/50 transition-all duration-500 group-hover/stack:scale-105">
-                      <Image src={galleryList[0]} alt="Gallery 1" fill className="object-cover" />
-                      <div className="absolute top-1.5 right-1.5 bg-black/80 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-1 rounded-md">
-                        {galleryList.length} Foto
-                      </div>
-                    </div>
+                      return (
+                        <div key={i} onClick={() => setActiveGallery({ images: galleryList, index: i })} className="aspect-square relative rounded border border-white/10 overflow-hidden bg-black opacity-80 hover:opacity-100 cursor-pointer transition-all hover:border-red-500">
+                           <Image src={imgSrc} alt={`gallery ${i}`} fill sizes="(max-width: 768px) 20vw, 5vw" className="object-cover" />
+                           {isLastBox && hasMore && (
+                             <div className="absolute inset-0 bg-black/70 flex items-center justify-center backdrop-blur-[2px]">
+                               <span className="text-white text-xs font-black">+{remainingCount}</span>
+                             </div>
+                           )}
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
 
-                {/* TOMBOL VIDEO */}
                 <button onClick={() => setActiveVideo(c.video_url)} className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-xl mb-4 group/btn text-left mt-auto">
                   <div className="w-10 h-10 bg-red-600 flex items-center justify-center rounded-lg shrink-0 shadow-[0_0_10px_rgba(220,38,38,0.3)] group-hover/btn:scale-105 transition-transform">
                     <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -176,7 +163,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                 </button>
 
-                {/* TOMBOL VOTE */}
                 <button
                   onClick={() => setActiveVote({ id: c.id, name: c.name, theme: c.theme, image: mainImg })}
                   className="w-full bg-red-600 hover:bg-red-500 text-white py-4 font-black text-sm tracking-widest uppercase transition-all flex items-center justify-center rounded-xl shadow-[0_10px_20px_rgba(220,38,38,0.2)] hover:shadow-[0_10px_30px_rgba(220,38,38,0.4)] active:scale-95 shrink-0"
@@ -212,7 +198,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               </button>
 
               <AnimatePresence mode="wait">
-                {/* --- LAYAR RULES --- */}
                 {showRules && !voteSuccess && (
                   <motion.div key="rules" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} className="p-6 md:p-8 flex-grow flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar">
                     <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">Peraturan Resmi</h2>
@@ -229,7 +214,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </motion.div>
                 )}
 
-                {/* --- LAYAR FORM VOTE UTAMA --- */}
                 {!showRules && !voteSuccess && (
                   <motion.div key="form" initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} className="p-6 md:p-8 flex-grow flex flex-col">
                     <div className="mb-6">
@@ -291,7 +275,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </motion.div>
                 )}
 
-                {/* --- LAYAR SUKSES BERHASIL VOTE --- */}
                 {voteSuccess && (
                   <motion.div key="success" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="p-8 flex-grow flex flex-col items-center justify-center text-center">
                     <motion.div 
@@ -324,7 +307,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         )}
       </AnimatePresence>
 
-      {/* POP-UP MODAL GALLERY SLIDER */}
+      {/* POP-UP MODAL GALLERY SLIDER (DENGAN TOMBOL TUTUP/CLOSE JELAS) */}
       <AnimatePresence>
         {activeGallery && (
           <motion.div
@@ -336,13 +319,15 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
             <div className="absolute inset-0" onClick={() => setActiveGallery(null)}></div>
             
             {/* ========================================== */}
-            {/* TOMBOL TUTUP GALERI (JELAS UNTUK MOBILE & WEB) */}
+            {/* TOMBOL TUTUP / CLOSE (TAMPIL DI HP & PC) */}
             {/* ========================================== */}
-            <div className="absolute top-4 right-4 md:top-6 md:right-6 z-[10000] flex gap-2">
-               <button onClick={() => setActiveGallery(null)} className="flex items-center gap-2 bg-[#12141d]/80 hover:bg-red-600 text-white px-5 py-3 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
-                 {/* Text "TUTUP" sekarang tampil di semua layar (HP maupun Web) */}
-                 <span className="text-xs font-bold uppercase tracking-widest">TUTUP</span>
-                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
+            <div className="absolute top-4 right-4 md:top-8 md:right-8 z-[10000] flex gap-2">
+               <button 
+                 onClick={() => setActiveGallery(null)} 
+                 className="flex items-center gap-2 bg-white/10 hover:bg-red-600 text-white px-4 py-2 md:px-5 md:py-3 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)] group"
+               >
+                 <span className="text-xs md:text-sm font-bold uppercase tracking-widest hidden sm:block">Tutup</span>
+                 <svg className="w-6 h-6 md:w-7 md:h-7 group-hover:rotate-90 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
                </button>
             </div>
             {/* ========================================== */}
@@ -382,7 +367,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         )}
       </AnimatePresence>
 
-      {/* POP-UP MODAL VIDEO */}
+      {/* POP-UP MODAL VIDEO (DENGAN TOMBOL TUTUP/CLOSE JELAS) */}
       <AnimatePresence>
         {activeVideo && (
           <motion.div
@@ -393,13 +378,15 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
             onClick={() => setActiveVideo(null)} 
           >
             {/* ========================================== */}
-            {/* TOMBOL TUTUP VIDEO (JELAS UNTUK MOBILE & WEB) */}
+            {/* TOMBOL TUTUP / CLOSE (TAMPIL DI HP & PC) */}
             {/* ========================================== */}
-            <div className="absolute top-4 right-4 md:top-6 md:right-6 z-[10000] flex gap-2">
-               <button onClick={() => setActiveVideo(null)} className="flex items-center gap-2 bg-[#12141d]/80 hover:bg-red-600 text-white px-5 py-3 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
-                 {/* Text "TUTUP" sekarang tampil di semua layar (HP maupun Web) */}
-                 <span className="text-xs font-bold uppercase tracking-widest">TUTUP</span>
-                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
+            <div className="absolute top-4 right-4 md:top-8 md:right-8 z-[10000] flex gap-2">
+               <button 
+                 onClick={() => setActiveVideo(null)} 
+                 className="flex items-center gap-2 bg-white/10 hover:bg-red-600 text-white px-4 py-2 md:px-5 md:py-3 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)] group"
+               >
+                 <span className="text-xs md:text-sm font-bold uppercase tracking-widest hidden sm:block">Tutup</span>
+                 <svg className="w-6 h-6 md:w-7 md:h-7 group-hover:rotate-90 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
                </button>
             </div>
             {/* ========================================== */}
