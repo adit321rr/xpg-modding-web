@@ -216,7 +216,8 @@ export default function VoteButton({ contestantId, contestantName, contestantThe
                     <h2 className="text-2xl font-black text-white uppercase tracking-widest mb-4">VOTE BERHASIL!</h2>
                     
                     <div className="text-gray-400 text-xs md:text-sm leading-relaxed mb-8 space-y-3">
-                      <p>Terima kasih telah berpartisipasi dalam pemungutan suara.</p>
+                      {/* REVISI NAMA INSTAGRAM DI SINI */}
+                      <p>Terima kasih <strong className="text-white">@{igUsername.replace('@', '')}</strong> telah berpartisipasi dalam pemungutan suara.</p>
                       <p>Ajak teman-temanmu untuk ikut memilih, pemungutan suara akan tetap dibuka hingga <strong className="text-white">18 Mei 2026.</strong></p>
                       <p>Pemilih yang beruntung akan mendapatkan total hadiah <strong className="text-red-500">Rp 16 Juta</strong> dan akan diumumkan pada tanggal 25 Mei 2026 melalui kanal media sosial resmi XPG ADATA.</p>
                     </div>
