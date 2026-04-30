@@ -10,13 +10,34 @@ export const revalidate = 0;
 export default async function Home() {
   const { data: contestants, error } = await supabase
     .from('contestants')
-    .select('*')
-    .order('vote_count', { ascending: false }) 
-    .order('id', { ascending: true }); 
+    .select('*');
 
   if (error) {
     return <div className="text-white p-10 text-center">Gagal memuat data. Pastikan koneksi internet aman.</div>;
   }
+
+  // =========================================================================
+  // REVISI URUTAN CUSTOM (Sesuai Request ADATA XPG)
+  // 1. wimodz.tech
+  // 2. MonsParmodd
+  // 3. Rakazone21
+  // 4. Kim Jong Tep
+  // 5. HelixCustom
+  // =========================================================================
+  const orderMap: { [key: string]: number } = {
+    'wimodz.tech': 1,
+    'MonsParmodd': 2,
+    'Rakazone21': 3,
+    'Kim Jong Tep': 4,
+    'HelixCustom': 5
+  };
+
+  // Kita sortir array contestants berdasarkan urutan di atas
+  const sortedContestants = contestants?.sort((a, b) => {
+    const orderA = orderMap[a.name] || 99; // Default taruh belakang kalau ga ada di map
+    const orderB = orderMap[b.name] || 99;
+    return orderA - orderB;
+  });
 
   return (
     <main className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-600 selection:text-white">
@@ -92,7 +113,8 @@ export default async function Home() {
           <p className="text-gray-500 text-lg">Saksikan mahakarya mereka. Satu suaramu sangat berharga.</p>
         </div>
         
-        <ContestantGrid contestants={contestants || []} />
+        {/* Mengoper data yang sudah di-sort */}
+        <ContestantGrid contestants={sortedContestants || []} />
       </section>
 
       {/* ========================================================================= */}
@@ -144,7 +166,8 @@ export default async function Home() {
           <p className="text-gray-500 text-lg">Hasil pemungutan suara secara real-time.</p>
         </div>
         
-        <Leaderboard contestants={contestants || []} />
+        {/* Jangan lupa Leaderboardnya diurutkan berdasarkan VOTE agar tetap jadi klasemen asli! */}
+        <Leaderboard contestants={contestants?.sort((a,b) => b.vote_count - a.vote_count) || []} />
       </section>
 
       {/* ========================================================================= */}
