@@ -161,7 +161,7 @@ export default function VoteButton({ contestantId, contestantName, contestantThe
                       <label className="block text-gray-400 text-sm font-bold tracking-widest uppercase mb-2">Username Instagram</label>
                       <input
                         type="text"
-                        placeholder="usernamekamu"
+                        placeholder="username instagram kamu"
                         value={igUsername}
                         onChange={(e) => setIgUsername(e.target.value)}
                         className="w-full bg-[#12141d] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-red-500 transition-colors"

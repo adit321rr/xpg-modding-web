@@ -95,17 +95,14 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               key={c.id} 
-              // PERUBAHAN UI CARD: w-full (Penuh layar ke bawah)
-              className="group relative h-full w-full bg-[#0a0b12] border border-[#1f2235] rounded-[1.5rem] overflow-hidden flex flex-col transition-all duration-500 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:border-red-500/50"
+              className="group relative h-full w-full bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
             >
               
+              {/* GAMBAR HERO PESERTA */}
               <div onClick={() => setActiveGallery({ images: galleryList, index: 0 })} className="relative h-[350px] md:h-[300px] xl:h-[350px] w-full bg-black cursor-pointer overflow-hidden shrink-0">
-                
-                {/* REVISI BADGE NOMOR URUT: Potongan Polygon Merah Keren */}
-                <div className={`absolute top-0 left-0 z-20 pl-4 pr-6 py-2 font-black text-sm text-white ${index === 0 ? 'bg-red-600' : 'bg-[#1f2235]'}`} style={{ clipPath: 'polygon(0 0, 100% 0, calc(100% - 15px) 100%, 0 100%)' }}>
+                <div className={`absolute top-0 left-0 z-20 px-4 py-2 font-black text-sm text-white ${index === 0 ? 'bg-red-600' : 'bg-[#1f2235]'}`} style={{ clipPath: 'polygon(0 0, 100% 0, calc(100% - 15px) 100%, 0 100%)' }}>
                   {index === 0 ? '🏆 #1' : `#${index + 1}`}
                 </div>
-
                 <Image src={mainImg} alt={c.name} fill sizes="(max-width: 768px) 100vw, 20vw" className="object-cover object-top transition-transform duration-700 group-hover:scale-105" priority={index === 0} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b12] via-[#0a0b12]/60 to-transparent z-10 pointer-events-none"></div>
                 <div className="absolute bottom-4 left-5 right-5 z-20">
@@ -114,7 +111,9 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                 </div>
               </div>
               
-              <div className="p-5 flex-grow flex flex-col z-20">
+              <div className="p-5 flex-grow flex flex-col z-20 relative -mt-2">
+                
+                {/* PERSENTASE & SUARA */}
                 <div className="flex justify-between items-center mb-5">
                   <div className="flex-grow mr-4">
                     <div className="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
@@ -131,13 +130,11 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                 </div>
 
-                {/* ========================================== */}
-                {/* PERUBAHAN UI: 3D STACK GALLERY (SCREENSHOT 3) */}
-                {/* ========================================== */}
-                <div className="mb-5 mt-2">
+                {/* 3D STACK GALLERY */}
+                <div className="mb-6 mt-2">
                   <div className="flex items-center gap-2 mb-3">
                     <div className="w-4 h-[1px] bg-red-600"></div>
-                    <span className="text-red-600 text-[10px] font-bold uppercase tracking-widest">GALERI TUMPANG</span>
+                    <span className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">GALERI</span>
                   </div>
 
                   <div 
@@ -167,8 +164,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                     </div>
                   </div>
                 </div>
-                {/* ========================================== */}
 
+                {/* TOMBOL VIDEO */}
                 <button onClick={() => setActiveVideo(c.video_url)} className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-xl mb-4 group/btn text-left mt-auto">
                   <div className="w-10 h-10 bg-red-600 flex items-center justify-center rounded-lg shrink-0 shadow-[0_0_10px_rgba(220,38,38,0.3)] group-hover/btn:scale-105 transition-transform">
                     <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -179,6 +176,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                 </button>
 
+                {/* TOMBOL VOTE */}
                 <button
                   onClick={() => setActiveVote({ id: c.id, name: c.name, theme: c.theme, image: mainImg })}
                   className="w-full bg-red-600 hover:bg-red-500 text-white py-4 font-black text-sm tracking-widest uppercase transition-all flex items-center justify-center rounded-xl shadow-[0_10px_20px_rgba(220,38,38,0.2)] hover:shadow-[0_10px_30px_rgba(220,38,38,0.4)] active:scale-95 shrink-0"
@@ -214,6 +212,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               </button>
 
               <AnimatePresence mode="wait">
+                {/* --- LAYAR RULES --- */}
                 {showRules && !voteSuccess && (
                   <motion.div key="rules" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} className="p-6 md:p-8 flex-grow flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar">
                     <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">Peraturan Resmi</h2>
@@ -230,6 +229,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </motion.div>
                 )}
 
+                {/* --- LAYAR FORM VOTE UTAMA --- */}
                 {!showRules && !voteSuccess && (
                   <motion.div key="form" initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} className="p-6 md:p-8 flex-grow flex flex-col">
                     <div className="mb-6">
@@ -291,6 +291,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </motion.div>
                 )}
 
+                {/* --- LAYAR SUKSES BERHASIL VOTE --- */}
                 {voteSuccess && (
                   <motion.div key="success" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="p-8 flex-grow flex flex-col items-center justify-center text-center">
                     <motion.div 
@@ -304,7 +305,10 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                     </motion.div>
                     <h2 className="text-2xl font-black text-white uppercase tracking-widest mb-4">VOTE BERHASIL!</h2>
                     <div className="text-gray-400 text-xs md:text-sm leading-relaxed mb-8 space-y-3">
-                      <p>Terima kasih telah berpartisipasi dalam pemungutan suara.</p>
+                      
+                      {/* === NAMA INSTAGRAM MUNCUL DI SINI! === */}
+                      <p>Terima kasih <strong className="text-white">@{igUsername.replace('@', '')}</strong> telah berpartisipasi dalam pemungutan suara.</p>
+                      
                       <p>Ajak teman-temanmu untuk ikut memilih, pemungutan suara akan tetap dibuka hingga <strong className="text-white">18 Mei 2026.</strong></p>
                       <p>Pemilih yang beruntung akan mendapatkan total hadiah <strong className="text-red-500">Rp 16 Juta</strong> dan akan diumumkan pada tanggal 25 Mei 2026 melalui kanal media sosial resmi XPG ADATA.</p>
                     </div>
@@ -323,7 +327,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         )}
       </AnimatePresence>
 
-      {/* POP-UP MODAL GALLERY SLIDER */}
+      {/* POP-UP MODAL GALLERY SLIDER (TIDAK ADA PERUBAHAN) */}
       <AnimatePresence>
         {activeGallery && (
           <motion.div
@@ -376,7 +380,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         )}
       </AnimatePresence>
 
-      {/* POP-UP MODAL VIDEO */}
+      {/* POP-UP MODAL VIDEO (TIDAK ADA PERUBAHAN) */}
       <AnimatePresence>
         {activeVideo && (
           <motion.div
