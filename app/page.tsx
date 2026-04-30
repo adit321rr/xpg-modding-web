@@ -32,7 +32,7 @@ export default async function Home() {
   };
 
   const sortedContestants = contestants?.sort((a, b) => {
-    const orderA = orderMap[a.name] || 99; 
+    const orderA = orderMap[a.name] || 99;
     const orderB = orderMap[b.name] || 99;
     return orderA - orderB;
   });
@@ -134,14 +134,12 @@ export default async function Home() {
       >
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <div className="flex items-center justify-center gap-3">
-              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight uppercase">
-                JURI & MENTOR:
-              </h2>
-              <h2 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700 drop-shadow-[0_0_15px_rgba(220,38,38,0.6)] uppercase">
+            <h2 className="text-4xl md:text-5xl font-black tracking-tight uppercase text-center flex flex-col md:flex-row items-center justify-center md:gap-3">
+              <span className="text-white">JURI & MENTOR:</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700 drop-shadow-[0_0_15px_rgba(220,38,38,0.6)] mt-1 md:mt-0">
                 WAROQ
-              </h2>
-            </div>
+              </span>
+            </h2>
             <p className="mt-4 text-gray-400 text-sm md:text-base max-w-2xl mx-auto">
               Para ahli berpengalaman yang mengevaluasi dan mengawasi jalannya
               kontes modding.
@@ -201,7 +199,6 @@ export default async function Home() {
       {/* ========================================================================= */}
       <footer className="bg-[#0a0a0a] border-t border-red-900/30 pt-20 pb-8 px-4 relative z-10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 mb-16">
-          
           {/* Kolom Kiri: Logo & Deskripsi */}
           <div>
             <div className="mb-6">
@@ -312,7 +309,7 @@ export default async function Home() {
                   Rp 16.000.000 untuk 32 pemenang
                 </p>
               </div>
-              
+
               {/* DUPLIKASI DIHAPUS, TERSISA 1 PESERTA SAJA */}
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
                 <p className="text-white font-bold text-sm uppercase tracking-wider">
