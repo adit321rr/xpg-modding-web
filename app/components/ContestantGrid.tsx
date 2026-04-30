@@ -74,8 +74,16 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
 
   return (
     <>
-      {/* CONTAINER: 100% Vertical Scroll (grid-cols-1 di HP) */}
-      <motion.div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12">
+      {/* Teks Petunjuk Swipe di Mobile */}
+      <div className="md:hidden flex items-center justify-center gap-2 mb-6 text-red-500/70 text-xs font-bold uppercase tracking-widest animate-pulse">
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+        Geser Ke Samping
+      </div>
+
+      {/* PERUBAHAN UI: flex overflow-x-auto untuk swipe samping di HP, snap-x agar mulus, dan md:grid untuk tampilan PC */}
+      <motion.div className="max-w-[1400px] mx-auto flex md:grid md:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-8 px-4 md:px-0 relative z-10 items-stretch overflow-x-auto snap-x snap-mandatory pb-12 scroll-pl-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {contestants?.map((c, index) => {
           const votePercentage = totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
           const mainImg = c.image_url || `/images/${c.id === 1 ? 'kim.webp' : c.id === 2 ? 'raka.webp' : c.id === 3 ? 'wira.webp' : c.id === 4 ? 'helix.webp' : 'mons.webp'}`;
@@ -95,15 +103,15 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               key={c.id} 
-              className="group relative h-full w-full bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
+              // PERUBAHAN UI CARD: w-[85vw] di HP agar kartu selanjutnya ngintip, shrink-0 agar tidak menyusut
+              className="group relative h-full w-[85vw] sm:w-[400px] md:w-auto shrink-0 snap-start bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
             >
               
-              {/* GAMBAR HERO PESERTA */}
               <div onClick={() => setActiveGallery({ images: galleryList, index: 0 })} className="relative h-[350px] md:h-[300px] xl:h-[350px] w-full bg-black cursor-pointer overflow-hidden shrink-0">
                 <div className={`absolute top-0 left-0 z-20 px-4 py-2 font-black text-sm text-white ${index === 0 ? 'bg-red-600' : 'bg-[#1f2235]'}`} style={{ clipPath: 'polygon(0 0, 100% 0, calc(100% - 15px) 100%, 0 100%)' }}>
                   {index === 0 ? '🏆 #1' : `#${index + 1}`}
                 </div>
-                <Image src={mainImg} alt={c.name} fill sizes="(max-width: 768px) 100vw, 20vw" className="object-cover object-top transition-transform duration-700 group-hover:scale-105" priority={index === 0} />
+                <Image src={mainImg} alt={c.name} fill sizes="(max-width: 768px) 85vw, 20vw" className="object-cover object-top transition-transform duration-700 group-hover:scale-105" priority={index === 0} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b12] via-[#0a0b12]/60 to-transparent z-10 pointer-events-none"></div>
                 <div className="absolute bottom-4 left-5 right-5 z-20">
                   <h2 className="text-3xl font-black text-white leading-tight tracking-wide mb-1">{c.name}</h2>
@@ -113,7 +121,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               
               <div className="p-5 flex-grow flex flex-col z-20 relative -mt-2">
                 
-                {/* PERSENTASE & SUARA */}
                 <div className="flex justify-between items-center mb-5">
                   <div className="flex-grow mr-4">
                     <div className="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
@@ -212,7 +219,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               </button>
 
               <AnimatePresence mode="wait">
-                {/* --- LAYAR RULES --- */}
                 {showRules && !voteSuccess && (
                   <motion.div key="rules" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} className="p-6 md:p-8 flex-grow flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar">
                     <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">Peraturan Resmi</h2>
@@ -229,7 +235,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </motion.div>
                 )}
 
-                {/* --- LAYAR FORM VOTE UTAMA --- */}
                 {!showRules && !voteSuccess && (
                   <motion.div key="form" initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} className="p-6 md:p-8 flex-grow flex flex-col">
                     <div className="mb-6">
@@ -291,7 +296,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </motion.div>
                 )}
 
-                {/* --- LAYAR SUKSES BERHASIL VOTE --- */}
                 {voteSuccess && (
                   <motion.div key="success" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="p-8 flex-grow flex flex-col items-center justify-center text-center">
                     <motion.div 
@@ -305,10 +309,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                     </motion.div>
                     <h2 className="text-2xl font-black text-white uppercase tracking-widest mb-4">VOTE BERHASIL!</h2>
                     <div className="text-gray-400 text-xs md:text-sm leading-relaxed mb-8 space-y-3">
-                      
-                      {/* === NAMA INSTAGRAM MUNCUL DI SINI! === */}
                       <p>Terima kasih <strong className="text-white">@{igUsername.replace('@', '')}</strong> telah berpartisipasi dalam pemungutan suara.</p>
-                      
                       <p>Ajak teman-temanmu untuk ikut memilih, pemungutan suara akan tetap dibuka hingga <strong className="text-white">18 Mei 2026.</strong></p>
                       <p>Pemilih yang beruntung akan mendapatkan total hadiah <strong className="text-red-500">Rp 16 Juta</strong> dan akan diumumkan pada tanggal 25 Mei 2026 melalui kanal media sosial resmi XPG ADATA.</p>
                     </div>
@@ -327,7 +328,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         )}
       </AnimatePresence>
 
-      {/* POP-UP MODAL GALLERY SLIDER (TIDAK ADA PERUBAHAN) */}
+      {/* POP-UP MODAL GALLERY SLIDER */}
       <AnimatePresence>
         {activeGallery && (
           <motion.div
@@ -380,7 +381,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         )}
       </AnimatePresence>
 
-      {/* POP-UP MODAL VIDEO (TIDAK ADA PERUBAHAN) */}
+      {/* POP-UP MODAL VIDEO */}
       <AnimatePresence>
         {activeVideo && (
           <motion.div
