@@ -22,11 +22,6 @@ export default async function Home() {
 
   // =========================================================================
   // REVISI URUTAN CUSTOM (Sesuai Request ADATA XPG)
-  // 1. wimodz.tech
-  // 2. MonsParmodd
-  // 3. Rakazone21
-  // 4. Kim Jong Tep
-  // 5. HelixCustom
   // =========================================================================
   const orderMap: { [key: string]: number } = {
     "wimodz.tech": 1,
@@ -36,9 +31,8 @@ export default async function Home() {
     HelixCustom: 5,
   };
 
-  // Kita sortir array contestants berdasarkan urutan di atas
   const sortedContestants = contestants?.sort((a, b) => {
-    const orderA = orderMap[a.name] || 99; // Default taruh belakang kalau ga ada di map
+    const orderA = orderMap[a.name] || 99; 
     const orderB = orderMap[b.name] || 99;
     return orderA - orderB;
   });
@@ -128,7 +122,6 @@ export default async function Home() {
           </p>
         </div>
 
-        {/* Mengoper data yang sudah di-sort */}
         <ContestantGrid contestants={sortedContestants || []} />
       </section>
 
@@ -142,11 +135,9 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <div className="flex items-center justify-center gap-3">
-              {/* Teks Jabatan (Putih) */}
               <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight uppercase">
                 JURI & MENTOR:
               </h2>
-              {/* Teks Nama Tokoh (Merah XPG + Glow) */}
               <h2 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700 drop-shadow-[0_0_15px_rgba(220,38,38,0.6)] uppercase">
                 WAROQ
               </h2>
@@ -198,7 +189,6 @@ export default async function Home() {
           </p>
         </div>
 
-        {/* Jangan lupa Leaderboardnya diurutkan berdasarkan VOTE agar tetap jadiPAPAN PERINGKAT asli! */}
         <Leaderboard
           contestants={
             contestants?.sort((a, b) => b.vote_count - a.vote_count) || []
@@ -211,6 +201,8 @@ export default async function Home() {
       {/* ========================================================================= */}
       <footer className="bg-[#0a0a0a] border-t border-red-900/30 pt-20 pb-8 px-4 relative z-10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 mb-16">
+          
+          {/* Kolom Kiri: Logo & Deskripsi */}
           <div>
             <div className="mb-6">
               <Image
@@ -229,6 +221,7 @@ export default async function Home() {
             </p>
           </div>
 
+          {/* Kolom Tengah: Sosial Media */}
           <div>
             <h4 className="text-red-600 font-bold tracking-widest mb-6 uppercase text-sm">
               Ikuti Kami
@@ -305,6 +298,7 @@ export default async function Home() {
             </div>
           </div>
 
+          {/* Kolom Kanan: Info Kontes */}
           <div>
             <h4 className="text-red-600 font-bold tracking-widest mb-6 uppercase text-sm">
               Info Kontes
@@ -312,28 +306,23 @@ export default async function Home() {
             <div className="flex flex-col gap-3">
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
                 <p className="text-white font-bold text-sm uppercase tracking-wider">
-                  Total Hadiah
+                  TOTAL HADIAH
                 </p>
                 <p className="text-red-500 text-xs mt-1 font-mono tracking-widest">
                   Rp 16.000.000 untuk 32 pemenang
                 </p>
               </div>
+              
+              {/* DUPLIKASI DIHAPUS, TERSISA 1 PESERTA SAJA */}
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
                 <p className="text-white font-bold text-sm uppercase tracking-wider">
-                  Peserta
+                  PESERTA
                 </p>
                 <p className="text-gray-400 text-xs mt-1">
                   5 Modders Profesional
                 </p>
               </div>
-              <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
-                <p className="text-white font-bold text-sm uppercase tracking-wider">
-                  Peserta
-                </p>
-                <p className="text-gray-400 text-xs mt-1">
-                  5 Modders Profesional
-                </p>
-              </div>
+
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
                 <p className="text-white font-bold text-sm uppercase tracking-wider">
                   PERIODE VOTING
