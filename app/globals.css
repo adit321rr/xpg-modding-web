@@ -21,3 +21,11 @@ html, body {
 .neon-glow {
   animation: glow 3s infinite alternate;
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -74,8 +74,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
 
   return (
     <>
-      {/* CONTAINER: 100% Vertical Scroll (grid-cols-1 di HP) */}
-      <motion.div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12">
+      {/* CONTAINER: Horizontal Scroll di HP, Grid di Desktop */}
+      <motion.div className="max-w-[1400px] mx-auto flex flex-nowrap md:grid md:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12 overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scroll-smooth hide-scrollbar">
         {contestants?.map((c, index) => {
           const votePercentage = totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
           const mainImg = c.image_url || `/images/${c.id === 1 ? 'kim.webp' : c.id === 2 ? 'raka.webp' : c.id === 3 ? 'wira.webp' : c.id === 4 ? 'helix.webp' : 'mons.webp'}`;
@@ -95,7 +95,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               key={c.id} 
-              className="group relative h-full w-full bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
+              // PERUBAHAN UI CARD: w-[85vw] dan flex-none di HP agar bisa di-scroll ke samping, w-full di Desktop
+              className="group relative h-full w-[85vw] sm:w-[60vw] md:w-full flex-none snap-center bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
             >
               
               {/* GAMBAR HERO PESERTA */}
@@ -327,7 +328,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         )}
       </AnimatePresence>
 
-      {/* POP-UP MODAL GALLERY SLIDER (TIDAK ADA PERUBAHAN) */}
+      {/* POP-UP MODAL GALLERY SLIDER */}
       <AnimatePresence>
         {activeGallery && (
           <motion.div
@@ -380,7 +381,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
         )}
       </AnimatePresence>
 
-      {/* POP-UP MODAL VIDEO (TIDAK ADA PERUBAHAN) */}
+      {/* POP-UP MODAL VIDEO */}
       <AnimatePresence>
         {activeVideo && (
           <motion.div
