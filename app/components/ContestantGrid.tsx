@@ -74,6 +74,21 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
 
   return (
     <>
+      {/* TOMBOL KEMBALI KE HALAMAN UTAMA */}
+      <div className="max-w-[1400px] mx-auto px-4 md:px-0 mb-6 flex justify-start w-full z-20 relative pt-4 md:pt-0">
+        <button 
+          onClick={() => router.back()} 
+          className="flex items-center gap-3 text-gray-400 hover:text-white transition-all group"
+        >
+          <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-500 transition-all shadow-lg">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+          </div>
+          <span className="text-sm font-bold uppercase tracking-widest hidden md:block">KEMBALI</span>
+        </button>
+      </div>
+
       <motion.div className="max-w-[1400px] mx-auto flex flex-nowrap md:grid md:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12 overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scroll-smooth hide-scrollbar">
         {contestants?.map((c, index) => {
           const votePercentage = totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
@@ -318,31 +333,31 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
+            className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
           >
             <div className="absolute inset-0" onClick={() => setActiveGallery(null)}></div>
             
-            <div className="absolute top-4 left-4 right-4 md:top-6 md:left-6 md:right-6 z-[10000] flex justify-between items-center pointer-events-none">
-              <button 
-                onClick={() => setActiveGallery(null)} 
-                className="pointer-events-auto flex items-center gap-2 bg-[#12141d]/80 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span className="hidden md:block text-xs font-bold uppercase tracking-widest">KEMBALI</span>
-              </button>
+            {/* TOMBOL KEMBALI KIRI ATAS - FIXED DI LUAR WRAPPER AGAR 100% AMAN */}
+            <button 
+              onClick={() => setActiveGallery(null)} 
+              className="absolute top-8 left-4 md:top-8 md:left-8 z-[100000] flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
+            >
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span className="hidden md:block text-xs font-bold uppercase tracking-widest">KEMBALI</span>
+            </button>
 
-              <button 
-                onClick={() => setActiveGallery(null)} 
-                className="pointer-events-auto flex items-center gap-2 bg-[#12141d]/80 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
-              >
-                <span className="hidden md:block text-xs font-bold uppercase tracking-widest">TUTUP</span>
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
+            {/* TOMBOL TUTUP KANAN ATAS (Opsional, tapi bagus untuk keseimbangan) */}
+            <button 
+              onClick={() => setActiveGallery(null)} 
+              className="absolute top-8 right-4 md:top-8 md:right-8 z-[100000] flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
+            >
+              <span className="hidden md:block text-xs font-bold uppercase tracking-widest">TUTUP</span>
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
 
             <button 
               onClick={() => setActiveGallery(prev => prev ? { ...prev, index: (prev.index - 1 + prev.images.length) % prev.images.length } : null)}
@@ -386,11 +401,11 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
+            className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
             onClick={() => setActiveVideo(null)} 
           >
-            <div className="absolute top-4 right-4 md:top-6 md:right-6 z-[10000] flex gap-2">
-               <button onClick={() => setActiveVideo(null)} className="flex items-center gap-2 bg-[#12141d]/80 hover:bg-red-600 text-white px-5 py-3 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
+            <div className="absolute top-8 right-4 md:top-8 md:right-8 z-[100000] flex gap-2">
+               <button onClick={() => setActiveVideo(null)} className="flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-5 py-3 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
                  <span className="text-xs font-bold uppercase tracking-widest">TUTUP VIDEO</span>
                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
                </button>
