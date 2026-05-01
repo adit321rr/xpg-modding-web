@@ -337,10 +337,10 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
           >
             <div className="absolute inset-0" onClick={() => setActiveGallery(null)}></div>
             
-            {/* TOMBOL KEMBALI KIRI ATAS - FIXED DI LUAR WRAPPER AGAR 100% AMAN */}
+            {/* TOMBOL KEMBALI KIRI ATAS - MENGGUNAKAN FIXED */}
             <button 
               onClick={() => setActiveGallery(null)} 
-              className="absolute top-8 left-4 md:top-8 md:left-8 z-[100000] flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
+              className="fixed top-8 left-4 md:top-8 md:left-8 z-[100000] flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
             >
               <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -348,10 +348,10 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               <span className="hidden md:block text-xs font-bold uppercase tracking-widest">KEMBALI</span>
             </button>
 
-            {/* TOMBOL TUTUP KANAN ATAS (Opsional, tapi bagus untuk keseimbangan) */}
+            {/* TOMBOL TUTUP KANAN ATAS - MENGGUNAKAN FIXED */}
             <button 
               onClick={() => setActiveGallery(null)} 
-              className="absolute top-8 right-4 md:top-8 md:right-8 z-[100000] flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
+              className="fixed top-8 right-4 md:top-8 md:right-8 z-[100000] flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
             >
               <span className="hidden md:block text-xs font-bold uppercase tracking-widest">TUTUP</span>
               <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
