@@ -131,22 +131,24 @@ export default function ContestantGrid({
             c.image_url ||
             `/images/${c.id === 1 ? "kim.webp" : c.id === 2 ? "raka.webp" : c.id === 3 ? "wira.webp" : c.id === 4 ? "helix.webp" : "mons.webp"}`;
 
-          const dbGallery = [
-            c.gallery_1,
-            c.gallery_2,
-            c.gallery_3,
-            c.gallery_4,
-            c.gallery_5,
-            c.gallery_6,
-            c.gallery_7,
-            c.gallery_8,
-            c.gallery_9,
-            c.gallery_10,
-            c.gallery_11,
-            c.gallery_12,
-            c.gallery_13,
-          ].filter(Boolean);
-
+            const posterImg = c.poster || `/images/poster.webp`;
+            
+            const dbGallery = [
+              c.gallery_1,
+              c.gallery_2,
+              c.gallery_3,
+              c.gallery_4,
+              c.gallery_5,
+              c.gallery_6,
+              c.gallery_7,
+              c.gallery_8,
+              c.gallery_9,
+              c.gallery_10,
+              c.gallery_11,
+              c.gallery_12,
+              c.gallery_13,
+            ].filter(Boolean);
+            
           const galleryList = dbGallery.length > 0 ? dbGallery : [mainImg];
 
           return (
@@ -530,81 +532,53 @@ export default function ContestantGrid({
                   </motion.div>
                 )}
 
+                {/* ========================================== */}
+                {/* REVISI BESAR: LAYAR SUKSES MENAMPILKAN POSTER */}
+                {/* ========================================== */}
                 {voteSuccess && (
-                  <motion.div
-                    key="success"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex-grow flex flex-col w-full bg-[#0a0b10] overflow-hidden"
-                  >
-                    {/* Shareable Card Area */}
-                    <div className="relative flex-grow flex flex-col items-center justify-center p-6 text-center w-full min-h-[400px]">
-                      {/* Background blur of the contestant */}
-                      <div className="absolute inset-0 z-0">
-                        <Image src={activeVote.image} alt="bg" fill className="object-cover opacity-20 blur-xl" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b10] via-[#0a0b10]/80 to-transparent"></div>
-                      </div>
+                  <motion.div key="success" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="p-6 flex-grow flex flex-col items-center justify-center text-center overflow-y-auto custom-scrollbar">
+                    
+                    <h2 className="text-xl md:text-2xl font-black text-white uppercase tracking-widest mb-1">VOTE BERHASIL!</h2>
+                    <p className="text-gray-400 text-xs md:text-sm mb-4">
+                      Terima kasih <strong className="text-white">@{igUsername.replace('@', '')}</strong>
+                    </p>
 
-                      <div className="relative z-10 w-full flex flex-col items-center">
-                        <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden border-2 border-red-500 shadow-[0_0_30px_rgba(220,38,38,0.4)] mb-6 relative rotate-3">
-                          <Image
-                            src={activeVote.image}
-                            alt={activeVote.name}
-                            fill
-                            className="object-cover object-top"
-                          />
-                        </div>
-
-                        <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 uppercase tracking-widest mb-2 drop-shadow-md">
-                          VOTE BERHASIL!
-                        </h2>
-                        
-                        <div className="bg-red-600/20 border border-red-500/30 rounded-lg px-4 py-2 mb-6">
-                          <p className="text-red-400 text-sm font-bold uppercase tracking-widest">
-                            #XPGADATA2026
-                          </p>
-                        </div>
-
-                        <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-4 max-w-[80%]">
-                          Terima kasih <strong className="text-white">@{igUsername.replace("@", "")}</strong>!<br/>
-                          Dukunganmu untuk <strong className="text-red-500">{activeVote.name}</strong> telah tersimpan.
-                        </p>
-                        <p className="text-gray-500 text-xs">
-                          Ajak teman-temanmu untuk ikut voting!
-                        </p>
-                      </div>
+                    {/* Area Menampilkan Poster Supabase */}
+                    <div className="relative w-[220px] md:w-[240px] aspect-[9/16] rounded-lg overflow-hidden shadow-[0_0_30px_rgba(220,38,38,0.3)] mb-4 border border-white/20 shrink-0">
+                      <Image src={activeVote.poster} alt="Share Poster" fill className="object-cover bg-[#0a0b12]" />
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="p-6 pt-0 relative z-10 w-full flex flex-col gap-3 bg-[#0a0b10]">
+                    <p className="text-gray-400 text-[10px] md:text-xs leading-relaxed mb-6 px-2">
+                      Screenshot poster ini dan bagikan ke IG Story-mu!<br className="hidden md:block"/> Jangan lupa tag <strong className="text-red-500">@adataxpgindonesia</strong>
+                    </p>
+
+                    <div className="w-full flex flex-col gap-3 mt-auto shrink-0">
                       <button
                         onClick={async () => {
-                          const shareData = {
-                            title: 'XPG ADATA PC Modding Contest 2026',
-                            text: `Saya sudah dukung ${activeVote?.name} di XPG ADATA PC Modding Contest 2026! Yuk ikutan vote dan menangkan total hadiah 16 Juta!`,
-                            url: window.location.href,
-                          };
                           if (navigator.share) {
                             try {
-                              await navigator.share(shareData);
+                              await navigator.share({
+                                title: 'XPG ADATA PC Modding Contest 2026',
+                                text: `Saya sudah dukung ${activeVote.name} di XPG ADATA PC Modding Contest 2026! Yuk ikutan vote dan menangkan total hadiah 16 Juta!`,
+                                url: window.location.href,
+                              });
                             } catch (err) {
                               console.error('Share failed', err);
                             }
                           } else {
-                            alert("Ambil screenshot (tangkapan layar) desain ini dan bagikan langsung ke IG Story-mu! Jangan lupa tag @adataxpgindonesia ya!");
+                            alert("Ambil screenshot (tangkapan layar) poster di atas dan bagikan langsung ke IG Story-mu! Jangan lupa tag @adataxpgindonesia");
                           }
                         }}
-                        className="w-full bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white py-4 font-black tracking-widest uppercase transition-all rounded-xl shadow-[0_10px_20px_rgba(220,38,38,0.2)] flex items-center justify-center gap-3 shrink-0"
+                        className="w-full bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white py-3 md:py-4 font-black tracking-widest text-xs md:text-sm uppercase transition-all rounded-xl shadow-[0_10px_20px_rgba(220,38,38,0.2)] flex items-center justify-center gap-2"
                       >
-                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                           <path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" />
                         </svg>
                         SHARE KE IG STORY
                       </button>
-                      
                       <button
                         onClick={handleCloseVoteModal}
-                        className="w-full bg-transparent border border-white/20 hover:bg-white/10 text-white py-4 font-bold tracking-widest uppercase transition-all rounded-xl shrink-0"
+                        className="w-full bg-transparent border border-white/20 hover:bg-white/10 text-white py-3 md:py-4 font-bold tracking-widest uppercase transition-all rounded-xl"
                       >
                         KEMBALI
                       </button>
@@ -612,6 +586,7 @@ export default function ContestantGrid({
                   </motion.div>
                 )}
               </AnimatePresence>
+
             </motion.div>
           </motion.div>
         )}
