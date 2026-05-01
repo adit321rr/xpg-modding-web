@@ -24,6 +24,7 @@ export default function ContestantGrid({
     name: string;
     theme: string;
     image: string;
+    poster: string;
   } | null>(null);
   const [igUsername, setIgUsername] = useState("");
   const [isChecked, setIsChecked] = useState(false);
@@ -302,6 +303,7 @@ export default function ContestantGrid({
                       name: c.name,
                       theme: c.theme,
                       image: mainImg,
+                      poster: posterImg,
                     })
                   }
                   className="w-full bg-red-600 hover:bg-red-500 text-white py-4 font-black text-sm tracking-widest uppercase transition-all flex items-center justify-center rounded-xl shadow-[0_10px_20px_rgba(220,38,38,0.2)] hover:shadow-[0_10px_30px_rgba(220,38,38,0.4)] active:scale-95 shrink-0"
