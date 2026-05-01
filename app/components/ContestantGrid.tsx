@@ -95,8 +95,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               key={c.id} 
-              // PERUBAHAN UI CARD: w-[85vw] dan flex-none di HP agar bisa di-scroll ke samping, w-full di Desktop
-              className="group relative h-full w-[85vw] sm:w-[60vw] md:w-full flex-none snap-center bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
+              // PERUBAHAN UI CARD: w-[75vw] dan snap-start agar kartu kedua "ngintip" di sebelah kanan
+              className="group relative h-full w-[75vw] sm:w-[50vw] md:w-full flex-none snap-start md:snap-center bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
             >
               
               {/* GAMBAR HERO PESERTA */}
