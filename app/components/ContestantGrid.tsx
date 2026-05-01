@@ -337,7 +337,27 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
           >
             <div className="absolute inset-0" onClick={() => setActiveGallery(null)}></div>
             
-            
+            {/* TOMBOL KEMBALI KIRI ATAS - FIXED DI LUAR WRAPPER AGAR 100% AMAN */}
+            <button 
+              onClick={() => setActiveGallery(null)} 
+              className="absolute top-8 left-4 md:top-8 md:left-8 z-[100000] flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
+            >
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span className="hidden md:block text-xs font-bold uppercase tracking-widest">KEMBALI</span>
+            </button>
+
+            {/* TOMBOL TUTUP KANAN ATAS (Opsional, tapi bagus untuk keseimbangan) */}
+            <button 
+              onClick={() => setActiveGallery(null)} 
+              className="absolute top-8 right-4 md:top-8 md:right-8 z-[100000] flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
+            >
+              <span className="hidden md:block text-xs font-bold uppercase tracking-widest">TUTUP</span>
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
 
             <button 
               onClick={() => setActiveGallery(prev => prev ? { ...prev, index: (prev.index - 1 + prev.images.length) % prev.images.length } : null)}
@@ -369,28 +389,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               {activeGallery.images.map((_, i) => (
                  <div key={i} className={`w-2.5 h-2.5 rounded-full shrink-0 transition-all ${i === activeGallery.index ? 'bg-red-600 scale-125' : 'bg-white/30'}`}></div>
               ))}
-
-              {/* TOMBOL KEMBALI KIRI ATAS - FIXED DI LUAR WRAPPER AGAR 100% AMAN */}
-            <button 
-              onClick={() => setActiveGallery(null)} 
-              className="absolute top-8 left-4 md:top-8 md:left-8 z-[100000] flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
-            >
-              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              <span className="hidden md:block text-xs font-bold uppercase tracking-widest">KEMBALI</span>
-            </button>
-
-            {/* TOMBOL TUTUP KANAN ATAS (Opsional, tapi bagus untuk keseimbangan) */}
-            <button 
-              onClick={() => setActiveGallery(null)} 
-              className="absolute top-8 right-4 md:top-8 md:right-8 z-[100000] flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
-            >
-              <span className="hidden md:block text-xs font-bold uppercase tracking-widest">TUTUP</span>
-              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
             </div>
           </motion.div>
         )}
