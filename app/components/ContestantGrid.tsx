@@ -97,33 +97,7 @@ export default function ContestantGrid({
 
   return (
     <>
-      {/* TOMBOL KEMBALI KE HALAMAN UTAMA */}
-      <div className="max-w-[1400px] mx-auto px-4 md:px-0 mb-6 flex justify-start w-full z-20 relative pt-4 md:pt-0">
-        <button
-          onClick={() => router.back()}
-          className="flex items-center gap-3 text-gray-400 hover:text-white transition-all group"
-        >
-          <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-500 transition-all shadow-lg">
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2.5}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-          </div>
-          {/* HAPUS 'hidden md:block' DI SINI AGAR MUNCUL DI HP */}
-          <span className="text-sm font-bold uppercase tracking-widest">
-            KEMBALI
-          </span>
-        </button>
-      </div>
+      
 
       <motion.div className="max-w-[1400px] mx-auto flex flex-nowrap md:grid md:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12 overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scroll-smooth hide-scrollbar">
         {contestants?.map((c, index) => {
