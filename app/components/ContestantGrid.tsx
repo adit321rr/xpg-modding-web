@@ -230,12 +230,14 @@ export default function ContestantGrid({
                     <span className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">
                       GALERI
                     </span>
+                    
                   </div>
 
                   <div
                     onClick={() =>
                       setActiveGallery({ images: galleryList, index: 0 })
                     }
+                    
                     className="relative w-full h-[140px] flex justify-center items-center cursor-pointer group/stack"
                   >
                     {galleryList.length > 1 && (
@@ -631,129 +633,97 @@ export default function ContestantGrid({
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
           >
+            {/* Background overlay untuk click-to-close */}
             <div
               className="absolute inset-0"
               onClick={() => setActiveGallery(null)}
             ></div>
 
-            {/* TOMBOL KEMBALI KIRI ATAS - GANTI JADI ABSOLUTE */}
-            <button
-              onClick={() => setActiveGallery(null)}
-              className="absolute top-4 left-4 md:top-8 md:left-8 z-[100000] flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-4 py-2 md:px-5 md:py-3 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
-            >
-              <svg
-                className="w-5 h-5 md:w-6 md:h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            {/* WRAPPER GAMBAR UTAMA (Posisi Relative) */}
+            <div className="relative w-full max-w-5xl h-[60vh] md:h-[80vh] flex items-center justify-center z-[100000] mt-12 md:mt-0">
+              
+              {/* TOMBOL KEMBALI - SEKARANG NEMPEL DI POJOK KIRI ATAS GAMBAR */}
+              <button
+                onClick={() => setActiveGallery(null)}
+                className="absolute -top-14 left-0 md:-top-16 md:left-0 flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)] z-[100001]"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                />
-              </svg>
-              <span className="text-xs font-bold uppercase tracking-widest">
-                KEMBALI
-              </span>
-            </button>
+                <svg
+                  className="w-5 h-5 md:w-6 md:h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+                <span className="text-xs font-bold uppercase tracking-widest">
+                  KEMBALI
+                </span>
+              </button>
 
-            {/* TOMBOL TUTUP KANAN ATAS - GANTI JADI ABSOLUTE */}
-            <button
-              onClick={() => setActiveGallery(null)}
-              className="absolute top-4 right-4 md:top-8 md:right-8 z-[100000] flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-4 py-2 md:px-5 md:py-3 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
-            >
-              <span className="hidden md:block text-xs font-bold uppercase tracking-widest">
-                TUTUP
-              </span>
-              <svg
-                className="w-5 h-5 md:w-6 md:h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+              {/* TOMBOL PREV (KIRI) */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveGallery((prev) =>
+                    prev
+                      ? {
+                          ...prev,
+                          index:
+                            (prev.index - 1 + prev.images.length) %
+                            prev.images.length,
+                        }
+                      : null,
+                  );
+                }}
+                className="absolute -left-2 md:-left-16 top-1/2 -translate-y-1/2 bg-[#12141d]/80 hover:bg-red-600 text-white p-3 rounded-full transition-all border border-white/20 z-[100001]"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
+                <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
 
-            <button
-              onClick={() =>
-                setActiveGallery((prev) =>
-                  prev
-                    ? {
-                        ...prev,
-                        index:
-                          (prev.index - 1 + prev.images.length) %
-                          prev.images.length,
-                      }
-                    : null,
-                )
-              }
-              className="absolute left-2 md:left-10 text-white/50 hover:text-white p-3 z-[10000] bg-black/50 rounded-full hover:bg-red-600 transition-all border border-white/10"
-            >
-              <svg
-                className="w-6 h-6 md:w-8 md:h-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+              {/* AREA GAMBAR */}
+              <div className="relative w-full h-full rounded-xl md:rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black/50">
+                <Image
+                  src={activeGallery.images[activeGallery.index]}
+                  alt="Gallery Preview"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+
+              {/* TOMBOL NEXT (KANAN) */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveGallery((prev) =>
+                    prev
+                      ? {
+                          ...prev,
+                          index: (prev.index + 1) % prev.images.length,
+                        }
+                      : null,
+                  );
+                }}
+                className="absolute -right-2 md:-right-16 top-1/2 -translate-y-1/2 bg-[#12141d]/80 hover:bg-red-600 text-white p-3 rounded-full transition-all border border-white/20 z-[100001]"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </button>
+                <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
 
-            <motion.div
-              key={activeGallery.index}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className="relative w-full max-w-5xl h-[75vh] md:h-[85vh] rounded-xl overflow-hidden shadow-2xl z-[9999] border border-white/10"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Image
-                src={activeGallery.images[activeGallery.index]}
-                alt="Gallery"
-                fill
-                sizes="100vw"
-                className="object-contain bg-[#050505]"
-              />
-            </motion.div>
+              {/* INDIKATOR HALAMAN BAWAH */}
+              <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-sm font-bold tracking-widest">
+                {activeGallery.index + 1} / {activeGallery.images.length}
+              </div>
 
-            <button
-              onClick={() =>
-                setActiveGallery((prev) =>
-                  prev
-                    ? { ...prev, index: (prev.index + 1) % prev.images.length }
-                    : null,
-                )
-              }
-              className="absolute right-2 md:right-10 text-white/50 hover:text-white p-3 z-[10000] bg-black/50 rounded-full hover:bg-red-600 transition-all border border-white/10"
-            >
-              <svg
-                className="w-6 h-6 md:w-8 md:h-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
