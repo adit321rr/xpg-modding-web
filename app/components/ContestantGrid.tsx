@@ -74,7 +74,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
 
   return (
     <>
-      {/* CONTAINER: Horizontal Scroll di HP, Grid di Desktop */}
       <motion.div className="max-w-[1400px] mx-auto flex flex-nowrap md:grid md:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12 overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scroll-smooth hide-scrollbar">
         {contestants?.map((c, index) => {
           const votePercentage = totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
@@ -95,11 +94,9 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               key={c.id} 
-              // PERUBAHAN UI CARD: w-[75vw] dan snap-start agar kartu kedua "ngintip" di sebelah kanan
               className="group relative h-full w-[75vw] sm:w-[50vw] md:w-full flex-none snap-start md:snap-center bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
             >
               
-              {/* GAMBAR HERO PESERTA */}
               <div onClick={() => setActiveGallery({ images: galleryList, index: 0 })} className="relative h-[350px] md:h-[300px] xl:h-[350px] w-full bg-black cursor-pointer overflow-hidden shrink-0">
                 <div className={`absolute top-0 left-0 z-20 px-4 py-2 font-black text-sm text-white ${index === 0 ? 'bg-red-600' : 'bg-[#1f2235]'}`} style={{ clipPath: 'polygon(0 0, 100% 0, calc(100% - 15px) 100%, 0 100%)' }}>
                   {index === 0 ? '🏆 #1' : `#${index + 1}`}
@@ -113,8 +110,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               </div>
               
               <div className="p-5 flex-grow flex flex-col z-20 relative -mt-2">
-                
-                {/* PERSENTASE & SUARA */}
                 <div className="flex justify-between items-center mb-5">
                   <div className="flex-grow mr-4">
                     <div className="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
@@ -131,7 +126,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                 </div>
 
-                {/* 3D STACK GALLERY */}
                 <div className="mb-6 mt-2">
                   <div className="flex items-center gap-2 mb-3">
                     <div className="w-4 h-[1px] bg-red-600"></div>
@@ -142,21 +136,18 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                     onClick={() => setActiveGallery({ images: galleryList, index: 0 })}
                     className="relative w-full h-[140px] flex justify-center items-center cursor-pointer group/stack"
                   >
-                    {/* Gambar Kiri */}
                     {galleryList.length > 1 && (
                       <div className="absolute left-[5%] w-[40%] h-[70%] rounded-xl overflow-hidden shadow-xl opacity-60 group-hover/stack:opacity-100 group-hover/stack:-translate-x-4 transition-all duration-500 z-10 grayscale-[50%] border border-white/5">
                         <Image src={galleryList[1]} alt="Gallery 2" fill className="object-cover" />
                       </div>
                     )}
                     
-                    {/* Gambar Kanan */}
                     {galleryList.length > 2 && (
                       <div className="absolute right-[5%] w-[40%] h-[70%] rounded-xl overflow-hidden shadow-xl opacity-60 group-hover/stack:opacity-100 group-hover/stack:translate-x-4 transition-all duration-500 z-10 grayscale-[50%] border border-white/5">
                         <Image src={galleryList[2]} alt="Gallery 3" fill className="object-cover" />
                       </div>
                     )}
 
-                    {/* Gambar Tengah */}
                     <div className="absolute w-[50%] h-[90%] rounded-xl overflow-hidden shadow-2xl z-20 border-2 border-[#0a0b12] group-hover/stack:border-red-500/50 transition-all duration-500 group-hover/stack:scale-105">
                       <Image src={galleryList[0]} alt="Gallery 1" fill className="object-cover" />
                       <div className="absolute top-1.5 right-1.5 bg-black/80 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-1 rounded-md">
@@ -166,7 +157,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                 </div>
 
-                {/* TOMBOL VIDEO */}
                 <button onClick={() => setActiveVideo(c.video_url)} className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-xl mb-4 group/btn text-left mt-auto">
                   <div className="w-10 h-10 bg-red-600 flex items-center justify-center rounded-lg shrink-0 shadow-[0_0_10px_rgba(220,38,38,0.3)] group-hover/btn:scale-105 transition-transform">
                     <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -177,7 +167,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </div>
                 </button>
 
-                {/* TOMBOL VOTE */}
                 <button
                   onClick={() => setActiveVote({ id: c.id, name: c.name, theme: c.theme, image: mainImg })}
                   className="w-full bg-red-600 hover:bg-red-500 text-white py-4 font-black text-sm tracking-widest uppercase transition-all flex items-center justify-center rounded-xl shadow-[0_10px_20px_rgba(220,38,38,0.2)] hover:shadow-[0_10px_30px_rgba(220,38,38,0.4)] active:scale-95 shrink-0"
@@ -213,7 +202,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               </button>
 
               <AnimatePresence mode="wait">
-                {/* --- LAYAR RULES --- */}
                 {showRules && !voteSuccess && (
                   <motion.div key="rules" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} className="p-6 md:p-8 flex-grow flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar">
                     <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">Peraturan Resmi</h2>
@@ -230,7 +218,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </motion.div>
                 )}
 
-                {/* --- LAYAR FORM VOTE UTAMA --- */}
                 {!showRules && !voteSuccess && (
                   <motion.div key="form" initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} className="p-6 md:p-8 flex-grow flex flex-col">
                     <div className="mb-6">
@@ -292,7 +279,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   </motion.div>
                 )}
 
-                {/* --- LAYAR SUKSES BERHASIL VOTE --- */}
                 {voteSuccess && (
                   <motion.div key="success" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="p-8 flex-grow flex flex-col items-center justify-center text-center">
                     <motion.div 
@@ -306,10 +292,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                     </motion.div>
                     <h2 className="text-2xl font-black text-white uppercase tracking-widest mb-4">VOTE BERHASIL!</h2>
                     <div className="text-gray-400 text-xs md:text-sm leading-relaxed mb-8 space-y-3">
-                      
-                      {/* === NAMA INSTAGRAM MUNCUL DI SINI! === */}
                       <p>Terima kasih <strong className="text-white">@{igUsername.replace('@', '')}</strong> telah berpartisipasi dalam pemungutan suara.</p>
-                      
                       <p>Ajak teman-temanmu untuk ikut memilih, pemungutan suara akan tetap dibuka hingga <strong className="text-white">18 Mei 2026.</strong></p>
                       <p>Pemilih yang beruntung akan mendapatkan total hadiah <strong className="text-red-500">Rp 16 Juta</strong> dan akan diumumkan pada tanggal 25 Mei 2026 melalui kanal media sosial resmi XPG ADATA.</p>
                     </div>
@@ -339,10 +322,7 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
           >
             <div className="absolute inset-0" onClick={() => setActiveGallery(null)}></div>
             
-            {/* NAVIGATION BAR KHUSUS GALERI (BACK & CLOSE) */}
             <div className="absolute top-4 left-4 right-4 md:top-6 md:left-6 md:right-6 z-[10000] flex justify-between items-center pointer-events-none">
-              
-              {/* Tombol Back / Panah Kiri (Kiri Atas) */}
               <button 
                 onClick={() => setActiveGallery(null)} 
                 className="pointer-events-auto flex items-center gap-2 bg-[#12141d]/80 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
@@ -353,7 +333,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                 <span className="hidden md:block text-xs font-bold uppercase tracking-widest">KEMBALI</span>
               </button>
 
-              {/* Tombol Silang / Tutup (Kanan Atas) */}
               <button 
                 onClick={() => setActiveGallery(null)} 
                 className="pointer-events-auto flex items-center gap-2 bg-[#12141d]/80 hover:bg-red-600 text-white px-3 py-3 md:px-5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
@@ -363,10 +342,8 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-
             </div>
 
-            {/* Tombol Slide Kiri */}
             <button 
               onClick={() => setActiveGallery(prev => prev ? { ...prev, index: (prev.index - 1 + prev.images.length) % prev.images.length } : null)}
               className="absolute left-2 md:left-10 text-white/50 hover:text-white p-3 z-[10000] bg-black/50 rounded-full hover:bg-red-600 transition-all border border-white/10"
@@ -374,7 +351,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             </button>
 
-            {/* Gambar Tengah */}
             <motion.div
               key={activeGallery.index}
               initial={{ opacity: 0, scale: 0.95 }}
@@ -387,7 +363,6 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               <Image src={activeGallery.images[activeGallery.index]} alt="Gallery" fill sizes="100vw" className="object-contain bg-[#050505]" />
             </motion.div>
 
-            {/* Tombol Slide Kanan */}
             <button 
               onClick={() => setActiveGallery(prev => prev ? { ...prev, index: (prev.index + 1) % prev.images.length } : null)}
               className="absolute right-2 md:right-10 text-white/50 hover:text-white p-3 z-[10000] bg-black/50 rounded-full hover:bg-red-600 transition-all border border-white/10"
@@ -395,12 +370,53 @@ export default function ContestantGrid({ contestants }: { contestants: any[] }) 
               <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </button>
             
-            {/* Indikator Dot di Bawah */}
             <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-3 z-[10000] max-w-[80vw] overflow-x-auto custom-scrollbar p-2 bg-black/50 backdrop-blur-md rounded-full border border-white/10">
               {activeGallery.images.map((_, i) => (
                  <div key={i} className={`w-2.5 h-2.5 rounded-full shrink-0 transition-all ${i === activeGallery.index ? 'bg-red-600 scale-125' : 'bg-white/30'}`}></div>
               ))}
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* POP-UP MODAL VIDEO */}
+      <AnimatePresence>
+        {activeVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
+            onClick={() => setActiveVideo(null)} 
+          >
+            <div className="absolute top-4 right-4 md:top-6 md:right-6 z-[10000] flex gap-2">
+               <button onClick={() => setActiveVideo(null)} className="flex items-center gap-2 bg-[#12141d]/80 hover:bg-red-600 text-white px-5 py-3 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
+                 <span className="text-xs font-bold uppercase tracking-widest">TUTUP VIDEO</span>
+                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
+               </button>
+            </div>
+            
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }} 
+              animate={{ scale: 1, y: 0 }} 
+              exit={{ scale: 0.9, y: 20 }} 
+              className={`w-full bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.4)] border border-red-500/20 relative z-[9999] ${
+                activeVideo.includes('instagram') 
+                  ? 'max-w-[450px] h-[85vh]' 
+                  : 'max-w-6xl aspect-video' 
+              }`} 
+              onClick={(e) => e.stopPropagation()}
+            >
+              <iframe 
+                width="100%" 
+                height="100%" 
+                src={activeVideo} 
+                title="Video player" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen
+              ></iframe>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
