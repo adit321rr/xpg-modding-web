@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import { supabase } from "../../lib/supabase";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import { supabase } from '../../lib/supabase';
+import { useRouter } from 'next/navigation';
 
 export default function ContestantGrid({
   contestants,
@@ -97,8 +97,6 @@ export default function ContestantGrid({
 
   return (
     <>
-      
-
       <motion.div className="max-w-[1400px] mx-auto flex flex-nowrap md:grid md:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12 overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scroll-smooth hide-scrollbar">
         {contestants?.map((c, index) => {
           const votePercentage =
@@ -204,14 +202,12 @@ export default function ContestantGrid({
                     <span className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">
                       GALERI
                     </span>
-                    
                   </div>
 
                   <div
                     onClick={() =>
                       setActiveGallery({ images: galleryList, index: 0 })
                     }
-                    
                     className="relative w-full h-[140px] flex justify-center items-center cursor-pointer group/stack"
                   >
                     {galleryList.length > 1 && (
@@ -310,7 +306,7 @@ export default function ContestantGrid({
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
-              className="relative w-full max-w-[450px] max-h-[90vh] bg-[#0a0b10] border border-white/10 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.2)] z-10 flex flex-col min-h-[350px]"
+              className="relative w-full max-w-[450px] bg-[#0a0b10] border border-white/10 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.2)] z-10 flex flex-col min-h-[350px] max-h-[90vh]"
               style={{
                 clipPath:
                   "polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)",
@@ -344,7 +340,7 @@ export default function ContestantGrid({
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 50 }}
-                    className="p-6 md:p-8 flex-grow flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar"
+                    className="p-6 md:p-8 flex-grow flex flex-col overflow-y-auto custom-scrollbar"
                   >
                     <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">
                       Peraturan Resmi
@@ -405,7 +401,7 @@ export default function ContestantGrid({
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -50 }}
-                    className="p-6 md:p-8 flex-grow flex flex-col"
+                    className="p-6 md:p-8 flex-grow flex flex-col overflow-y-auto custom-scrollbar"
                   >
                     <div className="mb-6">
                       <h2 className="text-2xl font-black text-white uppercase tracking-wider">
@@ -456,7 +452,7 @@ export default function ContestantGrid({
                         <p>{errorMessage}</p>
                       </motion.div>
                     )}
-                    <div className="mb-6 mt-auto">
+                    <div className="mb-6 mt-auto shrink-0">
                       <label className="block text-gray-400 text-sm font-bold tracking-widest uppercase mb-2">
                         Username Instagram
                       </label>
@@ -471,7 +467,7 @@ export default function ContestantGrid({
                         Masukkan tanpa simbol @
                       </p>
                     </div>
-                    <div className="flex items-start gap-3 mb-6">
+                    <div className="flex items-start gap-3 mb-6 shrink-0">
                       <div className="pt-1">
                         <input
                           type="checkbox"
@@ -511,9 +507,7 @@ export default function ContestantGrid({
                   </motion.div>
                 )}
 
-                {/* ========================================== */}
-                {/* REVISI: LAYAR SUKSES MENAMPILKAN POSTER + USERNAME */}
-                {/* ========================================== */}
+                {/* --- LAYAR SUKSES BERHASIL VOTE --- */}
                 {voteSuccess && (
                   <motion.div
                     key="success"
@@ -531,7 +525,6 @@ export default function ContestantGrid({
                       </strong>
                     </p>
 
-                    {/* Area Menampilkan Poster + Overlay Text Username */}
                     <div className="relative w-[160px] md:w-[240px] aspect-[9/16] rounded-lg overflow-hidden shadow-[0_0_30px_rgba(220,38,38,0.3)] mb-4 border border-white/20 shrink-0">
                       <Image
                         src={activeVote.poster}
@@ -539,7 +532,6 @@ export default function ContestantGrid({
                         fill
                         className="object-cover bg-[#0a0b12]"
                       />
-                      {/* Teks Username di atas gambar preview */}
                       <div className="absolute top-[10%] left-0 w-full text-center z-10 px-2">
                         <p className="text-white font-black text-sm md:text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate">
                           @{igUsername.replace("@", "")}
@@ -556,40 +548,36 @@ export default function ContestantGrid({
                     </p>
 
                     <div className="w-full flex flex-col gap-3 mt-auto shrink-0 pb-2">
-                      {/* Tombol Download via Canvas */}
                       <button
                         onClick={() => {
                           const canvas = document.createElement("canvas");
                           const ctx = canvas.getContext("2d");
+                          
+                          // PERUBAHAN: Menambahkan pengecekan null untuk ctx
+                          if (!ctx) {
+                            alert("Browser Anda tidak mendukung fitur ini. Silakan screenshot manual.");
+                            return;
+                          }
+
                           const img = new window.Image();
                           
-                          // Penting: setting ini mencegah error CORS saat menggambar gambar eksternal ke canvas
                           img.crossOrigin = "anonymous"; 
-                          
-                          // Pastikan link poster ini bisa diakses publik tanpa blokir CORS (Sebaiknya gunakan Supabase Storage / Public Folder)
                           img.src = activeVote.poster; 
 
                           img.onload = () => {
                             canvas.width = img.width;
                             canvas.height = img.height;
 
-                            // 1. Gambar poster asli sebagai background
                             ctx.drawImage(img, 0, 0);
 
-                            // 2. Setting gaya tulisan username
-                            // Sesuaikan ukuran font (misal: 60px) tergantung resolusi asli poster kamu
                             ctx.font = "bold 60px Arial"; 
-                            ctx.fillStyle = "#ffffff"; // Warna teks putih
+                            ctx.fillStyle = "#ffffff";
                             ctx.textAlign = "center";
                             ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
                             ctx.shadowBlur = 10;
 
-                            // 3. Gambar tulisan username (X, Y)
-                            // Posisi X di tengah (canvas.width / 2)
-                            // Posisi Y di sesuaikan (misal 180 dari atas). Kamu mungkin perlu mainin angka '180' ini agar pas di kotak postermu.
                             ctx.fillText(`@${igUsername.replace("@", "")}`, canvas.width / 2, 180);
 
-                            // 4. Ubah ke format gambar dan trigger download
                             const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
                             const link = document.createElement("a");
                             link.download = `Poster-Vote-${activeVote.name}.jpg`;
@@ -598,7 +586,6 @@ export default function ContestantGrid({
                           };
 
                           img.onerror = () => {
-                            // Fallback jika Canvas gagal karena masalah koneksi/CORS Google Drive
                             alert("Gagal men-download poster otomatis. Tahan/klik kanan gambar di atas untuk menyimpan.");
                           };
                         }}
@@ -667,16 +654,12 @@ export default function ContestantGrid({
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
           >
-            {/* Background overlay untuk click-to-close */}
             <div
               className="absolute inset-0"
               onClick={() => setActiveGallery(null)}
             ></div>
 
-            {/* WRAPPER GAMBAR UTAMA (Posisi Relative) */}
             <div className="relative w-full max-w-5xl h-[60vh] md:h-[80vh] flex items-center justify-center z-[100000] mt-12 md:mt-0">
-              
-              {/* TOMBOL KEMBALI - SEKARANG NEMPEL DI POJOK KIRI ATAS GAMBAR */}
               <button
                 onClick={() => setActiveGallery(null)}
                 className="absolute -top-14 left-0 md:-top-16 md:left-0 flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)] z-[100001]"
@@ -699,7 +682,6 @@ export default function ContestantGrid({
                 </span>
               </button>
 
-              {/* TOMBOL PREV (KIRI) */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -721,7 +703,6 @@ export default function ContestantGrid({
                 </svg>
               </button>
 
-              {/* AREA GAMBAR */}
               <div className="relative w-full h-full rounded-xl md:rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black/50">
                 <Image
                   src={activeGallery.images[activeGallery.index]}
@@ -732,7 +713,6 @@ export default function ContestantGrid({
                 />
               </div>
 
-              {/* TOMBOL NEXT (KANAN) */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -752,11 +732,9 @@ export default function ContestantGrid({
                 </svg>
               </button>
 
-              {/* INDIKATOR HALAMAN BAWAH */}
               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-sm font-bold tracking-widest">
                 {activeGallery.index + 1} / {activeGallery.images.length}
               </div>
-
             </div>
           </motion.div>
         )}
