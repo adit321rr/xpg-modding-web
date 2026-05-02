@@ -512,7 +512,7 @@ export default function ContestantGrid({
                 )}
 
                 {/* ========================================== */}
-                {/* REVISI BESAR: LAYAR SUKSES MENAMPILKAN POSTER */}
+                {/* REVISI: LAYAR SUKSES MENAMPILKAN POSTER + USERNAME */}
                 {/* ========================================== */}
                 {voteSuccess && (
                   <motion.div
@@ -531,7 +531,7 @@ export default function ContestantGrid({
                       </strong>
                     </p>
 
-                    {/* Area Menampilkan Poster Supabase (Dikecilkan di layar HP: w-[160px]) */}
+                    {/* Area Menampilkan Poster + Overlay Text Username */}
                     <div className="relative w-[160px] md:w-[240px] aspect-[9/16] rounded-lg overflow-hidden shadow-[0_0_30px_rgba(220,38,38,0.3)] mb-4 border border-white/20 shrink-0">
                       <Image
                         src={activeVote.poster}
@@ -539,10 +539,16 @@ export default function ContestantGrid({
                         fill
                         className="object-cover bg-[#0a0b12]"
                       />
+                      {/* Teks Username di atas gambar preview */}
+                      <div className="absolute top-[10%] left-0 w-full text-center z-10 px-2">
+                        <p className="text-white font-black text-sm md:text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate">
+                          @{igUsername.replace("@", "")}
+                        </p>
+                      </div>
                     </div>
 
                     <p className="text-gray-400 text-[10px] md:text-xs leading-relaxed mb-6 px-2 shrink-0">
-                      Screenshot poster ini dan bagikan ke IG Story-mu!
+                      Download poster personal ini dan bagikan ke IG Story-mu!
                       <br className="hidden md:block" /> Jangan lupa tag{" "}
                       <strong className="text-red-500">
                         @adataxpgindonesia
@@ -550,18 +556,59 @@ export default function ContestantGrid({
                     </p>
 
                     <div className="w-full flex flex-col gap-3 mt-auto shrink-0 pb-2">
+                      {/* Tombol Download via Canvas */}
+                      <button
+                        onClick={() => {
+                          const canvas = document.createElement("canvas");
+                          const ctx = canvas.getContext("2d");
+                          const img = new window.Image();
+                          
+                          // Penting: setting ini mencegah error CORS saat menggambar gambar eksternal ke canvas
+                          img.crossOrigin = "anonymous"; 
+                          
+                          // Pastikan link poster ini bisa diakses publik tanpa blokir CORS (Sebaiknya gunakan Supabase Storage / Public Folder)
+                          img.src = activeVote.poster; 
 
-                      <a
-                        href="https://drive.google.com/uc?export=download&id=1vInzute52u6ZgXq8zc2auz_onVZwwY4x"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                          img.onload = () => {
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+
+                            // 1. Gambar poster asli sebagai background
+                            ctx.drawImage(img, 0, 0);
+
+                            // 2. Setting gaya tulisan username
+                            // Sesuaikan ukuran font (misal: 60px) tergantung resolusi asli poster kamu
+                            ctx.font = "bold 60px Arial"; 
+                            ctx.fillStyle = "#ffffff"; // Warna teks putih
+                            ctx.textAlign = "center";
+                            ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
+                            ctx.shadowBlur = 10;
+
+                            // 3. Gambar tulisan username (X, Y)
+                            // Posisi X di tengah (canvas.width / 2)
+                            // Posisi Y di sesuaikan (misal 180 dari atas). Kamu mungkin perlu mainin angka '180' ini agar pas di kotak postermu.
+                            ctx.fillText(`@${igUsername.replace("@", "")}`, canvas.width / 2, 180);
+
+                            // 4. Ubah ke format gambar dan trigger download
+                            const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+                            const link = document.createElement("a");
+                            link.download = `Poster-Vote-${activeVote.name}.jpg`;
+                            link.href = dataUrl;
+                            link.click();
+                          };
+
+                          img.onerror = () => {
+                            // Fallback jika Canvas gagal karena masalah koneksi/CORS Google Drive
+                            alert("Gagal men-download poster otomatis. Tahan/klik kanan gambar di atas untuk menyimpan.");
+                          };
+                        }}
                         className="w-full bg-[#12141d] border border-white/20 hover:bg-white/10 text-white py-3 md:py-4 font-black tracking-widest text-xs md:text-sm uppercase transition-all rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.3)] flex items-center justify-center gap-2"
                       >
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
-                        DOWNLOAD POSTER
-                      </a>
+                        DOWNLOAD POSTER SAYA
+                      </button>
 
                       <button
                         onClick={async () => {
@@ -577,7 +624,7 @@ export default function ContestantGrid({
                             }
                           } else {
                             alert(
-                              "Ambil screenshot (tangkapan layar) poster di atas dan bagikan langsung ke IG Story-mu! Jangan lupa tag @adataxpgindonesia",
+                              "Silakan tekan tombol 'DOWNLOAD POSTER SAYA' terlebih dahulu lalu bagikan ke IG Story-mu! Jangan lupa tag @adataxpgindonesia",
                             );
                           }
                         }}
