@@ -570,7 +570,7 @@ export default function ContestantGrid({
 
                             ctx.drawImage(img, 0, 0);
 
-                            ctx.font = "bold 60px Arial"; 
+                            ctx.font = "bold 10px TT Octosquares, sans-serif"; 
                             ctx.fillStyle = "#ffffff";
                             ctx.textAlign = "center";
                             ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
