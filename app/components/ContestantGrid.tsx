@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import { supabase } from "../../lib/supabase";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import { supabase } from '../../lib/supabase';
+import { useRouter } from 'next/navigation';
 
 export default function ContestantGrid({
   contestants,
@@ -95,51 +95,9 @@ export default function ContestantGrid({
     }
   };
 
-  // =========================================================================
-  // FIX VIDEO: Mengubah otomatis link YouTube biasa menjadi link Embed
-  // =========================================================================
-  const handleOpenVideo = (url: string | null) => {
-    if (!url) {
-      alert("Video belum tersedia untuk peserta ini.");
-      return;
-    }
-    let finalUrl = url;
-    if (url.includes("youtube.com/watch?v=")) {
-      const videoId = url.split("v=")[1].split("&")[0];
-      finalUrl = `https://www.youtube.com/embed/${videoId}`;
-    } else if (url.includes("youtu.be/")) {
-      const videoId = url.split("youtu.be/")[1].split("?")[0];
-      finalUrl = `https://www.youtube.com/embed/${videoId}`;
-    }
-    setActiveVideo(finalUrl);
-  };
-
   return (
     <>
-      {/* Teks Swipe To View More (Sesuai Gambar Referensi) */}
-      <div className="max-w-[1400px] mx-auto md:hidden flex justify-end mb-4 px-4 relative z-20">
-        <p className="text-gray-500 text-[10px] font-bold tracking-widest uppercase flex items-center gap-1">
-          SWIPE TO VIEW MORE
-          <svg
-            className="w-3 h-3 text-gray-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={3}
-              d="M13 5l7 7-7 7M5 5l7 7-7 7"
-            />
-          </svg>
-        </p>
-      </div>
-
-      {/* ========================================================================= */}
-      {/* PERUBAHAN UI: Netflix Carousel Effect (w-[85vw] dengan padding kiri) */}
-      {/* ========================================================================= */}
-      <motion.div className="max-w-[1400px] mx-auto flex flex-nowrap md:grid md:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12 overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scroll-smooth hide-scrollbar scroll-pl-4">
+      <motion.div className="max-w-[1400px] mx-auto flex flex-nowrap md:grid md:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12 overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scroll-smooth hide-scrollbar">
         {contestants?.map((c, index) => {
           const votePercentage =
             totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
@@ -178,7 +136,6 @@ export default function ContestantGrid({
                 ease: "easeOut",
               }}
               key={c.id}
-              // PERUBAHAN UKURAN: w-[85vw] untuk mobile (menyisakan 15% untuk kartu sebelah ngintip)
               className="group relative h-full w-[75vw] sm:w-[50vw] md:w-full flex-none snap-start md:snap-center bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
             >
               <div
@@ -290,12 +247,8 @@ export default function ContestantGrid({
                 </div>
 
                 <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleOpenVideo(c.video_url);
-                  }}
-                  className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-xl mb-4 group/btn text-left mt-auto relative z-30"
+                  onClick={() => setActiveVideo(c.video_url)}
+                  className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-xl mb-4 group/btn text-left mt-auto"
                 >
                   <div className="w-10 h-10 bg-red-600 flex items-center justify-center rounded-lg shrink-0 shadow-[0_0_10px_rgba(220,38,38,0.3)] group-hover/btn:scale-105 transition-transform">
                     <svg
@@ -387,7 +340,7 @@ export default function ContestantGrid({
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 50 }}
-                    className="p-6 md:p-8 flex-grow flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar"
+                    className="p-6 md:p-8 flex-grow flex flex-col overflow-y-auto custom-scrollbar"
                   >
                     <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">
                       Peraturan Resmi
@@ -448,7 +401,7 @@ export default function ContestantGrid({
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -50 }}
-                    className="p-6 md:p-8 flex-grow flex flex-col"
+                    className="p-6 md:p-8 flex-grow flex flex-col overflow-y-auto custom-scrollbar"
                   >
                     <div className="mb-6">
                       <h2 className="text-2xl font-black text-white uppercase tracking-wider">
@@ -499,7 +452,7 @@ export default function ContestantGrid({
                         <p>{errorMessage}</p>
                       </motion.div>
                     )}
-                    <div className="mb-6 mt-auto">
+                    <div className="mb-6 mt-auto shrink-0">
                       <label className="block text-gray-400 text-sm font-bold tracking-widest uppercase mb-2">
                         Username Instagram
                       </label>
@@ -514,7 +467,7 @@ export default function ContestantGrid({
                         Masukkan tanpa simbol @
                       </p>
                     </div>
-                    <div className="flex items-start gap-3 mb-6">
+                    <div className="flex items-start gap-3 mb-6 shrink-0">
                       <div className="pt-1">
                         <input
                           type="checkbox"
@@ -554,6 +507,7 @@ export default function ContestantGrid({
                   </motion.div>
                 )}
 
+                {/* --- LAYAR SUKSES BERHASIL VOTE --- */}
                 {voteSuccess && (
                   <motion.div
                     key="success"
@@ -598,82 +552,47 @@ export default function ContestantGrid({
                         onClick={() => {
                           const canvas = document.createElement("canvas");
                           const ctx = canvas.getContext("2d");
-
+                          
+                          // PERUBAHAN: Menambahkan pengecekan null untuk ctx
                           if (!ctx) {
-                            alert(
-                              "Browser Anda tidak mendukung fitur ini. Silakan screenshot manual.",
-                            );
+                            alert("Browser Anda tidak mendukung fitur ini. Silakan screenshot manual.");
                             return;
                           }
 
                           const img = new window.Image();
-
-                          img.crossOrigin = "anonymous";
-                          img.src = activeVote.poster;
+                          
+                          img.crossOrigin = "anonymous"; 
+                          img.src = activeVote.poster; 
 
                           img.onload = () => {
-                            // CRITICAL: Kita bungkus pakai document.fonts.ready agar browser memastikan
-                            // font TT Octosquares sudah ter-load sebelum canvas mulai menggambar.
-                            document.fonts.ready.then(() => {
-                              canvas.width = img.width;
-                              canvas.height = img.height;
+                            canvas.width = img.width;
+                            canvas.height = img.height;
 
-                              ctx.drawImage(img, 0, 0);
+                            ctx.drawImage(img, 0, 0);
 
-                              // 1. ATUR FONT & UKURAN DI SINI
-                              // "bold" = Cetak Tebal, "45px" = Ukuran, "'TT Octosquares'" = Nama Font
-                              ctx.font =
-                                "bold 20px 'TT Octosquares', sans-serif";
+                            ctx.font = "bold 60px Arial"; 
+                            ctx.fillStyle = "#ffffff";
+                            ctx.textAlign = "center";
+                            ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
+                            ctx.shadowBlur = 10;
 
-                              // 2. ATUR WARNA TEKS
-                              ctx.fillStyle = "#ffffff"; // Warna putih
-                              ctx.textAlign = "center";
+                            ctx.fillText(`@${igUsername.replace("@", "")}`, canvas.width / 2, 180);
 
-                              // 3. ATUR EFEK BAYANGAN (Biar teks makin pop-up)
-                              ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
-                              ctx.shadowBlur = 15;
-
-                              // 4. ATUR POSISI (X, Y)
-                              // canvas.width / 2 = Posisi X (Tengah-tengah kiri-kanan)
-                              // 210 = Posisi Y (Jarak dari atas ke bawah).
-                              // Berdasarkan poster Abang, angka 200 - 240 pas banget untuk taruh nama di dalam/atas box "TERIMA KASIH".
-                              ctx.fillText(
-                                `@${igUsername.replace("@", "")}`,
-                                canvas.width / 2,
-                                400 ,
-                              );
-
-                              const dataUrl = canvas.toDataURL(
-                                "image/jpeg",
-                                0.9,
-                              );
-                              const link = document.createElement("a");
-                              link.download = `Poster-Vote-${activeVote.name}.jpg`;
-                              link.href = dataUrl;
-                              link.click();
-                            });
+                            const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+                            const link = document.createElement("a");
+                            link.download = `Poster-Vote-${activeVote.name}.jpg`;
+                            link.href = dataUrl;
+                            link.click();
                           };
 
                           img.onerror = () => {
-                            alert(
-                              "Gagal men-download poster otomatis. Tahan/klik kanan gambar di atas untuk menyimpan.",
-                            );
+                            alert("Gagal men-download poster otomatis. Tahan/klik kanan gambar di atas untuk menyimpan.");
                           };
                         }}
                         className="w-full bg-[#12141d] border border-white/20 hover:bg-white/10 text-white py-3 md:py-4 font-black tracking-widest text-xs md:text-sm uppercase transition-all rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.3)] flex items-center justify-center gap-2"
                       >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2.5}
-                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                          />
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
                         DOWNLOAD POSTER SAYA
                       </button>
@@ -779,18 +698,8 @@ export default function ContestantGrid({
                 }}
                 className="absolute -left-2 md:-left-16 top-1/2 -translate-y-1/2 bg-[#12141d]/80 hover:bg-red-600 text-white p-3 rounded-full transition-all border border-white/20 z-[100001]"
               >
-                <svg
-                  className="w-6 h-6 md:w-8 md:h-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M15 19l-7-7 7-7"
-                  />
+                <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
 
@@ -818,18 +727,8 @@ export default function ContestantGrid({
                 }}
                 className="absolute -right-2 md:-right-16 top-1/2 -translate-y-1/2 bg-[#12141d]/80 hover:bg-red-600 text-white p-3 rounded-full transition-all border border-white/20 z-[100001]"
               >
-                <svg
-                  className="w-6 h-6 md:w-8 md:h-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M9 5l7 7-7 7"
-                  />
+                <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
 
