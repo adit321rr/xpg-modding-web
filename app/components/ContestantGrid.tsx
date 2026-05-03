@@ -570,13 +570,13 @@ export default function ContestantGrid({
 
                             ctx.drawImage(img, 0, 0);
 
-                            ctx.font = "bold 2px TT Octosquares, sans-serif"; 
+                            ctx.font = "bold 0.1px TT Octosquares, sans-serif"; 
                             ctx.fillStyle = "#ffffff";
                             ctx.textAlign = "center";
                             ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
                             ctx.shadowBlur = 10;
 
-                            ctx.fillText(`@${igUsername.replace("@", "")}`, canvas.width / 2, 1200);
+                            ctx.fillText(`@${igUsername.replace("@", "")}`, canvas.width / 2, 2100);
 
                             const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
                             const link = document.createElement("a");
