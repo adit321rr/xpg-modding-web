@@ -95,9 +95,41 @@ export default function ContestantGrid({
     }
   };
 
+  // =========================================================================
+  // FIX VIDEO: Mengubah otomatis link YouTube biasa menjadi link Embed
+  // =========================================================================
+  const handleOpenVideo = (url: string | null) => {
+    if (!url) {
+      alert("Video belum tersedia untuk peserta ini.");
+      return;
+    }
+    let finalUrl = url;
+    if (url.includes("youtube.com/watch?v=")) {
+      const videoId = url.split("v=")[1].split("&")[0];
+      finalUrl = `https://www.youtube.com/embed/${videoId}`;
+    } else if (url.includes("youtu.be/")) {
+      const videoId = url.split("youtu.be/")[1].split("?")[0];
+      finalUrl = `https://www.youtube.com/embed/${videoId}`;
+    }
+    setActiveVideo(finalUrl);
+  };
+
   return (
     <>
-      <motion.div className="max-w-[1400px] mx-auto flex flex-nowrap md:grid md:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12 overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scroll-smooth hide-scrollbar">
+      {/* Teks Swipe To View More (Sesuai Gambar Referensi) */}
+      <div className="max-w-[1400px] mx-auto md:hidden flex justify-end mb-4 px-4 relative z-20">
+        <p className="text-gray-500 text-[10px] font-bold tracking-widest uppercase flex items-center gap-1">
+          SWIPE TO VIEW MORE 
+          <svg className="w-3 h-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+          </svg>
+        </p>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* PERUBAHAN UI: Netflix Carousel Effect (w-[85vw] dengan padding kiri) */}
+      {/* ========================================================================= */}
+      <motion.div className="max-w-[1400px] mx-auto flex flex-nowrap md:grid md:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12 overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scroll-smooth hide-scrollbar scroll-pl-4">
         {contestants?.map((c, index) => {
           const votePercentage =
             totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
@@ -136,7 +168,8 @@ export default function ContestantGrid({
                 ease: "easeOut",
               }}
               key={c.id}
-              className="group relative h-full w-[75vw] sm:w-[50vw] md:w-full flex-none snap-start md:snap-center bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
+              // PERUBAHAN UKURAN: w-[85vw] untuk mobile (menyisakan 15% untuk kartu sebelah ngintip)
+              className="group relative h-full w-[85vw] shrink-0 sm:w-[50vw] md:w-full flex-none snap-start bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
             >
               <div
                 onClick={() =>
@@ -247,8 +280,12 @@ export default function ContestantGrid({
                 </div>
 
                 <button
-                  onClick={() => setActiveVideo(c.video_url)}
-                  className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-xl mb-4 group/btn text-left mt-auto"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleOpenVideo(c.video_url);
+                  }}
+                  className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-xl mb-4 group/btn text-left mt-auto relative z-30"
                 >
                   <div className="w-10 h-10 bg-red-600 flex items-center justify-center rounded-lg shrink-0 shadow-[0_0_10px_rgba(220,38,38,0.3)] group-hover/btn:scale-105 transition-transform">
                     <svg
@@ -340,7 +377,7 @@ export default function ContestantGrid({
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 50 }}
-                    className="p-6 md:p-8 flex-grow flex flex-col overflow-y-auto custom-scrollbar"
+                    className="p-6 md:p-8 flex-grow flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar"
                   >
                     <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">
                       Peraturan Resmi
@@ -401,7 +438,7 @@ export default function ContestantGrid({
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -50 }}
-                    className="p-6 md:p-8 flex-grow flex flex-col overflow-y-auto custom-scrollbar"
+                    className="p-6 md:p-8 flex-grow flex flex-col"
                   >
                     <div className="mb-6">
                       <h2 className="text-2xl font-black text-white uppercase tracking-wider">
@@ -452,7 +489,7 @@ export default function ContestantGrid({
                         <p>{errorMessage}</p>
                       </motion.div>
                     )}
-                    <div className="mb-6 mt-auto shrink-0">
+                    <div className="mb-6 mt-auto">
                       <label className="block text-gray-400 text-sm font-bold tracking-widest uppercase mb-2">
                         Username Instagram
                       </label>
@@ -467,7 +504,7 @@ export default function ContestantGrid({
                         Masukkan tanpa simbol @
                       </p>
                     </div>
-                    <div className="flex items-start gap-3 mb-6 shrink-0">
+                    <div className="flex items-start gap-3 mb-6">
                       <div className="pt-1">
                         <input
                           type="checkbox"
@@ -507,7 +544,6 @@ export default function ContestantGrid({
                   </motion.div>
                 )}
 
-                {/* --- LAYAR SUKSES BERHASIL VOTE --- */}
                 {voteSuccess && (
                   <motion.div
                     key="success"
@@ -553,7 +589,6 @@ export default function ContestantGrid({
                           const canvas = document.createElement("canvas");
                           const ctx = canvas.getContext("2d");
                           
-                          // PERUBAHAN: Menambahkan pengecekan null untuk ctx
                           if (!ctx) {
                             alert("Browser Anda tidak mendukung fitur ini. Silakan screenshot manual.");
                             return;
