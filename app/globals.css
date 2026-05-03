@@ -29,3 +29,11 @@ html, body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@font-face {
+  font-family: 'TT Octosquares';
+  src: url('/fonts/TTOctosquares-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
