@@ -583,7 +583,7 @@ export default function ContestantGrid({
                               ctx.shadowOffsetY = 2;
 
                               // 2. POSISI Y DIUBAH JADI 380 (Lebih ke atas, di atas kotak merah)
-                              ctx.fillText(`@${igUsername.replace("@", "")}`, canvas.width / 2, 380);
+                              ctx.fillText(`@${igUsername.replace("@", "")}`, canvas.width / 2, 600);
 
                               const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
                               const link = document.createElement("a");
