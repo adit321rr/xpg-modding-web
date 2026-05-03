@@ -576,7 +576,7 @@ export default function ContestantGrid({
                             ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
                             ctx.shadowBlur = 10;
 
-                            ctx.fillText(`@${igUsername.replace("@", "")}`, canvas.width / 2, 180);
+                            ctx.fillText(`@${igUsername.replace("@", "")}`, canvas.width / 2, 500);
 
                             const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
                             const link = document.createElement("a");
