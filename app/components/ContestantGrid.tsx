@@ -179,7 +179,7 @@ export default function ContestantGrid({
               }}
               key={c.id}
               // PERUBAHAN UKURAN: w-[85vw] untuk mobile (menyisakan 15% untuk kartu sebelah ngintip)
-              className="group relative h-full w-[85vw] shrink-0 sm:w-[50vw] md:w-full flex-none snap-start bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
+              className="group relative h-full w-[75vw] sm:w-[50vw] md:w-full flex-none snap-start md:snap-center bg-[#0a0b12] border border-[#1f2235] hover:border-red-500/50 flex flex-col transition-all duration-500 shadow-2xl rounded-[1.5rem] overflow-hidden"
             >
               <div
                 onClick={() =>
@@ -640,7 +640,7 @@ export default function ContestantGrid({
                               ctx.fillText(
                                 `@${igUsername.replace("@", "")}`,
                                 canvas.width / 2,
-                                400,
+                                400 ,
                               );
 
                               const dataUrl = canvas.toDataURL(
