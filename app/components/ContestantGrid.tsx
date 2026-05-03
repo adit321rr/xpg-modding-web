@@ -553,7 +553,6 @@ export default function ContestantGrid({
                           const canvas = document.createElement("canvas");
                           const ctx = canvas.getContext("2d");
                           
-                          // PERUBAHAN: Menambahkan pengecekan null untuk ctx
                           if (!ctx) {
                             alert("Browser Anda tidak mendukung fitur ini. Silakan screenshot manual.");
                             return;
@@ -565,24 +564,33 @@ export default function ContestantGrid({
                           img.src = activeVote.poster; 
 
                           img.onload = () => {
-                            canvas.width = img.width;
-                            canvas.height = img.height;
+                            // WAJIB pakai document.fonts.ready agar font TT Octosquares pasti keload
+                            document.fonts.ready.then(() => {
+                              canvas.width = img.width;
+                              canvas.height = img.height;
 
-                            ctx.drawImage(img, 0, 0);
+                              ctx.drawImage(img, 0, 0);
 
-                            ctx.font = "bold 0.1px TT Octosquares, sans-serif"; 
-                            ctx.fillStyle = "#ffffff";
-                            ctx.textAlign = "center";
-                            ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
-                            ctx.shadowBlur = 10;
+                              // 1. UKURAN FONT DIPERKECIL JADI 36px 
+                              ctx.font = "bold 36px 'TT Octosquares', sans-serif"; 
+                              ctx.fillStyle = "#ffffff";
+                              ctx.textAlign = "center";
+                              
+                              // Efek bayangan ringan agar teks terbaca walau background terang
+                              ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+                              ctx.shadowBlur = 10;
+                              ctx.shadowOffsetX = 2;
+                              ctx.shadowOffsetY = 2;
 
-                            ctx.fillText(`@${igUsername.replace("@", "")}`, canvas.width / 2, 2100);
+                              // 2. POSISI Y DIUBAH JADI 380 (Lebih ke atas, di atas kotak merah)
+                              ctx.fillText(`@${igUsername.replace("@", "")}`, canvas.width / 2, 380);
 
-                            const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
-                            const link = document.createElement("a");
-                            link.download = `Poster-Vote-${activeVote.name}.jpg`;
-                            link.href = dataUrl;
-                            link.click();
+                              const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+                              const link = document.createElement("a");
+                              link.download = `Poster-Vote-${activeVote.name}.jpg`;
+                              link.href = dataUrl;
+                              link.click();
+                            });
                           };
 
                           img.onerror = () => {
