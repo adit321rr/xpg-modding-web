@@ -623,7 +623,7 @@ export default function ContestantGrid({
                               // 1. ATUR FONT & UKURAN DI SINI
                               // "bold" = Cetak Tebal, "45px" = Ukuran, "'TT Octosquares'" = Nama Font
                               ctx.font =
-                                "bold 45px 'TT Octosquares', sans-serif";
+                                "bold 20px 'TT Octosquares', sans-serif";
 
                               // 2. ATUR WARNA TEKS
                               ctx.fillStyle = "#ffffff"; // Warna putih
@@ -640,7 +640,7 @@ export default function ContestantGrid({
                               ctx.fillText(
                                 `@${igUsername.replace("@", "")}`,
                                 canvas.width / 2,
-                                210,
+                                400,
                               );
 
                               const dataUrl = canvas.toDataURL(
