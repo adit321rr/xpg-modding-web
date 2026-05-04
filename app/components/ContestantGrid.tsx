@@ -580,7 +580,7 @@ export default function ContestantGrid({
 
                               // 1. UKURAN FONT DIPERKECIL JADI 36px
                               ctx.font =
-                                "bold 20px 'TT Octosquares', sans-serif";
+                                "bold 40px 'TT Octosquares', sans-serif";
                               ctx.fillStyle = "#ffffff";
                               ctx.textAlign = "center";
 
