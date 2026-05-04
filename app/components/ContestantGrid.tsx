@@ -836,17 +836,23 @@ export default function ContestantGrid({
         )}
         
       </AnimatePresence>
-      {/* POP-UP MODAL VIDEO */}
+      {/* ========================================================================= */}
+      {/* POP-UP MODAL VIDEO YANG SUDAH DIPERBAIKI (TOMBOL TERLIHAT, NAVBAR HILANG) */}
+      {/* ========================================================================= */}
       <AnimatePresence>
         {activeVideo && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
+            // Tambahkan z-[99999] yang lebih tinggi dari Navbar (z-50)
+            className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
             onClick={() => setActiveVideo(null)} 
           >
-            <div className="absolute top-4 right-4 md:top-6 md:right-6 z-[10000] flex gap-2">
+            {/* Trik super: menyembunyikan Navbar secara dinamis saat video dibuka */}
+            <style dangerouslySetInnerHTML={{ __html: `nav { display: none !important; }` }} />
+
+            <div className="absolute top-4 right-4 md:top-6 md:right-6 z-[100000] flex gap-2">
                <button onClick={() => setActiveVideo(null)} className="flex items-center gap-2 bg-[#12141d]/80 hover:bg-red-600 text-white px-5 py-3 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
                  <span className="text-xs font-bold uppercase tracking-widest">TUTUP VIDEO</span>
                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -857,7 +863,7 @@ export default function ContestantGrid({
               initial={{ scale: 0.9, y: 20 }} 
               animate={{ scale: 1, y: 0 }} 
               exit={{ scale: 0.9, y: 20 }} 
-              className={`w-full bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.4)] border border-red-500/20 relative z-[9999] ${
+              className={`w-full bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.4)] border border-red-500/20 relative z-[100000] ${
                 activeVideo.includes('instagram') 
                   ? 'max-w-[450px] h-[85vh]' 
                   : 'max-w-6xl aspect-video' 
@@ -880,5 +886,3 @@ export default function ContestantGrid({
     </>
   );
 }
-
-
