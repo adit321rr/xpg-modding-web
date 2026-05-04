@@ -580,7 +580,7 @@ export default function ContestantGrid({
 
                               // 1. UKURAN FONT DIPERKECIL JADI 36px
                               ctx.font =
-                                "bold 36px 'TT Octosquares', sans-serif";
+                                "bold 20px 'TT Octosquares', sans-serif";
                               ctx.fillStyle = "#ffffff";
                               ctx.textAlign = "center";
 
@@ -594,7 +594,7 @@ export default function ContestantGrid({
                               ctx.fillText(
                                 `@${igUsername.replace("@", "")}`,
                                 canvas.width / 2,
-                                420,
+                                380,
                               );
 
                               const dataUrl = canvas.toDataURL(
