@@ -525,7 +525,7 @@ export default function ContestantGrid({
                       </strong>
                     </p>
 
-                    <div className="relative w-[20px] md:w-[90px] aspect-[9/16] rounded-lg overflow-hidden shadow-[0_0_30px_rgba(220,38,38,0.3)] mb-4 border border-white/20 shrink-0">
+                    <div className="relative w-[160px] md:w-[240px] aspect-[9/16] rounded-lg overflow-hidden shadow-[0_0_30px_rgba(220,38,38,0.3)] mb-4 border border-white/20 shrink-0">
                       <Image
                         src={activeVote.poster}
                         alt="Share Poster"
@@ -533,7 +533,7 @@ export default function ContestantGrid({
                         className="object-cover bg-[#0a0b12]"
                       />
                       {/* PERUBAHAN 1: top-[10%] diubah jadi top-[21%] agar turun ke dalam kotak merah */}
-                      <div className="absolute top-[16%] left-0 w-full text-center z-10 px-2">
+                      <div className="absolute top-[16%] left-0 w-full text-center z-10 px-1">
                         <p
                           className="text-white font-black text-sm md:text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
                           // PERUBAHAN 2: Terapkan font TT Octosquares langsung ke style HTML
