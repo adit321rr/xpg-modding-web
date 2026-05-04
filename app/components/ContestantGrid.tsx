@@ -533,7 +533,7 @@ export default function ContestantGrid({
                         className="object-cover bg-[#0a0b12]"
                       />
                       {/* PERUBAHAN 1: top-[10%] diubah jadi top-[21%] agar turun ke dalam kotak merah */}
-                      <div className="absolute top-[18%] left-0 w-full text-center z-10 px-2">
+                      <div className="absolute top-[14%] left-0 w-full text-center z-2 px-2">
                         <p
                           className="text-white font-black text-sm md:text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
                           // PERUBAHAN 2: Terapkan font TT Octosquares langsung ke style HTML
