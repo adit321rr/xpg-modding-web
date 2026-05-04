@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
-import { supabase } from '../../lib/supabase';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import { supabase } from "../../lib/supabase";
+import { useRouter } from "next/navigation";
 
 export default function ContestantGrid({
   contestants,
@@ -532,8 +532,13 @@ export default function ContestantGrid({
                         fill
                         className="object-cover bg-[#0a0b12]"
                       />
-                      <div className="absolute top-[10%] left-0 w-full text-center z-10 px-2">
-                        <p className="text-white font-black text-sm md:text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate">
+                      {/* PERUBAHAN 1: top-[10%] diubah jadi top-[21%] agar turun ke dalam kotak merah */}
+                      <div className="absolute top-[21%] left-0 w-full text-center z-10 px-2">
+                        <p
+                          className="text-white font-black text-sm md:text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
+                          // PERUBAHAN 2: Terapkan font TT Octosquares langsung ke style HTML
+                          style={{ fontFamily: "'TT Octosquares', sans-serif" }}
+                        >
                           @{igUsername.replace("@", "")}
                         </p>
                       </div>
@@ -552,16 +557,18 @@ export default function ContestantGrid({
                         onClick={() => {
                           const canvas = document.createElement("canvas");
                           const ctx = canvas.getContext("2d");
-                          
+
                           if (!ctx) {
-                            alert("Browser Anda tidak mendukung fitur ini. Silakan screenshot manual.");
+                            alert(
+                              "Browser Anda tidak mendukung fitur ini. Silakan screenshot manual.",
+                            );
                             return;
                           }
 
                           const img = new window.Image();
-                          
-                          img.crossOrigin = "anonymous"; 
-                          img.src = activeVote.poster; 
+
+                          img.crossOrigin = "anonymous";
+                          img.src = activeVote.poster;
 
                           img.onload = () => {
                             // WAJIB pakai document.fonts.ready agar font TT Octosquares pasti keload
@@ -571,11 +578,12 @@ export default function ContestantGrid({
 
                               ctx.drawImage(img, 0, 0);
 
-                              // 1. UKURAN FONT DIPERKECIL JADI 36px 
-                              ctx.font = "bold 36px 'TT Octosquares', sans-serif"; 
+                              // 1. UKURAN FONT DIPERKECIL JADI 36px
+                              ctx.font =
+                                "bold 36px 'TT Octosquares', sans-serif";
                               ctx.fillStyle = "#ffffff";
                               ctx.textAlign = "center";
-                              
+
                               // Efek bayangan ringan agar teks terbaca walau background terang
                               ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
                               ctx.shadowBlur = 10;
@@ -583,9 +591,16 @@ export default function ContestantGrid({
                               ctx.shadowOffsetY = 2;
 
                               // 2. POSISI Y DIUBAH JADI 380 (Lebih ke atas, di atas kotak merah)
-                              ctx.fillText(`@${igUsername.replace("@", "")}`, canvas.width / 2, 1000);
+                              ctx.fillText(
+                                `@${igUsername.replace("@", "")}`,
+                                canvas.width / 2,
+                                420,
+                              );
 
-                              const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+                              const dataUrl = canvas.toDataURL(
+                                "image/jpeg",
+                                0.9,
+                              );
                               const link = document.createElement("a");
                               link.download = `Poster-Vote-${activeVote.name}.jpg`;
                               link.href = dataUrl;
@@ -594,13 +609,25 @@ export default function ContestantGrid({
                           };
 
                           img.onerror = () => {
-                            alert("Gagal men-download poster otomatis. Tahan/klik kanan gambar di atas untuk menyimpan.");
+                            alert(
+                              "Gagal men-download poster otomatis. Tahan/klik kanan gambar di atas untuk menyimpan.",
+                            );
                           };
                         }}
                         className="w-full bg-[#12141d] border border-white/20 hover:bg-white/10 text-white py-3 md:py-4 font-black tracking-widest text-xs md:text-sm uppercase transition-all rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.3)] flex items-center justify-center gap-2"
                       >
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2.5}
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                          />
                         </svg>
                         DOWNLOAD POSTER SAYA
                       </button>
@@ -706,8 +733,18 @@ export default function ContestantGrid({
                 }}
                 className="absolute -left-2 md:-left-16 top-1/2 -translate-y-1/2 bg-[#12141d]/80 hover:bg-red-600 text-white p-3 rounded-full transition-all border border-white/20 z-[100001]"
               >
-                <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                <svg
+                  className="w-6 h-6 md:w-8 md:h-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M15 19l-7-7 7-7"
+                  />
                 </svg>
               </button>
 
@@ -735,8 +772,18 @@ export default function ContestantGrid({
                 }}
                 className="absolute -right-2 md:-right-16 top-1/2 -translate-y-1/2 bg-[#12141d]/80 hover:bg-red-600 text-white p-3 rounded-full transition-all border border-white/20 z-[100001]"
               >
-                <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-6 h-6 md:w-8 md:h-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </button>
 
