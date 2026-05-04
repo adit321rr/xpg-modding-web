@@ -594,7 +594,7 @@ export default function ContestantGrid({
                               ctx.fillText(
                                 `@${igUsername.replace("@", "")}`,
                                 canvas.width / 2,
-                                380,
+                                385,
                               );
 
                               const dataUrl = canvas.toDataURL(
