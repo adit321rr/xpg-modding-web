@@ -38,6 +38,24 @@ export default function ContestantGrid({
     0,
   );
 
+  // =========================================================================
+  // FIX URUTAN: Mengurutkan peserta secara statis sesuai request klien
+  // =========================================================================
+  const orderMap: { [key: string]: number } = {
+    "wimodz.tech": 1,
+    "MonsParmodd": 2,
+    "Rakazone21": 3,
+    "Kim Jong Tep": 4,
+    "HelixCustom": 5,
+  };
+
+  const orderedContestants = [...contestants].sort((a, b) => {
+    const orderA = orderMap[a.name] || 99;
+    const orderB = orderMap[b.name] || 99;
+    return orderA - orderB;
+  });
+  // =========================================================================
+
   const handleCloseVoteModal = () => {
     setActiveVote(null);
     setTimeout(() => {
@@ -98,7 +116,8 @@ export default function ContestantGrid({
   return (
     <>
       <motion.div className="max-w-[1400px] mx-auto flex flex-nowrap md:grid md:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12 overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scroll-smooth hide-scrollbar">
-        {contestants?.map((c, index) => {
+        {/* PERUBAHAN: Gunakan orderedContestants di sini */}
+        {orderedContestants?.map((c, index) => {
           const votePercentage =
             totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
           const mainImg =
@@ -340,7 +359,7 @@ export default function ContestantGrid({
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 50 }}
-                    className="p-6 md:p-8 flex-grow flex flex-col overflow-y-auto custom-scrollbar"
+                    className="p-6 md:p-8 flex-grow flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar"
                   >
                     <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">
                       Peraturan Resmi
@@ -401,7 +420,7 @@ export default function ContestantGrid({
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -50 }}
-                    className="p-6 md:p-8 flex-grow flex flex-col overflow-y-auto custom-scrollbar"
+                    className="p-6 md:p-8 flex-grow flex flex-col"
                   >
                     <div className="mb-6">
                       <h2 className="text-2xl font-black text-white uppercase tracking-wider">
@@ -452,7 +471,7 @@ export default function ContestantGrid({
                         <p>{errorMessage}</p>
                       </motion.div>
                     )}
-                    <div className="mb-6 mt-auto shrink-0">
+                    <div className="mb-6 mt-auto">
                       <label className="block text-gray-400 text-sm font-bold tracking-widest uppercase mb-2">
                         Username Instagram
                       </label>
@@ -467,7 +486,7 @@ export default function ContestantGrid({
                         Masukkan tanpa simbol @
                       </p>
                     </div>
-                    <div className="flex items-start gap-3 mb-6 shrink-0">
+                    <div className="flex items-start gap-3 mb-6">
                       <div className="pt-1">
                         <input
                           type="checkbox"
@@ -733,18 +752,8 @@ export default function ContestantGrid({
                 }}
                 className="absolute -left-2 md:-left-16 top-1/2 -translate-y-1/2 bg-[#12141d]/80 hover:bg-red-600 text-white p-3 rounded-full transition-all border border-white/20 z-[100001]"
               >
-                <svg
-                  className="w-6 h-6 md:w-8 md:h-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M15 19l-7-7 7-7"
-                  />
+                <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
 
@@ -772,18 +781,8 @@ export default function ContestantGrid({
                 }}
                 className="absolute -right-2 md:-right-16 top-1/2 -translate-y-1/2 bg-[#12141d]/80 hover:bg-red-600 text-white p-3 rounded-full transition-all border border-white/20 z-[100001]"
               >
-                <svg
-                  className="w-6 h-6 md:w-8 md:h-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M9 5l7 7-7 7"
-                  />
+                <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
 
@@ -797,3 +796,5 @@ export default function ContestantGrid({
     </>
   );
 }
+
+
