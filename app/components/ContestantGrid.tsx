@@ -113,10 +113,38 @@ export default function ContestantGrid({
     }
   };
 
+  // =========================================================================
+  // FIX VIDEO: Memperbaiki segala format link YouTube & IG dari Supabase
+  // =========================================================================
+  const handleOpenVideo = (url: string | null) => {
+    if (!url) {
+      alert("Video belum tersedia untuk peserta ini.");
+      return;
+    }
+    let finalUrl = url;
+    
+    // Auto-detect format YouTube dan ubah jadi Embed Resmi
+    if (url.includes("youtube.com") || url.includes("youtu.be")) {
+      let videoId = "";
+      if (url.includes("v=")) {
+        videoId = url.split("v=")[1].split("&")[0];
+      } else if (url.includes("youtu.be/")) {
+        videoId = url.split("youtu.be/")[1].split("?")[0];
+      } else if (url.includes("embed/") && !url.includes("embed?v=")) {
+        videoId = url.split("embed/")[1].split("?")[0];
+      }
+      
+      if (videoId) {
+        // Otomatis putar (autoplay) kalau videonya youtube
+        finalUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+      }
+    }
+    setActiveVideo(finalUrl);
+  };
+
   return (
     <>
       <motion.div className="max-w-[1400px] mx-auto flex flex-nowrap md:grid md:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12 overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scroll-smooth hide-scrollbar">
-        {/* PERUBAHAN: Gunakan orderedContestants di sini */}
         {orderedContestants?.map((c, index) => {
           const votePercentage =
             totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
@@ -266,8 +294,12 @@ export default function ContestantGrid({
                 </div>
 
                 <button
-                  onClick={() => setActiveVideo(c.video_url)}
-                  className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-xl mb-4 group/btn text-left mt-auto"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleOpenVideo(c.video_url);
+                  }}
+                  className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-xl mb-4 group/btn text-left mt-auto relative z-30"
                 >
                   <div className="w-10 h-10 bg-red-600 flex items-center justify-center rounded-lg shrink-0 shadow-[0_0_10px_rgba(220,38,38,0.3)] group-hover/btn:scale-105 transition-transform">
                     <svg
