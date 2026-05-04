@@ -114,7 +114,7 @@ export default function ContestantGrid({
   };
 
   // =========================================================================
-  // FIX VIDEO: Memperbaiki segala format link YouTube & IG dari Supabase
+  // FIX VIDEO: Memperbaiki typo dari Supabase & segala format YouTube/IG
   // =========================================================================
   const handleOpenVideo = (url: string | null) => {
     if (!url) {
@@ -138,7 +138,16 @@ export default function ContestantGrid({
         // Otomatis putar (autoplay) kalau videonya youtube
         finalUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
       }
+    } 
+    // FIX INSTAGRAM TYPO DARI SUPABASE (emabed -> embed)
+    else if (url.includes("instagram.com")) {
+      finalUrl = url.replace("/emabed", "/embed");
+      // Pastikan selalu ada /embed/ di belakang
+      if (!finalUrl.includes("/embed")) {
+        finalUrl = finalUrl.replace(/\/$/, "") + "/embed/";
+      }
     }
+    
     setActiveVideo(finalUrl);
   };
 
@@ -294,12 +303,13 @@ export default function ContestantGrid({
                 </div>
 
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     handleOpenVideo(c.video_url);
                   }}
-                  className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-xl mb-4 group/btn text-left mt-auto relative z-30"
+                  className="w-full flex items-center bg-[#12141d] border border-[#1f2235] hover:border-red-500/50 hover:bg-[#1a1d29] transition-all p-3 rounded-xl mb-4 group/btn text-left mt-auto relative z-[60] cursor-pointer"
                 >
                   <div className="w-10 h-10 bg-red-600 flex items-center justify-center rounded-lg shrink-0 shadow-[0_0_10px_rgba(220,38,38,0.3)] group-hover/btn:scale-105 transition-transform">
                     <svg
