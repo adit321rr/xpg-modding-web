@@ -177,7 +177,7 @@ export default function ContestantGrid({
             c.image_url ||
             `/images/${c.id === 1 ? "kim.webp" : c.id === 2 ? "raka.webp" : c.id === 3 ? "wira.webp" : c.id === 4 ? "helix.webp" : "mons.webp"}`;
 
-          const posterImg = c.poster || `/images/poster.webp`;
+          const posterImg = c.poster || `/images/poster1.webp`;
 
           const dbGallery = [
             c.gallery_1,
