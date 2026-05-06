@@ -582,13 +582,13 @@ export default function ContestantGrid({
                     <h2 className="text-xl md:text-2xl font-black text-white uppercase tracking-widest mb-1 shrink-0 mt-2">
                       VOTE BERHASIL!
                     </h2>
-                    <p className="text-gray-400 text-xs md:text-sm mb-4 shrink-0">
+                    <p className="text-gray-400 text-[15px] md:text-sm mb-4 shrink-0">
                       Terima kasih{" "}
                       <strong className="text-white">
                         @{igUsername.replace("@", "")}
                       </strong>
                     </p>
-                    <p className="text-gray-400 text-[10px] md:text-xs leading-relaxed mb-6 px-2 shrink-0">
+                    <p className="text-gray-400 text-[15px] md:text-xs leading-relaxed mb-6 px-2 shrink-0">
                       Download poster personal ini dan bagikan ke IG Story-mu!
                       <br className="hidden md:block" /> Jangan lupa tag{" "}
                       <strong className="text-red-500">
