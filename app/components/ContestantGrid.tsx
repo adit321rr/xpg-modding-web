@@ -587,6 +587,8 @@ export default function ContestantGrid({
                       <strong className="text-white">
                         @{igUsername.replace("@", "")}
                       </strong>
+                    </p>
+                    <p className="text-gray-400 text-[10px] md:text-xs leading-relaxed mb-6 px-2 shrink-0">
                       Download poster personal ini dan bagikan ke IG Story-mu!
                       <br className="hidden md:block" /> Jangan lupa tag{" "}
                       <strong className="text-red-500">
