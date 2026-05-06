@@ -586,7 +586,7 @@ export default function ContestantGrid({
                       </strong>
                     </p>
 
-                    <div className="relative w-[160px] md:w-[240px] aspect-[9/16] rounded-lg overflow-hidden shadow-[0_0_30px_rgba(220,38,38,0.3)] mb-4 border border-white/20 shrink-0">
+                    <div className="relative w-[210px] md:w-[290px] aspect-[9/16] rounded-lg overflow-hidden shadow-[0_0_30px_rgba(220,38,38,0.3)] mb-4 border border-white/20 shrink-0">
                       <Image
                         src={activeVote.poster}
                         alt="Share Poster"
