@@ -130,7 +130,7 @@ export default async function Home() {
       {/* ========================================================================= */}
       <section
         id="judges-section"
-        className="pt-12 pb-24 px-4 relative z-10 bg-[#050505]"
+        className="pt-12 pb-24 px-4 relative z-0 bg-[#050505]"
       >
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
