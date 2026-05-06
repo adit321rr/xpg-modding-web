@@ -176,7 +176,7 @@ export default async function Home() {
       {/* ========================================================================= */}
       <section
         id="leaderboard-section"
-        className="py-24 px-4 bg-[#0a0a0a] border-t border-white/5 relative z-10"
+        className="py-24 px-4 bg-[#0a0a0a] border-t border-white/5 relative z-0"
       >
         <div className="max-w-4xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
@@ -197,7 +197,7 @@ export default async function Home() {
       {/* ========================================================================= */}
       {/* 5. FOOTER SECTION */}
       {/* ========================================================================= */}
-      <footer className="bg-[#0a0a0a] border-t border-red-900/30 pt-20 pb-8 px-4 relative z-10">
+      <footer className="bg-[#0a0a0a] border-t border-red-900/30 pt-20 pb-8 px-4 relative z-0">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 mb-16">
           {/* Kolom Kiri: Logo & Deskripsi */}
           <div>
