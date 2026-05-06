@@ -634,7 +634,7 @@ export default function ContestantGrid({
                       <div className="absolute top-[18%] left-0 w-full text-center z-10 px-3">
                         <p
                           // NAH INI RAHASIANYA BANG: md:text-sm SAYA GANTI JADI md:text-[11px]
-                          className="text-white font-black text-[8px] md:text-[8px] drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
+                          className="text-white font-black text-[6px] md:text-[8px] drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
                           style={{ fontFamily: "'TT Octosquares', sans-serif" }}
                         >
                           @{igUsername.replace("@", "")}
