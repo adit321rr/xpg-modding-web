@@ -597,7 +597,7 @@ export default function ContestantGrid({
                         className="object-cover bg-[#0a0b12]"
                       />
                       {/* PERUBAHAN 1: top-[10%] diubah jadi top-[21%] agar turun ke dalam kotak merah */}
-                      <div className="absolute top-[19%] left-0 w-full text-center z-10 px-3">
+                      <div className="absolute top-[18%] left-0 w-full text-center z-10 px-3">
                         <p
                           className="text-white font-black text-[6px] md:text-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
                           style={{ fontFamily: "'TT Octosquares', sans-serif" }}
