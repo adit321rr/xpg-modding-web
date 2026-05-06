@@ -357,7 +357,7 @@ export default function ContestantGrid({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+            className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
           >
             {/* Hide navbar saat modal aktif (khusus untuk mobile yang belum auto-hide) */}
             <style dangerouslySetInnerHTML={{ __html: `nav { display: none !important; }` }} />
@@ -370,7 +370,7 @@ export default function ContestantGrid({
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
-              className="relative w-full max-w-[450px] bg-[#0a0b10] border border-white/10 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.2)] z-10 flex flex-col min-h-[350px] max-h-[90vh]"
+              className="relative w-full max-w-[450px] bg-[#0a0b10] border border-white/10 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.2)] z-[100000] flex flex-col min-h-[350px] max-h-[90vh]"
               style={{
                 clipPath:
                   "polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)",
