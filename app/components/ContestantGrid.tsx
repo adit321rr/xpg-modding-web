@@ -359,6 +359,9 @@ export default function ContestantGrid({
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
           >
+            {/* Hide navbar saat modal aktif (khusus untuk mobile yang belum auto-hide) */}
+            <style dangerouslySetInnerHTML={{ __html: `nav { display: none !important; }` }} />
+
             <div
               className="absolute inset-0"
               onClick={handleCloseVoteModal}
