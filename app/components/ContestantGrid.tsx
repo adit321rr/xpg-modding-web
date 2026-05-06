@@ -43,10 +43,10 @@ export default function ContestantGrid({
   // =========================================================================
   const orderMap: { [key: string]: number } = {
     "wimodz.tech": 1,
-    "MonsParmodd": 2,
-    "Rakazone21": 3,
+    MonsParmodd: 2,
+    Rakazone21: 3,
     "Kim Jong Tep": 4,
-    "HelixCustom": 5,
+    HelixCustom: 5,
   };
 
   const orderedContestants = [...contestants].sort((a, b) => {
@@ -89,17 +89,23 @@ export default function ContestantGrid({
         .single();
 
       if (existingVote) {
-        setErrorMessage("Akun Instagram ini sudah pernah digunakan untuk voting!");
+        setErrorMessage(
+          "Akun Instagram ini sudah pernah digunakan untuk voting!",
+        );
         setLoading(false);
         return;
       }
 
       // 3. CEK SEARCHAPI.IO (Request dari Klien: Apakah akun IG ini eksis?)
       setErrorMessage("Memverifikasi keaslian akun Instagram..."); // Kasih tau user kalau lagi loading loading API
-      const igCheckRes = await fetch(`/api/check-ig?username=${cleanIgUsername}`);
-      
+      const igCheckRes = await fetch(
+        `/api/check-ig?username=${cleanIgUsername}`,
+      );
+
       if (!igCheckRes.ok) {
-        setErrorMessage("Username Instagram tidak ditemukan! Pastikan username benar dan tidak di-private total.");
+        setErrorMessage(
+          "Username Instagram tidak ditemukan! Pastikan username benar dan tidak di-private total.",
+        );
         setLoading(false);
         return;
       }
@@ -138,7 +144,7 @@ export default function ContestantGrid({
       return;
     }
     let finalUrl = url;
-    
+
     // Auto-detect format YouTube dan ubah jadi Embed Resmi
     if (url.includes("youtube.com") || url.includes("youtu.be")) {
       let videoId = "";
@@ -149,12 +155,12 @@ export default function ContestantGrid({
       } else if (url.includes("embed/") && !url.includes("embed?v=")) {
         videoId = url.split("embed/")[1].split("?")[0];
       }
-      
+
       if (videoId) {
         // Otomatis putar (autoplay) kalau videonya youtube
         finalUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
       }
-    } 
+    }
     // FIX INSTAGRAM TYPO DARI SUPABASE (emabed -> embed)
     else if (url.includes("instagram.com")) {
       finalUrl = url.replace("/emabed", "/embed");
@@ -163,7 +169,7 @@ export default function ContestantGrid({
         finalUrl = finalUrl.replace(/\/$/, "") + "/embed/";
       }
     }
-    
+
     setActiveVideo(finalUrl);
   };
 
@@ -376,7 +382,11 @@ export default function ContestantGrid({
             className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
           >
             {/* Hide navbar saat modal aktif (khusus untuk mobile yang belum auto-hide) */}
-            <style dangerouslySetInnerHTML={{ __html: `nav { display: none !important; }` }} />
+            <style
+              dangerouslySetInnerHTML={{
+                __html: `nav { display: none !important; }`,
+              }}
+            />
 
             <div
               className="absolute inset-0"
@@ -605,7 +615,7 @@ export default function ContestantGrid({
                       </strong>
                     </p>
                     <p className="text-gray-400 text-[18px] md:text-xs leading-relaxed mb-6 px-2 shrink-0">
-                      Download poster ini dan bagikan ke Instagram Story-mu! 
+                      Download poster ini dan bagikan ke Instagram Story-mu!
                       <br className="hidden md:block" /> Jangan lupa tag{" "}
                       <strong className="text-red-500">
                         @adataxpgindonesia
@@ -619,8 +629,8 @@ export default function ContestantGrid({
                         fill
                         className="object-cover bg-[#0a0b12]"
                       />
-                      {/* PERUBAHAN 1: top-[10%] diubah jadi top-[21%] agar turun ke dalam kotak merah */}
-                      <div className="absolute top-[18%] left-0 w-full text-center z-10 px-3">
+                      {/* UBAH ANGKA top-[18%] DI BAWAH INI UNTUK NAIK/TURUN TAMPILAN PREVIEW */}
+                      <div className="absolute top-[21%] left-0 w-full text-center z-10 px-3">
                         <p
                           className="text-white font-black text-[6px] md:text-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
                           style={{ fontFamily: "'TT Octosquares', sans-serif" }}
@@ -668,11 +678,11 @@ export default function ContestantGrid({
                               ctx.shadowOffsetX = 2;
                               ctx.shadowOffsetY = 2;
 
-                              // 2. POSISI Y DIUBAH JADI 380 (Lebih ke atas, di atas kotak merah)
+                              // UBAH ANGKA 385 DI BAWAH INI UNTUK NAIK/TURUN HASIL DOWNLOAD
                               ctx.fillText(
                                 `@${igUsername.replace("@", "")}`,
                                 canvas.width / 2,
-                                385,
+                                385, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
                               );
 
                               const dataUrl = canvas.toDataURL(
@@ -710,7 +720,6 @@ export default function ContestantGrid({
                         DOWNLOAD POSTER SAYA
                       </button>
 
-                    
                       <button
                         onClick={handleCloseVoteModal}
                         className="w-full bg-transparent border border-white/20 hover:bg-white/10 text-white py-3 md:py-4 font-bold tracking-widest uppercase transition-all rounded-xl"
@@ -779,8 +788,18 @@ export default function ContestantGrid({
                 }}
                 className="absolute -left-2 md:-left-16 top-1/2 -translate-y-1/2 bg-[#12141d]/80 hover:bg-red-600 text-white p-3 rounded-full transition-all border border-white/20 z-[100001]"
               >
-                <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                <svg
+                  className="w-6 h-6 md:w-8 md:h-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M15 19l-7-7 7-7"
+                  />
                 </svg>
               </button>
 
@@ -808,8 +827,18 @@ export default function ContestantGrid({
                 }}
                 className="absolute -right-2 md:-right-16 top-1/2 -translate-y-1/2 bg-[#12141d]/80 hover:bg-red-600 text-white p-3 rounded-full transition-all border border-white/20 z-[100001]"
               >
-                <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-6 h-6 md:w-8 md:h-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </button>
 
@@ -819,7 +848,6 @@ export default function ContestantGrid({
             </div>
           </motion.div>
         )}
-        
       </AnimatePresence>
       {/* ========================================================================= */}
       {/* POP-UP MODAL VIDEO (TOMBOL DI KIRI ATAS VIDEO) */}
@@ -831,45 +859,61 @@ export default function ContestantGrid({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
-            onClick={() => setActiveVideo(null)} 
+            onClick={() => setActiveVideo(null)}
           >
-            <style dangerouslySetInnerHTML={{ __html: `nav { display: none !important; }` }} />
+            <style
+              dangerouslySetInnerHTML={{
+                __html: `nav { display: none !important; }`,
+              }}
+            />
 
             {/* Kontainer fleksibel agar tombol selalu pas di atas kiri kotak video */}
-            <div className={`w-full flex flex-col items-start ${activeVideo.includes('instagram') ? 'max-w-[450px]' : 'max-w-6xl'}`}>
-              
-              <button 
-                onClick={() => setActiveVideo(null)} 
+            <div
+              className={`w-full flex flex-col items-start ${activeVideo.includes("instagram") ? "max-w-[450px]" : "max-w-6xl"}`}
+            >
+              <button
+                onClick={() => setActiveVideo(null)}
                 className="mb-4 flex items-center gap-2 bg-[#12141d]/90 hover:bg-red-600 text-white px-5 py-2.5 rounded-full transition-all backdrop-blur-xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)] z-[100000]"
               >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
-                <span className="text-xs font-bold uppercase tracking-widest">TUTUP VIDEO</span>
+                <span className="text-xs font-bold uppercase tracking-widest">
+                  TUTUP VIDEO
+                </span>
               </button>
-              
-              <motion.div 
-                initial={{ scale: 0.9, y: 20 }} 
-                animate={{ scale: 1, y: 0 }} 
-                exit={{ scale: 0.9, y: 20 }} 
+
+              <motion.div
+                initial={{ scale: 0.9, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, y: 20 }}
                 className={`w-full bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.4)] border border-red-500/20 relative z-[100000] ${
-                  activeVideo.includes('instagram') 
-                    ? 'h-[75vh] md:h-[85vh]' // Tinggi disesuaikan agar sisa ruang cukup buat tombol
-                    : 'aspect-video' 
-                }`} 
+                  activeVideo.includes("instagram")
+                    ? "h-[75vh] md:h-[85vh]" // Tinggi disesuaikan agar sisa ruang cukup buat tombol
+                    : "aspect-video"
+                }`}
                 onClick={(e) => e.stopPropagation()}
               >
-                <iframe 
-                  width="100%" 
-                  height="100%" 
-                  src={activeVideo} 
-                  title="Video player" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={activeVideo}
+                  title="Video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 ></iframe>
               </motion.div>
-
             </div>
           </motion.div>
         )}
