@@ -630,9 +630,9 @@ export default function ContestantGrid({
                         className="object-cover bg-[#0a0b12]"
                       />
                       {/* UBAH ANGKA top-[18%] DI BAWAH INI UNTUK NAIK/TURUN TAMPILAN PREVIEW */}
-                      <div className="absolute top-[21%] left-0 w-full text-center z-10 px-3">
+                      <div className="absolute top-[19%] left-0 w-full text-center z-10 px-3">
                         <p
-                          className="text-white font-black text-[6px] md:text-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
+                          className="text-white font-black text-[4px] md:text-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
                           style={{ fontFamily: "'TT Octosquares', sans-serif" }}
                         >
                           @{igUsername.replace("@", "")}
@@ -668,7 +668,7 @@ export default function ContestantGrid({
 
                               // 1. UKURAN FONT DIPERKECIL JADI 36px
                               ctx.font =
-                                "bold 40px 'TT Octosquares', sans-serif";
+                                "bold 80px 'TT Octosquares', sans-serif";
                               ctx.fillStyle = "#ffffff";
                               ctx.textAlign = "center";
 
@@ -682,7 +682,7 @@ export default function ContestantGrid({
                               ctx.fillText(
                                 `@${igUsername.replace("@", "")}`,
                                 canvas.width / 2,
-                                385, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
+                                450, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
                               );
 
                               const dataUrl = canvas.toDataURL(
