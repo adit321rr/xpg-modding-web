@@ -77,17 +77,10 @@ export default function ContestantGrid({
         "Kamu harus menyetujui persyaratan untuk melanjutkan.",
       );
 
-    // 1. CEK LOCALSTORAGE (Anti-Spam Perangkat)
-    if (typeof window !== "undefined" && localStorage.getItem("xpg_voted")) {
-      setErrorMessage("Perangkat ini sudah digunakan untuk voting! 1 Perangkat = 1 Vote.");
-      return;
-    }
-
     setLoading(true);
     const cleanIgUsername = igUsername.replace("@", "").trim().toLowerCase();
 
     try {
-      // 2. CEK DATABASE SUPABASE (Apakah akun IG ini sudah pernah dipakai vote?)
       const { data: existingVote } = await supabase
         .from("votes")
         .select("*")
@@ -95,23 +88,13 @@ export default function ContestantGrid({
         .single();
 
       if (existingVote) {
-        setErrorMessage("Akun Instagram ini sudah pernah digunakan untuk voting!");
+        setErrorMessage(
+          "Akun Instagram ini sudah pernah digunakan untuk voting!",
+        );
         setLoading(false);
         return;
       }
 
-      // 3. CEK SEARCHAPI.IO (Request dari Klien: Apakah akun IG ini eksis?)
-      setErrorMessage("Memverifikasi keaslian akun Instagram..."); // Kasih tau user kalau lagi loading loading API
-      const igCheckRes = await fetch(`/api/check-ig?username=${cleanIgUsername}`);
-      
-      if (!igCheckRes.ok) {
-        setErrorMessage("Username Instagram tidak ditemukan! Pastikan username benar dan tidak di-private total.");
-        setLoading(false);
-        return;
-      }
-
-      // 4. JIKA LOLOS SEMUA -> SIMPAN VOTE KE SUPABASE
-      setErrorMessage("Menyimpan vote...");
       const { error } = await supabase
         .from("votes")
         .insert([
@@ -119,11 +102,6 @@ export default function ContestantGrid({
         ]);
 
       if (error) throw error;
-
-      // 5. KUNCI PERANGKAT BERHASIL
-      if (typeof window !== "undefined") {
-        localStorage.setItem("xpg_voted", "true");
-      }
 
       setVoteSuccess(true);
       router.refresh();
