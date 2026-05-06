@@ -629,10 +629,12 @@ export default function ContestantGrid({
                         fill
                         className="object-cover bg-[#0a0b12]"
                       />
-                      {/* UBAH ANGKA top-[18%] DI BAWAH INI UNTUK NAIK/TURUN TAMPILAN PREVIEW */}
-                      <div className="absolute top-[15%] left-0 w-full text-center z-10 px-3">
+
+                      {/* Posisi top di-adjust sedikit ke 16.5% biar pas banget di tengah kotak merah barunya */}
+                      <div className="absolute top-[18%] left-0 w-full text-center z-10 px-3">
                         <p
-                          className="text-white font-black text-[6px] md:text-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
+                          // NAH INI RAHASIANYA BANG: md:text-sm SAYA GANTI JADI md:text-[11px]
+                          className="text-white font-black text-[8px] md:text-[8px] drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
                           style={{ fontFamily: "'TT Octosquares', sans-serif" }}
                         >
                           @{igUsername.replace("@", "")}
