@@ -596,7 +596,7 @@ export default function ContestantGrid({
                       {/* PERUBAHAN 1: top-[10%] diubah jadi top-[21%] agar turun ke dalam kotak merah */}
                       <div className="absolute top-[16%] left-0 w-full text-center z-10 px-1">
                         <p
-                          className="text-white font-black text-[11px] md:text-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
+                          className="text-white font-black text-[7px] md:text-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
                           style={{ fontFamily: "'TT Octosquares', sans-serif" }}
                         >
                           @{igUsername.replace("@", "")}
