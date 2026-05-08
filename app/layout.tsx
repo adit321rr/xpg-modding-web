@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: 'XPG ADATA Mod To Xtreme',
     images: [
       {
-        url: '/images/og-cover.jpg', // GANTI PAKAI NAMA FILE SCREENSHOT ABANG (WAJIB JPG/PNG)
+        url: '/images/cover.jpeg', // GANTI PAKAI NAMA FILE SCREENSHOT ABANG (WAJIB JPG/PNG)
         width: 1200,
         height: 630,
         alt: 'Cover XPG Mod To Xtreme',
