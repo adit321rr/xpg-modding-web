@@ -207,7 +207,7 @@ export default function ContestantGrid({
         ctx.fillText(
           `@${igUsername.replace("@", "")}`,
           canvas.width / 2,
-          850 // Pastikan angka ini udah pas dengan layout terbaru Abang
+          760 // Pastikan angka ini udah pas dengan layout terbaru Abang
         );
 
         const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
@@ -231,7 +231,7 @@ export default function ContestantGrid({
             c.image_url ||
             `/images/${c.id === 1 ? "kim.webp" : c.id === 2 ? "raka.webp" : c.id === 3 ? "wira.webp" : c.id === 4 ? "helix.webp" : "mons.webp"}`;
 
-          const posterImg = c.poster || `/images/poster1.webp`;
+          const posterImg = c.poster || `/images/poster.webp`;
 
           const dbGallery = [
             c.gallery_1,
@@ -679,7 +679,7 @@ export default function ContestantGrid({
                       />
 
                       {/* Posisi top di-adjust sedikit ke 16.5% biar pas banget di tengah kotak merah barunya */}
-                      <div className="absolute top-[18%] left-0 w-full text-center z-10 px-3">
+                      <div className="absolute top-[38%] left-0 w-full text-center z-10 px-3">
                         <p
                           // NAH INI RAHASIANYA BANG: md:text-sm SAYA GANTI JADI md:text-[11px]
                           className="text-white font-black text-[6px] md:text-[8px] drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
@@ -732,7 +732,7 @@ export default function ContestantGrid({
                               ctx.fillText(
                                 `@${igUsername.replace("@", "")}`,
                                 canvas.width / 2,
-                                850, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
+                                760, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
                               );
 
                               const dataUrl = canvas.toDataURL(
