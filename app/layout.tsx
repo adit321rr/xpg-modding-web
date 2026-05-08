@@ -8,9 +8,6 @@ const inter = Inter({ subsets: ['latin'] });
 // SEO & META TAGS (Untuk Google, WhatsApp, FB, dll)
 // =========================================================================
 export const metadata: Metadata = {
-  // WAJIB ADA INI BIAR LINK GAMBAR JADI ABSOLUT
-  metadataBase: new URL('https://xpgpcmodding.com'), 
-  
   title: 'XPG ADATA - Mod To Xtreme 2026',
   description: 'Kompetisi PC modding paling bergengsi di Indonesia. Dukung modder elit favoritmu dan menangkan total hadiah Rp 16 Juta!',
   keywords: 'xpg, adata, pc modding, lomba pc, mod to xtreme, gaming pc indonesia',
@@ -27,7 +24,7 @@ export const metadata: Metadata = {
     siteName: 'XPG ADATA Mod To Xtreme',
     images: [
       {
-        url: '/images/cover.jpeg', // GANTI PAKAI NAMA FILE SCREENSHOT ABANG (WAJIB JPG/PNG)
+        url: '/images/cover.jpeg', // Cover share WhatsApp
         width: 1200,
         height: 630,
         alt: 'Cover XPG Mod To Xtreme',
@@ -49,3 +46,4 @@ export default function RootLayout({
     </html>
   );
 }
+
