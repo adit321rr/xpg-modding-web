@@ -500,26 +500,22 @@ export default function ContestantGrid({
                         <strong>SATU</strong> suara selama periode kontes
                         berlangsung. Pilih jagoanmu dengan bijak!
                       </p>
+                      
+                      {/* NOMOR 3 YANG LAMA SUDAH DIHAPUS DI SINI */}
+
                       <p>
+                        {/* INI TADINYA NOMOR 4, UBAH JADI NOMOR 3 */}
                         <strong className="text-white">
-                          3. Syarat Sosial Media:
-                        </strong>{" "}
-                        Untuk mengesahkan suaramu dan berhak mengikuti undian
-                        hadiah Rp 16 Juta, kamu{" "}
-                        <strong>WAJIB mem-follow</strong> XPG ADATA Indonesia di
-                        Instagram, TikTok, dan Facebook.
-                      </p>
-                      <p>
-                        <strong className="text-white">
-                          4. Pengumuman Pemenang:
+                          3. Pengumuman Pemenang:
                         </strong>{" "}
                         Pemilih beruntung yang memenangkan undian akan dihubungi
                         langsung melalui DM Instagram oleh akun resmi
                         @adataxpgindonesia.
                       </p>
                       <p>
+                        {/* INI TADINYA NOMOR 5, UBAH JADI NOMOR 4 */}
                         <strong className="text-white">
-                          5. Hak Penyelenggara:
+                          4. Hak Penyelenggara:
                         </strong>{" "}
                         XPG ADATA berhak membatalkan atau mengurangi suara yang
                         terbukti curang. Keputusan juri dan penyelenggara adalah
@@ -627,10 +623,9 @@ export default function ContestantGrid({
                           onClick={() => setShowRules(true)}
                           className="text-red-500 underline hover:text-red-400 mx-1 focus:outline-none"
                         >
-                          peraturan kontes
+                          peraturan kontes.
                         </button>
-                        serta mengonfirmasi bahwa saya mem-follow XPG ADATA di
-                        semua platform media sosial yang disyaratkan.
+                        {/* KALIMAT WAJIB FOLLOW SOSMED SUDAH DIHAPUS DI SINI */}
                       </label>
                     </div>
                     <button
