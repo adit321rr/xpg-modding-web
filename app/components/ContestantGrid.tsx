@@ -196,7 +196,7 @@ export default function ContestantGrid({
 
         ctx.drawImage(img, 0, 0);
 
-        ctx.font = "bold 20px 'TT Octosquares', sans-serif";
+        ctx.font = "bold 80px 'TT Octosquares', sans-serif";
         ctx.fillStyle = "#ffffff";
         ctx.textAlign = "center";
         ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
@@ -207,7 +207,7 @@ export default function ContestantGrid({
         ctx.fillText(
           `@${igUsername.replace("@", "")}`,
           canvas.width / 2,
-          580 // Pastikan angka ini udah pas dengan layout terbaru Abang
+          630 // Pastikan angka ini udah pas dengan layout terbaru Abang
         );
 
         const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
@@ -732,7 +732,7 @@ export default function ContestantGrid({
                               ctx.fillText(
                                 `@${igUsername.replace("@", "")}`,
                                 canvas.width / 2,
-                                580, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
+                                630, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
                               );
 
                               const dataUrl = canvas.toDataURL(
