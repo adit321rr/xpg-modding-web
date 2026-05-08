@@ -127,6 +127,7 @@ export default function ContestantGrid({
 
       setVoteSuccess(true);
       router.refresh();
+      triggerAutoDownload();
     } catch (err) {
       console.error(err);
       setErrorMessage("Gagal mengirim vote. Pastikan koneksi internet stabil.");
@@ -171,6 +172,53 @@ export default function ContestantGrid({
     }
 
     setActiveVideo(finalUrl);
+  };
+
+  // =========================================================================
+  // FUNGSI BARU: AUTO DOWNLOAD POSTER
+  // =========================================================================
+  const triggerAutoDownload = () => {
+    if (!activeVote) return;
+    
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) return;
+
+    const img = new window.Image();
+    img.crossOrigin = "anonymous";
+    img.src = activeVote.poster;
+
+    img.onload = () => {
+      document.fonts.ready.then(() => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        ctx.drawImage(img, 0, 0);
+
+        ctx.font = "bold 80px 'TT Octosquares', sans-serif";
+        ctx.fillStyle = "#ffffff";
+        ctx.textAlign = "center";
+        ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+
+        ctx.fillText(
+          `@${igUsername.replace("@", "")}`,
+          canvas.width / 2,
+          850 // Pastikan angka ini udah pas dengan layout terbaru Abang
+        );
+
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+        const link = document.createElement("a");
+        link.download = `Poster-Vote-${activeVote.name}.jpg`;
+        link.href = dataUrl;
+        
+        // Simulasikan klik otomatis tanpa harus user pencet
+        link.click();
+      });
+    };
   };
 
   return (
