@@ -207,7 +207,7 @@ export default function ContestantGrid({
         ctx.fillText(
           `@${igUsername.replace("@", "")}`,
           canvas.width / 2,
-          730 // Pastikan angka ini udah pas dengan layout terbaru Abang
+          600 // Pastikan angka ini udah pas dengan layout terbaru Abang
         );
 
         const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
@@ -732,7 +732,7 @@ export default function ContestantGrid({
                               ctx.fillText(
                                 `@${igUsername.replace("@", "")}`,
                                 canvas.width / 2,
-                                730, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
+                                600, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
                               );
 
                               const dataUrl = canvas.toDataURL(
