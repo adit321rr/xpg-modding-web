@@ -207,7 +207,7 @@ export default function ContestantGrid({
         ctx.fillText(
           `@${igUsername.replace("@", "")}`,
           canvas.width / 2,
-          760 // Pastikan angka ini udah pas dengan layout terbaru Abang
+          730 // Pastikan angka ini udah pas dengan layout terbaru Abang
         );
 
         const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
@@ -679,7 +679,7 @@ export default function ContestantGrid({
                       />
 
                       {/* Posisi top di-adjust sedikit ke 16.5% biar pas banget di tengah kotak merah barunya */}
-                      <div className="absolute top-[38%] left-0 w-full text-center z-10 px-3">
+                      <div className="absolute top-[38.5%] left-0 w-full text-center z-10 px-3">
                         <p
                           // NAH INI RAHASIANYA BANG: md:text-sm SAYA GANTI JADI md:text-[11px]
                           className="text-white font-black text-[5px] md:text-[7px] drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
@@ -718,7 +718,7 @@ export default function ContestantGrid({
 
                               // 1. UKURAN FONT DIPERKECIL JADI 36px
                               ctx.font =
-                                "bold 20px 'TT Octosquares', sans-serif";
+                                "bold 45px 'TT Octosquares', sans-serif";
                               ctx.fillStyle = "#ffffff";
                               ctx.textAlign = "center";
 
@@ -732,7 +732,7 @@ export default function ContestantGrid({
                               ctx.fillText(
                                 `@${igUsername.replace("@", "")}`,
                                 canvas.width / 2,
-                                670, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
+                                730, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
                               );
 
                               const dataUrl = canvas.toDataURL(
