@@ -196,7 +196,7 @@ export default function ContestantGrid({
 
         ctx.drawImage(img, 0, 0);
 
-        ctx.font = "bold 80px 'TT Octosquares', sans-serif";
+        ctx.font = "bold 20px 'TT Octosquares', sans-serif";
         ctx.fillStyle = "#ffffff";
         ctx.textAlign = "center";
         ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
@@ -682,7 +682,7 @@ export default function ContestantGrid({
                       <div className="absolute top-[38%] left-0 w-full text-center z-10 px-3">
                         <p
                           // NAH INI RAHASIANYA BANG: md:text-sm SAYA GANTI JADI md:text-[11px]
-                          className="text-white font-black text-[6px] md:text-[8px] drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
+                          className="text-white font-black text-[5px] md:text-[7px] drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
                           style={{ fontFamily: "'TT Octosquares', sans-serif" }}
                         >
                           @{igUsername.replace("@", "")}
@@ -718,7 +718,7 @@ export default function ContestantGrid({
 
                               // 1. UKURAN FONT DIPERKECIL JADI 36px
                               ctx.font =
-                                "bold 80px 'TT Octosquares', sans-serif";
+                                "bold 20px 'TT Octosquares', sans-serif";
                               ctx.fillStyle = "#ffffff";
                               ctx.textAlign = "center";
 
@@ -732,7 +732,7 @@ export default function ContestantGrid({
                               ctx.fillText(
                                 `@${igUsername.replace("@", "")}`,
                                 canvas.width / 2,
-                                760, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
+                                670, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
                               );
 
                               const dataUrl = canvas.toDataURL(
