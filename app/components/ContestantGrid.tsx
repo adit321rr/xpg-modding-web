@@ -196,7 +196,7 @@ export default function ContestantGrid({
 
         ctx.drawImage(img, 0, 0);
 
-        ctx.font = "bold 40px 'TT Octosquares', sans-serif";
+        ctx.font = "bold 30px 'TT Octosquares', sans-serif";
         ctx.fillStyle = "#ffffff";
         ctx.textAlign = "center";
         ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
@@ -718,7 +718,7 @@ export default function ContestantGrid({
 
                               // 1. UKURAN FONT DIPERKECIL JADI 36px
                               ctx.font =
-                                "bold 40px 'TT Octosquares', sans-serif";
+                                "bold 30px 'TT Octosquares', sans-serif";
                               ctx.fillStyle = "#ffffff";
                               ctx.textAlign = "center";
 
