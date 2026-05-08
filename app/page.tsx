@@ -212,9 +212,7 @@ export default async function Home() {
               />
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pr-4 mt-2">
-              Kompetisi PC modding di Indonesia yang disponsori oleh XPG ADATA.
-              Menampilkan 5 modder kreatif yang memodifikasi PC untuk
-              memperebutkan gelar juara.
+              Kompetisi PC modding di Indonesia yang disponsori oleh XPG ADATA. Menghadirkan 5 modder kreatif yang memodifikasi PC untuk memperebutkan gelar juara.
             </p>
           </div>
 
@@ -254,7 +252,7 @@ export default async function Home() {
               >
                 <div>
                   <p className="text-white font-bold text-sm">TikTok</p>
-                  <p className="text-gray-500 text-xs mt-1">@adataxpg.id</p>
+                  <p className="text-gray-500 text-xs mt-1">@adataxpgindonesia</p>
                 </div>
                 <svg
                   className="w-4 h-4 text-gray-500 group-hover:text-red-500 transition-colors"
@@ -336,7 +334,7 @@ export default async function Home() {
               </div>
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
                 <p className="text-white font-bold text-sm uppercase tracking-wider">
-                  SYARAT DAPAT HADIAH
+                  SYARAT IKUT HADIAH
                 </p>
                 <p className="text-gray-400 text-xs mt-1">
                   Upload poster bukti voting di Instagram Story dan tag @adataxpgindonesia. Klaim hadiah maksimal 1 bulan setelah pengumuman pemenang.
