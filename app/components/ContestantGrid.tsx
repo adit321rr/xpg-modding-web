@@ -394,7 +394,7 @@ export default function ContestantGrid({
                   </div>
                   <div className="ml-3">
                     <div className="text-white text-xs md:text-sm font-bold uppercase tracking-wider">
-                      TONTON VIDEO
+                      LIHAT DETAIL PC MOD
                     </div>
                     <div className="text-gray-500 text-[9px] md:text-[10px] uppercase tracking-widest mt-0.5">
                       Proses Rakit & Pameran
@@ -500,11 +500,7 @@ export default function ContestantGrid({
                         <strong>SATU</strong> suara selama periode kontes
                         berlangsung. Pilih jagoanmu dengan bijak!
                       </p>
-                      
-                      {/* NOMOR 3 YANG LAMA SUDAH DIHAPUS DI SINI */}
-
                       <p>
-                        {/* INI TADINYA NOMOR 4, UBAH JADI NOMOR 3 */}
                         <strong className="text-white">
                           3. Pengumuman Pemenang:
                         </strong>{" "}
@@ -513,7 +509,6 @@ export default function ContestantGrid({
                         @adataxpgindonesia.
                       </p>
                       <p>
-                        {/* INI TADINYA NOMOR 5, UBAH JADI NOMOR 4 */}
                         <strong className="text-white">
                           4. Hak Penyelenggara:
                         </strong>{" "}
@@ -625,7 +620,6 @@ export default function ContestantGrid({
                         >
                           peraturan kontes.
                         </button>
-                        {/* KALIMAT WAJIB FOLLOW SOSMED SUDAH DIHAPUS DI SINI */}
                       </label>
                     </div>
                     <button

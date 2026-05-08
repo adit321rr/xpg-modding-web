@@ -61,7 +61,7 @@ export default async function Home() {
         <div className="max-w-5xl mx-auto text-center relative z-10 w-full flex flex-col items-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-red-500/50 bg-red-500/10 text-red-400 text-xs font-bold tracking-[0.2em] mb-8 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-            ACARA RESMI XPG ADATA
+            OFFICIAL EVENT BY XPG ADATA
           </div>
 
           <div className="relative mb-8 drop-shadow-[0_0_25px_rgba(220,38,38,0.3)] flex justify-center">
@@ -83,10 +83,16 @@ export default async function Home() {
             </span>
           </h2>
 
-          <div className="mb-12 inline-block border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-2 rounded-full">
-            <p className="text-white font-bold tracking-[0.2em] uppercase text-sm md:text-base">
-              7 - 18 MEI 2026
-            </p>
+          {/* DIBUAT JADI 2 KOTAK AGAR RAPI SESUAI PERMINTAAN KLIEN */}
+          <div className="mb-12 flex flex-col md:flex-row gap-6 justify-center w-full max-w-3xl">
+            <div className="border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-4 rounded-2xl flex-1 text-left md:text-center">
+              <p className="text-white text-sm md:text-base mb-1">Periode voting: <strong>7 - 18 Mei 2026</strong></p>
+              <p className="text-white text-sm md:text-base">Pengumuman pemenang: <strong>25 Mei 2026</strong></p>
+            </div>
+            <div className="border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-4 rounded-2xl flex-1 text-left md:text-center">
+              <p className="text-red-500 font-bold tracking-widest uppercase text-xs mb-2">Syarat Ikut Undian Hadiah:</p>
+              <p className="text-white text-sm md:text-base">Upload poster bukti voting ke Instagram Story dan tag <strong>@adataxpgindonesia</strong></p>
+            </div>
           </div>
 
           <div className="flex flex-col sm:flex-row justify-center gap-6">
@@ -115,10 +121,10 @@ export default async function Home() {
       >
         <div className="max-w-7xl mx-auto mb-16 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-            Para Peserta
+            5 Kontestan
           </h2>
           <p className="text-gray-500 text-lg">
-            Saksikan mahakarya mereka. Satu suaramu sangat berharga.
+            Pilih juara favoritmu! Satu suaramu sangat berharga
           </p>
         </div>
 
@@ -141,8 +147,7 @@ export default async function Home() {
               </span>
             </h2>
             <p className="mt-4 text-gray-400 text-sm md:text-base max-w-2xl mx-auto">
-              Para ahli berpengalaman yang mengevaluasi dan mengawasi jalannya
-              kontes modding.
+              Indonesian Professional PC modder
             </p>
           </div>
 
@@ -161,12 +166,7 @@ export default async function Home() {
                 priority
               />
             </div>
-
-            <div className="absolute -bottom-12 left-0 right-0 text-center opacity-50 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-y-2">
-              <p className="text-xs tracking-[0.4em] font-bold text-red-500 uppercase">
-                Ketua Juri
-              </p>
-            </div>
+            {/* TULISAN "KETUA JURI" DI BAWAH SINI SUDAH DIHAPUS SESUAI REVISI */}
           </div>
         </div>
       </section>
@@ -179,8 +179,8 @@ export default async function Home() {
         className="py-24 px-4 bg-[#0a0a0a] border-t border-white/5 relative z-0"
       >
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-            Papan Peringkat
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight uppercase">
+            LEADERBOARD
           </h2>
           <p className="text-gray-500 text-lg">
             Hasil pemungutan suara secara real-time.
@@ -213,8 +213,8 @@ export default async function Home() {
             </div>
             <p className="text-gray-500 text-sm leading-relaxed pr-4 mt-2">
               Kompetisi PC modding di Indonesia yang disponsori oleh XPG ADATA.
-              Menampilkan kreativitas dan keahlian 5 kontestan dalam menciptakan
-              modifikasi PC unik.
+              Menampilkan 5 modder kreatif yang memodifikasi PC untuk
+              memperebutkan gelar juara.
             </p>
           </div>
 
@@ -339,8 +339,7 @@ export default async function Home() {
                   SYARAT DAPAT HADIAH
                 </p>
                 <p className="text-gray-400 text-xs mt-1">
-                  Publish bukti voting di Instagram Story Klaim hadiah maksimal
-                  1 bulan setelah pengumuman pemenang
+                  Upload poster bukti voting di Instagram Story dan tag @adataxpgindonesia. Klaim hadiah maksimal 1 bulan setelah pengumuman pemenang.
                 </p>
               </div>
             </div>

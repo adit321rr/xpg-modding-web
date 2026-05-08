@@ -64,7 +64,7 @@ export default function Navbar() {
             Juri & Mentor
           </a>
           <a href="#leaderboard-section" onClick={(e) => handleScroll(e, 'leaderboard-section')} className="text-sm font-bold text-gray-400 hover:text-white transition-colors tracking-widest uppercase cursor-pointer">
-           PAPAN PERINGKAT
+            LEADERBOARD
           </a>
           <a href="#vote-section" onClick={(e) => handleScroll(e, 'vote-section')} className="bg-red-600 hover:bg-red-500 text-white text-sm font-bold py-2.5 px-6 rounded-md transition-all active:scale-95 tracking-wider shadow-[0_0_15px_rgba(220,38,38,0.4)] cursor-pointer">
             VOTE SEKARANG
@@ -107,7 +107,7 @@ export default function Navbar() {
                 Juri & Mentor
               </a>
               <a href="#leaderboard-section" onClick={(e) => handleScroll(e, 'leaderboard-section')} className="block w-full text-center text-lg font-bold text-gray-300 hover:text-white py-4 tracking-widest uppercase border-b border-white/5 cursor-pointer active:bg-white/5">
-               PAPAN PERINGKAT
+               LEADERBOARD
               </a>
               <a href="#vote-section" onClick={(e) => handleScroll(e, 'vote-section')} className="mt-6 block w-full text-center bg-red-600 hover:bg-red-500 text-white text-lg font-bold py-4 rounded-xl active:scale-95 tracking-wider shadow-[0_0_20px_rgba(220,38,38,0.3)] cursor-pointer">
                 VOTE SEKARANG
