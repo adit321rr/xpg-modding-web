@@ -64,6 +64,7 @@ export default function ContestantGrid({
       setErrorMessage("");
       setIgUsername("");
       setIsChecked(false);
+      router.refresh();
     }, 500);
   };
 
@@ -125,8 +126,7 @@ export default function ContestantGrid({
         localStorage.setItem("xpg_voted", "true");
       }
 
-      setVoteSuccess(true);
-      router.refresh();
+      setVoteSuccess(true); 
       triggerAutoDownload();
     } catch (err) {
       console.error(err);
@@ -215,8 +215,10 @@ export default function ContestantGrid({
         link.download = `Poster-Vote-${activeVote.name}.jpg`;
         link.href = dataUrl;
         
-        // Simulasikan klik otomatis tanpa harus user pencet
+        link.target = "_blank";
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link); // Bersihkan kembali
       });
     };
   };
