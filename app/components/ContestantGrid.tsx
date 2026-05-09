@@ -279,7 +279,7 @@ export default function ContestantGrid({
                       "polygon(0 0, 100% 0, calc(100% - 15px) 100%, 0 100%)",
                   }}
                 >
-                  {index === 0 ? "🏆 #1" : `#${index + 1}`}
+                  {index === 0 ? "#1" : `#${index + 1}`}
                 </div>
                 <Image
                   src={mainImg}
