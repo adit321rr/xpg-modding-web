@@ -24,7 +24,7 @@ export default function Leaderboard({ contestants }: { contestants: any[] }) {
             <div className={`w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-full border ${
               index === 0 && c.vote_count > 0 ? 'border-yellow-500 text-yellow-500 bg-yellow-500/10' : 'border-gray-700 text-gray-500 bg-gray-800/50'
             }`}>
-              {index === 0 && c.vote_count > 0 ? '🏆' : `#${index + 1}`}
+              {index === 0 && c.vote_count > 0 ? '' : `#${index + 1}`}
             </div>
 
             <div className="w-12 h-12 relative rounded-md overflow-hidden bg-black flex-shrink-0">
