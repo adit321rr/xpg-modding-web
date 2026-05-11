@@ -45,7 +45,7 @@ export default async function Home() {
             <p className="text-gray-300 text-base md:text-lg leading-relaxed">
               Mohon maaf, platform voting XPG ADATA PC Modding Contest sedang dalam pemeliharaan rutin untuk sinkronisasi dan peningkatan keamanan data. 
               <br/><br/>
-              Kami akan kembali beroperasi normal dalam waktu kurang lebih <strong className="text-white bg-red-600/20 px-2 py-1 rounded">2 jam</strong>. Terima kasih atas kesabaran Anda.
+              Kami akan kembali beroperasi normal dalam waktu kurang lebih <strong className="text-white bg-red-600/20 px-2 py-1 rounded">1 hari</strong>. Terima kasih atas kesabaran Anda.
             </p>
           </div>
           
@@ -65,7 +65,7 @@ export default async function Home() {
       </div>
     );
   }
-  
+
   // =========================================================================
   // REVISI URUTAN CUSTOM (Sesuai Request ADATA XPG)
   // =========================================================================

@@ -78,6 +78,11 @@ export default function ContestantGrid({
         "Kamu harus menyetujui persyaratan untuk melanjutkan.",
       );
 
+      // 1. CEK LOCALSTORAGE (Anti-Spam Perangkat)
+    if (typeof window !== "undefined" && localStorage.getItem("xpg_voted")) {
+      setErrorMessage("Perangkat ini sudah digunakan untuk voting! 1 Perangkat = 1 Vote.");
+      return;
+    }
     setLoading(true);
     const cleanIgUsername = igUsername.replace("@", "").trim().toLowerCase();
 
