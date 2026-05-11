@@ -84,7 +84,7 @@ export default function ContestantGrid({
     try {
       // 2. CEK DATABASE SUPABASE (Apakah akun IG ini sudah pernah dipakai vote?)
       const { data: existingVote } = await supabase
-        .from("votes")
+        .from("votes_v2") 
         .select("*")
         .eq("ig_username", cleanIgUsername)
         .single();
@@ -114,7 +114,7 @@ export default function ContestantGrid({
       // 4. JIKA LOLOS SEMUA -> SIMPAN VOTE KE SUPABASE
       setErrorMessage("Menyimpan vote...");
       const { error } = await supabase
-        .from("votes")
+        .from("votes_v2")
         .insert([
           { ig_username: cleanIgUsername, contestant_id: activeVote.id },
         ]);
