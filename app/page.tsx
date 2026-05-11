@@ -8,17 +8,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 export const revalidate = 0;
 
 export default async function Home() {
-  const { data: contestants, error } = await supabase
-    .from("contestants")
-    .select("*");
-
-  if (error) {
-    return (
-      <div className="text-white p-10 text-center">
-        Gagal memuat data. Pastikan koneksi internet aman.
-      </div>
-    );
-  }
   // =========================================================================
   // SAKLAR MAINTENANCE (Ubah jadi 'false' kalau web sudah siap dibuka lagi)
   // =========================================================================
@@ -65,6 +54,18 @@ export default async function Home() {
       </main>
     );
   }
+  const { data: contestants, error } = await supabase
+    .from("contestants")
+    .select("*");
+
+  if (error) {
+    return (
+      <div className="text-white p-10 text-center">
+        Gagal memuat data. Pastikan koneksi internet aman.
+      </div>
+    );
+  }
+  
   // =========================================================================
   // REVISI URUTAN CUSTOM (Sesuai Request ADATA XPG)
   // =========================================================================
