@@ -19,7 +19,52 @@ export default async function Home() {
       </div>
     );
   }
+  // =========================================================================
+  // SAKLAR MAINTENANCE (Ubah jadi 'false' kalau web sudah siap dibuka lagi)
+  // =========================================================================
+  const isMaintenance = true;
 
+  if (isMaintenance) {
+    return (
+      <main className="min-h-screen bg-[#050505] flex flex-col items-center justify-center px-4 relative overflow-hidden font-sans">
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/images/bg-hero.webp"
+            alt="Background"
+            className="w-full h-full object-cover object-top opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/40 via-[#050505]/80 to-[#050505]"></div>
+        </div>
+
+        <div className="relative z-10 text-center flex flex-col items-center max-w-2xl mx-auto mt-[-50px]">
+          <img
+            src="/images/mte25-logo.webp"
+            alt="Logo MTE"
+            className="w-[300px] md:w-[450px] mb-8 drop-shadow-[0_0_25px_rgba(220,38,38,0.3)]"
+          />
+          
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-yellow-500/50 bg-yellow-500/10 text-yellow-400 text-xs font-bold tracking-[0.2em] mb-6 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+            UNDER MAINTENANCE
+          </div>
+          
+          <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-wider mb-6 drop-shadow-xl">
+            Sistem Sedang <span className="text-red-500">Ditingkatkan</span>
+          </h1>
+          
+          <div className="border border-white/10 bg-white/5 backdrop-blur-sm p-6 md:p-8 rounded-2xl mb-10">
+            <p className="text-gray-300 text-base md:text-lg leading-relaxed">
+              Mohon maaf, platform voting XPG ADATA PC Modding Contest sedang dalam pemeliharaan rutin untuk sinkronisasi dan peningkatan keamanan data. 
+              <br/><br/>
+              Kami akan kembali beroperasi normal dalam waktu kurang lebih <strong className="text-white bg-red-600/20 px-2 py-1 rounded">2 jam</strong>. Terima kasih atas kesabaran Anda.
+            </p>
+          </div>
+          
+          <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin shadow-[0_0_15px_rgba(220,38,38,0.5)]"></div>
+        </div>
+      </main>
+    );
+  }
   // =========================================================================
   // REVISI URUTAN CUSTOM (Sesuai Request ADATA XPG)
   // =========================================================================
