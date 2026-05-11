@@ -98,18 +98,18 @@ export default function ContestantGrid({
       }
 
       // 3. CEK SEARCHAPI.IO (Request dari Klien: Apakah akun IG ini eksis?)
-      setErrorMessage("Memverifikasi keaslian akun Instagram..."); // Kasih tau user kalau lagi loading loading API
-      const igCheckRes = await fetch(
-        `/api/check-ig?username=${cleanIgUsername}`,
-      );
+//       setErrorMessage("Memverifikasi keaslian akun Instagram..."); // Kasih tau user kalau lagi loading loading API
+//       const igCheckRes = await fetch(
+//        `/api/check-ig?username=${cleanIgUsername}`,
+//      );
 
-      if (!igCheckRes.ok) {
-        setErrorMessage(
-          "Username Instagram tidak ditemukan! Pastikan username benar dan tidak di-private total.",
-        );
-        setLoading(false);
-        return;
-      }
+//      if (!igCheckRes.ok) {
+//        setErrorMessage(
+//          "Username Instagram tidak ditemukan! Pastikan username benar dan tidak di-private total.",
+//        );
+//        setLoading(false);
+//        return;
+//      }
 
       // 4. JIKA LOLOS SEMUA -> SIMPAN VOTE KE SUPABASE
       setErrorMessage("Menyimpan vote...");
