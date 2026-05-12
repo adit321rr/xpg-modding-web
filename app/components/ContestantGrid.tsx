@@ -604,7 +604,7 @@ export default function ContestantGrid({
 
                     <div className="flex justify-center mb-6">
                       <ReCAPTCHA
-                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+                        sitekey="6LfaDucsAAAAAKDhQfxODC3hHWeLq4XWeAJRnArr"
                         onChange={(value) => setCaptchaToken(value)}
                         theme="dark"
                       />
