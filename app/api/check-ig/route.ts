@@ -10,34 +10,31 @@ export async function GET(request: Request) {
       { status: 503 }
     );
   }
+ // =========================================================================
+  // KODE ASLI ABANG DI BAWAH SINI (Baru jalan kalau isMaintenance = false)
+  // =========================================================================
   const { searchParams } = new URL(request.url);
   const username = searchParams.get('username');
 
   if (!username) {
-    return NextResponse.json({ error: 'Username dibutuhkan' }, { status: 400 });
+    return NextResponse.json({ error: 'Username diperlukan' }, { status: 400 });
   }
-
-  // AMAN: Tidak pakai NEXT_PUBLIC_, jadi kunci ini hanya hidup di dalam Server
-  const API_KEY = process.env.SEARCHAPI_KEY; 
-  
-  if (!API_KEY) {
-    return NextResponse.json({ error: 'API Key belum di-setting di server' }, { status: 500 });
-  }
-  
-  const url = `https://www.searchapi.io/api/v1/search?engine=instagram_profile&username=${username}&api_key=${API_KEY}`;
 
   try {
-    const res = await fetch(url);
-    const data = await res.json();
+    // Ambil kunci API dari Environment Variable
+    const apiKey = process.env.SEARCHAPI_KEY; 
+    
+    // Nembak ke SearchApi (ini yang nyedot kuota kalau nggak dilindungi)
+    const res = await fetch(`https://www.searchapi.io/api/v1/search?engine=instagram_profile&username=${username}&api_key=${apiKey}`);
 
-    // Jika API mengembalikan pesan error (biasanya karena akun tidak ada)
-    if (data.error) {
-      return NextResponse.json({ exists: false, message: 'Akun tidak ditemukan' }, { status: 404 });
+    if (!res.ok) {
+       return NextResponse.json({ error: 'Akun IG tidak ditemukan atau private' }, { status: 404 });
     }
 
-    // Jika berhasil menemukan profile
-    return NextResponse.json({ exists: true, data: data.user_profile }, { status: 200 });
+    const data = await res.json();
+    return NextResponse.json(data);
+
   } catch (error) {
-    return NextResponse.json({ error: 'Gagal memverifikasi ke server IG' }, { status: 500 });
+    return NextResponse.json({ error: 'Terjadi kesalahan pada server' }, { status: 500 });
   }
 }
