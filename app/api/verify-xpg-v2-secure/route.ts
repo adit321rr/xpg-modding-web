@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     );
   }
  // =========================================================================
-  // KODE ASLI ABANG DI BAWAH SINI (Baru jalan kalau isMaintenance = false)
+  // KODE ASLI  DI BAWAH SINI (Baru jalan kalau isMaintenance = false)
   // =========================================================================
   const { searchParams } = new URL(request.url);
   const username = searchParams.get('username');
