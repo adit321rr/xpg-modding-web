@@ -229,7 +229,7 @@ export default async function Home() {
             LEADERBOARD
           </h2>
           <p className="text-gray-500 text-lg">
-            Hasil pemungutan suara secara real-time.
+          Hasil ini hanya menampilkan jumlah voters yang sudah memenuhi syarat (posting poster bukti voting di Instagram story dan tag @adataxpgindonesia)
           </p>
         </div>
 
