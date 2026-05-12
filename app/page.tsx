@@ -11,7 +11,7 @@ export default async function Home() {
   // =========================================================================
   // SAKLAR MAINTENANCE (Ubah jadi 'false' kalau web sudah siap dibuka lagi)
   // =========================================================================
-  const isMaintenance = false;
+  const isMaintenance = true;
 
   if (isMaintenance) {
     return (
