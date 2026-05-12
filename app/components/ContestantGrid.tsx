@@ -33,6 +33,7 @@ export default function ContestantGrid({
   const [errorMessage, setErrorMessage] = useState("");
   const [showRules, setShowRules] = useState(false);
 
+  // MENGGUNAKAN JUMLAH VOTE ASLI DARI TABEL "votes" (RAW)
   const totalVotes = contestants.reduce(
     (acc, curr) => acc + (curr.vote_count || 0),
     0,
@@ -83,7 +84,7 @@ export default function ContestantGrid({
     const cleanIgUsername = igUsername.replace("@", "").trim().toLowerCase();
 
     try {
-      // 2. CEK DATABASE SUPABASE (KEMBALI MENGGUNAKAN TABEL VOTE 1/ASLI)
+      // 2. CEK DATABASE SUPABASE (Wajib mengecek ke tabel "votes" karena kita akan menyimpan ke "votes")
       const { data: existingVote } = await supabase
         .from("votes")  // <--- DIUBAH MENJADI "votes" KEMBALI
         .select("*")
@@ -98,7 +99,7 @@ export default function ContestantGrid({
         return;
       }
 
-      // 3. CEK SEARCHAPI.IO (Request dari Klien: Apakah akun IG ini eksis?)
+      // 3. CEK SEARCHAPI.IO (Dibypass di sisi server API karena kuota habis)
       setErrorMessage("Memverifikasi keaslian akun Instagram..."); 
       const igCheckRes = await fetch(`/api/verify-xpg-v2-secure?username=${cleanIgUsername}`);
       
