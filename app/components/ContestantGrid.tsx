@@ -114,7 +114,7 @@ export default function ContestantGrid({
       // 4. JIKA LOLOS SEMUA -> SIMPAN VOTE KE SUPABASE TABEL ASLI (VOTE 1)
       setErrorMessage("Menyimpan vote...");
       const { error } = await supabase
-        .from("votes") // <--- DIUBAH MENJADI "votes" KEMBALI
+        .from("votes_v2") // <--- DIUBAH MENJADI "votes" KEMBALI
         .insert([
           { ig_username: cleanIgUsername, contestant_id: activeVote.id },
         ]);
