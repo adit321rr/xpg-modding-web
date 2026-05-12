@@ -1,6 +1,15 @@
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
+  const isMaintenance = true; 
+
+  if (isMaintenance) {
+    // Kalau maintenance nyala, langsung tendang bot-nya, JANGAN TERUSIN ke SearchApi!
+    return NextResponse.json(
+      { error: "Sistem Sedang Maintenance" },
+      { status: 503 }
+    );
+  }
   const { searchParams } = new URL(request.url);
   const username = searchParams.get('username');
 
