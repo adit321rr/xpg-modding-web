@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { supabase } from "../../lib/supabase";
 import { useRouter } from "next/navigation";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function ContestantGrid({
   contestants,
@@ -31,6 +32,7 @@ export default function ContestantGrid({
   const [voteSuccess, setVoteSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showRules, setShowRules] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const totalVotes = contestants.reduce(
     (acc, curr) => acc + (curr.vote_count || 0),
@@ -57,6 +59,10 @@ export default function ContestantGrid({
     if (!isChecked)
       return setErrorMessage(
         "Kamu harus menyetujui persyaratan untuk melanjutkan.",
+      );
+    if (!captchaToken)
+      return setErrorMessage(
+        "Tolong centang verifikasi 'Saya bukan robot' terlebih dahulu.",
       );
 
     if (typeof window !== "undefined" && localStorage.getItem("xpg_voted")) {
@@ -435,40 +441,65 @@ export default function ContestantGrid({
                     className="p-6 md:p-8 flex-grow flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar"
                   >
                     <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-4">
-                    Peraturan Resmi
-                  </h2>
-                  <div className="text-gray-400 text-sm space-y-4 my-4 leading-relaxed">
-                    <p>
-                      <strong className="text-white">1. Syarat Voting Sah:</strong>{" "}
-                      Syarat voting sah dan berhak ikut undian hadiah adalah melakukan voting di website www.xpgpcmodding.com, lalu upload poster bukti voting ke Instagram Story dan tag @adataxpgindonesia.
-                    </p>
-                    <p>
-                      <strong className="text-white">2. Satu Akun Satu Vote:</strong>{" "}
-                      Setiap username Instagram hanya bisa memberikan <strong>SATU</strong> suara selama periode kontes berlangsung.
-                    </p>
-                    <p>
-                      <strong className="text-white">3. Satu Device Satu Vote:</strong>{" "}
-                      Setiap device hanya bisa memberikan <strong>SATU</strong> suara selama periode kontes berlangsung.
-                    </p>
-                    <p>
-                      <strong className="text-white">4. Kelayakan:</strong>{" "}
-                      Voting terbuka untuk umum. Pemilih wajib menggunakan akun Instagram yang aktif dan asli. Penggunaan akun palsu atau bot akan mengakibatkan diskualifikasi suara.
-                    </p>
-                    <p>
-                      <strong className="text-white">5. Pengumuman Pemenang:</strong>{" "}
-                      Pemenang akan diumumkan pada 25 Mei 2026 di media sosial XPG ADATA. Pemilih yang memenangkan undian akan dihubungi langsung melalui DM Instagram oleh akun resmi @adataxpgindonesia. Batas klaim hadiah adalah 1 bulan setelah pengumuman.
-                    </p>
-                    <p>
-                      <strong className="text-white">6. Hak Penyelenggara:</strong>{" "}
-                      XPG ADATA berhak membatalkan atau mengurangi suara yang terbukti curang. Keputusan juri dan penyelenggara adalah mutlak.
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setShowRules(false)}
-                    className="w-full mt-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white py-3 font-bold tracking-widest uppercase transition-all rounded-lg shrink-0"
-                  >
-                    Saya Mengerti, Kembali ke Vote
-                  </button>
+                      Peraturan Resmi
+                    </h2>
+                    <div className="text-gray-400 text-sm space-y-4 my-4 leading-relaxed">
+                      <p>
+                        <strong className="text-white">
+                          1. Syarat Voting Sah:
+                        </strong>{" "}
+                        Syarat voting sah dan berhak ikut undian hadiah adalah
+                        melakukan voting di website www.xpgpcmodding.com, lalu
+                        upload poster bukti voting ke Instagram Story dan tag
+                        @adataxpgindonesia.
+                      </p>
+                      <p>
+                        <strong className="text-white">
+                          2. Satu Akun Satu Vote:
+                        </strong>{" "}
+                        Setiap username Instagram hanya bisa memberikan{" "}
+                        <strong>SATU</strong> suara selama periode kontes
+                        berlangsung.
+                      </p>
+                      <p>
+                        <strong className="text-white">
+                          3. Satu Device Satu Vote:
+                        </strong>{" "}
+                        Setiap device hanya bisa memberikan{" "}
+                        <strong>SATU</strong> suara selama periode kontes
+                        berlangsung.
+                      </p>
+                      <p>
+                        <strong className="text-white">4. Kelayakan:</strong>{" "}
+                        Voting terbuka untuk umum. Pemilih wajib menggunakan
+                        akun Instagram yang aktif dan asli. Penggunaan akun
+                        palsu atau bot akan mengakibatkan diskualifikasi suara.
+                      </p>
+                      <p>
+                        <strong className="text-white">
+                          5. Pengumuman Pemenang:
+                        </strong>{" "}
+                        Pemenang akan diumumkan pada 25 Mei 2026 di media sosial
+                        XPG ADATA. Pemilih yang memenangkan undian akan
+                        dihubungi langsung melalui DM Instagram oleh akun resmi
+                        @adataxpgindonesia. Batas klaim hadiah adalah 1 bulan
+                        setelah pengumuman.
+                      </p>
+                      <p>
+                        <strong className="text-white">
+                          6. Hak Penyelenggara:
+                        </strong>{" "}
+                        XPG ADATA berhak membatalkan atau mengurangi suara yang
+                        terbukti curang. Keputusan juri dan penyelenggara adalah
+                        mutlak.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setShowRules(false)}
+                      className="w-full mt-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white py-3 font-bold tracking-widest uppercase transition-all rounded-lg shrink-0"
+                    >
+                      Saya Mengerti, Kembali ke Vote
+                    </button>
                   </motion.div>
                 )}
 
@@ -569,6 +600,14 @@ export default function ContestantGrid({
                           peraturan kontes.
                         </button>
                       </label>
+                    </div>
+
+                    <div className="flex justify-center mb-6">
+                      <ReCAPTCHA
+                        sitekey="MASUKKAN_SITE_KEY_DARI_GOOGLE_DI_SINI"
+                        onChange={(value) => setCaptchaToken(value)}
+                        theme="dark"
+                      />
                     </div>
                     <button
                       onClick={handleVoteSubmit}
