@@ -39,6 +39,20 @@ export default function ContestantGrid({
     0,
   );
 
+  const orderMap: { [key: string]: number } = {
+    "wimodz.tech": 1,
+    MonsParmodd: 2,
+    Rakazone21: 3,
+    "Kim Jong Tep": 4,
+    HelixCustom: 5,
+  };
+
+  const orderedContestants = [...contestants].sort((a, b) => {
+    const orderA = orderMap[a.name] || 99;
+    const orderB = orderMap[b.name] || 99;
+    return orderA - orderB;
+  });
+
   const handleCloseVoteModal = () => {
     setActiveVote(null);
     setTimeout(() => {
@@ -53,31 +67,57 @@ export default function ContestantGrid({
 
   const handleVoteSubmit = async () => {
     setErrorMessage("");
+
+    // 1. Validasi Input Dasar
     if (!activeVote) return;
     if (!igUsername.trim())
       return setErrorMessage("Tolong masukkan username Instagram kamu.");
     if (!isChecked)
       return setErrorMessage(
-        "Kamu harus menyetujui persyaratan untuk melanjutkan.",
+        "Kamu harus menyetujui persyaratan untuk melanjutkan."
       );
     if (!captchaToken)
       return setErrorMessage(
-        "Tolong centang verifikasi 'Saya bukan robot' terlebih dahulu.",
+        "Tolong centang verifikasi 'Saya bukan robot' terlebih dahulu."
       );
 
+    // 2. Cek LocalStorage (Anti-Spam Perangkat)
     if (typeof window !== "undefined" && localStorage.getItem("xpg_voted")) {
       setErrorMessage(
-        "Perangkat ini sudah digunakan untuk voting! 1 Perangkat = 1 Vote.",
+        "Perangkat ini sudah digunakan untuk voting! 1 Perangkat = 1 Vote."
       );
       return;
     }
+
+    // MULAI LOADING DAN SIAPKAN USERNAME (Wajib di sini urutannya!)
     setLoading(true);
     const cleanIgUsername = igUsername.replace("@", "").trim().toLowerCase();
 
     try {
-      // =========================================================================
-      // MENGECEK KE TABEL "votes" PERTAMA (Biar aman dari Unique Constraint 500)
-      // =========================================================================
+      // 3. CEK CAPTCHA KE BACKEND (Lapis 2)
+      setErrorMessage("Memverifikasi data & keamanan...");
+      const igCheckRes = await fetch(`/api/verify-xpg-v2-secure`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: cleanIgUsername,
+          captcha: captchaToken,
+        }),
+      });
+
+      if (!igCheckRes.ok) {
+        // Tangkap pesan error dari API (misal: "Kamu terdeteksi sebagai bot!")
+        const errorData = await igCheckRes.json();
+        setErrorMessage(
+          errorData.error || "Gagal memverifikasi. Pastikan koneksi aman."
+        );
+        setLoading(false);
+        return;
+      }
+
+      // 4. CEK DATABASE SUPABASE (Apakah akun IG ini sudah pernah dipakai vote?)
       const { data: existingVote } = await supabase
         .from("votes")
         .select("*")
@@ -86,37 +126,21 @@ export default function ContestantGrid({
 
       if (existingVote) {
         setErrorMessage(
-          "Akun Instagram ini sudah pernah digunakan untuk voting!",
+          "Akun Instagram ini sudah pernah digunakan untuk voting!"
         );
         setLoading(false);
         return;
       }
 
-      setErrorMessage("Memverifikasi keaslian akun Instagram...");
-      const igCheckRes = await fetch(
-        `/api/verify-xpg-v2-secure?username=${cleanIgUsername}`,
-      );
-
-      if (!igCheckRes.ok) {
-        setErrorMessage(
-          "Username Instagram tidak ditemukan! Pastikan username benar dan tidak di-private total.",
-        );
-        setLoading(false);
-        return;
-      }
-
-      // =========================================================================
-      // MENYIMPAN VOTE BARU KE TABEL "votes" PERTAMA (Berjalan di latar belakang)
-      // =========================================================================
+      // 5. MENYIMPAN VOTE BARU KE TABEL "votes" PERTAMA
       setErrorMessage("Menyimpan vote...");
-      const { error } = await supabase
-        .from("votes")
-        .insert([
-          { ig_username: cleanIgUsername, contestant_id: activeVote.id },
-        ]);
+      const { error } = await supabase.from("votes").insert([
+        { ig_username: cleanIgUsername, contestant_id: activeVote.id },
+      ]);
 
       if (error) throw error;
 
+      // 6. KUNCI PERANGKAT BERHASIL
       if (typeof window !== "undefined") {
         localStorage.setItem("xpg_voted", "true");
       }
@@ -190,7 +214,7 @@ export default function ContestantGrid({
   return (
     <>
       <motion.div className="max-w-[1400px] mx-auto flex flex-nowrap md:grid md:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8 px-4 md:px-0 relative z-10 items-stretch pb-12 overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scroll-smooth hide-scrollbar">
-        {contestants?.map((c, index) => {
+        {orderedContestants?.map((c, index) => {
           const votePercentage =
             totalVotes > 0 ? Math.round((c.vote_count / totalVotes) * 100) : 0;
           const mainImg =
@@ -413,21 +437,19 @@ export default function ContestantGrid({
                   onClick={handleCloseVoteModal}
                   className="absolute top-5 right-5 text-gray-500 hover:text-white transition-colors z-50"
                 >
-                  {" "}
                   <svg
                     className="w-6 h-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
-                    {" "}
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
                       d="M6 18L18 6M6 6l12 12"
-                    />{" "}
-                  </svg>{" "}
+                    />
+                  </svg>
                 </button>
               )}
 
@@ -544,22 +566,20 @@ export default function ContestantGrid({
                         animate={{ opacity: 1, y: 0 }}
                         className="mb-6 bg-red-900/20 border border-red-500/50 text-red-400 p-3 rounded-lg text-sm flex items-start gap-2"
                       >
-                        {" "}
                         <svg
                           className="w-5 h-5 shrink-0 mt-0.5"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
                         >
-                          {" "}
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth={2}
                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                          />{" "}
-                        </svg>{" "}
-                        <p>{errorMessage}</p>{" "}
+                          />
+                        </svg>
+                        <p>{errorMessage}</p>
                       </motion.div>
                     )}
                     <div className="mb-6 mt-auto">
@@ -706,22 +726,20 @@ export default function ContestantGrid({
                         }}
                         className="w-full bg-[#12141d] border border-white/20 hover:bg-white/10 text-white py-3 md:py-4 font-black tracking-widest text-xs md:text-sm uppercase transition-all rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.3)] flex items-center justify-center gap-2"
                       >
-                        {" "}
                         <svg
                           className="w-5 h-5"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
                         >
-                          {" "}
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth={2.5}
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                          />{" "}
-                        </svg>{" "}
-                        DOWNLOAD POSTER SAYA{" "}
+                          />
+                        </svg>
+                        DOWNLOAD POSTER SAYA
                       </button>
                       <button
                         onClick={handleCloseVoteModal}

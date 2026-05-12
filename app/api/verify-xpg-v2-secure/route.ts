@@ -1,38 +1,45 @@
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request) {
+// KITA UBAH JADI POST AGAR BISA MENERIMA DATA TOKEN DENGAN AMAN
+export async function POST(request: Request) {
   const isMaintenance = false; 
 
   if (isMaintenance) {
-    // Kalau maintenance nyala, langsung tendang bot-nya, JANGAN TERUSIN ke SearchApi!
-    return NextResponse.json(
-      { error: "Sistem Sedang Maintenance" },
-      { status: 503 }
-    );
-  }
- // =========================================================================
-  // KODE ASLI  DI BAWAH SINI (Baru jalan kalau isMaintenance = false)
-  // =========================================================================
-  const { searchParams } = new URL(request.url);
-  const username = searchParams.get('username');
-
-  if (!username) {
-    return NextResponse.json({ error: 'Username diperlukan' }, { status: 400 });
+    return NextResponse.json({ error: "Sistem Sedang Maintenance" }, { status: 503 });
   }
 
   try {
-    // Ambil kunci API dari Environment Variable
-    const apiKey = process.env.SEARCHAPI_KEY; 
-    
-    // Nembak ke SearchApi (ini yang nyedot kuota kalau nggak dilindungi)
-    const res = await fetch(`https://www.searchapi.io/api/v1/search?engine=instagram_profile&username=${username}&api_key=${apiKey}`);
+    // Tangkap data yang dikirim dari frontend (ContestantGrid)
+    const body = await request.json();
+    const { username, captcha } = body;
 
-    if (!res.ok) {
-       return NextResponse.json({ error: 'Akun IG tidak ditemukan atau private' }, { status: 404 });
+    if (!username) {
+      return NextResponse.json({ error: 'Username diperlukan' }, { status: 400 });
     }
 
-    const data = await res.json();
-    return NextResponse.json(data);
+    if (!captcha) {
+      return NextResponse.json({ error: 'CAPTCHA token diperlukan' }, { status: 400 });
+    }
+
+    // =========================================================================
+    // VERIFIKASI CAPTCHA KE SERVER GOOGLE (LAPIS 2)
+    // =========================================================================
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+    const googleVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}`;
+
+    // Nembak ke server Google pakai metode POST
+    const recaptchaRes = await fetch(googleVerifyUrl, { method: 'POST' });
+    const recaptchaData = await recaptchaRes.json();
+
+    // Kalau Google bilang ini bot atau tokennya palsu, langsung tolak!
+    if (!recaptchaData.success) {
+      return NextResponse.json({ error: 'Verifikasi CAPTCHA gagal. Kamu terdeteksi sebagai bot!' }, { status: 403 });
+    }
+
+    // =========================================================================
+    // BYPASS SEARCHAPI (Karena kuota habis, langsung nyalakan lampu hijau)
+    // =========================================================================
+    return NextResponse.json({ success: true, username: username });
 
   } catch (error) {
     return NextResponse.json({ error: 'Terjadi kesalahan pada server' }, { status: 500 });
