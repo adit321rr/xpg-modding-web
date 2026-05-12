@@ -86,7 +86,7 @@ export default function ContestantGrid({
     try {
       // 2. CEK DATABASE SUPABASE (Wajib mengecek ke tabel "votes" karena kita akan menyimpan ke "votes")
       const { data: existingVote } = await supabase
-        .from("votes")  // <--- DIUBAH MENJADI "votes" KEMBALI
+        .from("votes_v2")  // <--- DIUBAH MENJADI "votes" KEMBALI
         .select("*")
         .eq("ig_username", cleanIgUsername)
         .single();
