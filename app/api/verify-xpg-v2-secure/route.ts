@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
-  const isMaintenance = true; 
+  const isMaintenance = false; 
 
   if (isMaintenance) {
     // Kalau maintenance nyala, langsung tendang bot-nya, JANGAN TERUSIN ke SearchApi!
