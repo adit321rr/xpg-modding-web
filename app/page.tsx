@@ -54,24 +54,9 @@ export default async function Home() {
       </main>
     );
   }
-
-  // 1. AMBIL DATA KONTESTAN (Dengan vote_count campuran dari Vote 1)
   const { data: contestants, error } = await supabase
     .from("contestants")
     .select("*");
-
-  // 2. AMBIL DATA BERSIH (Hanya dari tabel votes_v2 untuk Leaderboard)
-  const { data: cleanVotes } = await supabase
-    .from("votes_v2")
-    .select("contestant_id");
-
-  // 3. HITUNG JUMLAH VOTE BERSIH SECARA OTOMATIS
-  const cleanCounts: { [key: number]: number } = {};
-  if (cleanVotes) {
-    cleanVotes.forEach((v: any) => {
-      cleanCounts[v.contestant_id] = (cleanCounts[v.contestant_id] || 0) + 1;
-    });
-  }
 
   if (error) {
     return (
@@ -92,18 +77,11 @@ export default async function Home() {
     HelixCustom: 5,
   };
 
-  // DATA UNTUK CONTESTANT GRID (Pakai vote asli / Vote 1)
   const sortedContestants = contestants?.sort((a, b) => {
     const orderA = orderMap[a.name] || 99;
     const orderB = orderMap[b.name] || 99;
     return orderA - orderB;
   });
-
-  // DATA UNTUK LEADERBOARD (Kita "Bypass" vote_count-nya pakai data dari votes_v2)
-  const leaderboardData = contestants?.map(c => ({
-    ...c,
-    vote_count: cleanCounts[c.id] || 0 // Timpa angka aslinya dengan angka bersih
-  })).sort((a, b) => b.vote_count - a.vote_count) || [];
 
   return (
     <main className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-600 selection:text-white">
@@ -151,6 +129,7 @@ export default async function Home() {
             </span>
           </h2>
 
+          {/* DIBUAT JADI 2 KOTAK AGAR RAPI SESUAI PERMINTAAN KLIEN */}
           <div className="mb-12 flex flex-col md:flex-row gap-6 justify-center w-full max-w-3xl">
             <div className="border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-4 rounded-2xl flex-1 text-left md:text-center">
               <p className="text-white text-sm md:text-base mb-1">Periode voting: <strong>7 - 18 Mei 2026</strong></p>
@@ -195,7 +174,6 @@ export default async function Home() {
           </p>
         </div>
 
-        {/* MENGGUNAKAN DATA VOTE 1 (RAW) */}
         <ContestantGrid contestants={sortedContestants || []} />
       </section>
 
@@ -234,6 +212,7 @@ export default async function Home() {
                 priority
               />
             </div>
+            {/* TULISAN "KETUA JURI" DI BAWAH SINI SUDAH DIHAPUS SESUAI REVISI */}
           </div>
         </div>
       </section>
@@ -254,8 +233,11 @@ export default async function Home() {
           </p>
         </div>
 
-        {/* MENGGUNAKAN DATA VOTE V2 (CLEAN DATA) */}
-        <Leaderboard contestants={leaderboardData} />
+        <Leaderboard
+          contestants={
+            contestants?.sort((a, b) => b.vote_count - a.vote_count) || []
+          }
+        />
       </section>
 
       {/* ========================================================================= */}
@@ -263,6 +245,7 @@ export default async function Home() {
       {/* ========================================================================= */}
       <footer className="bg-[#0a0a0a] border-t border-red-900/30 pt-20 pb-8 px-4 relative z-0">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 mb-16">
+          {/* Kolom Kiri: Logo & Deskripsi */}
           <div>
             <div className="mb-6">
               <Image
@@ -279,6 +262,7 @@ export default async function Home() {
             </p>
           </div>
 
+          {/* Kolom Tengah: Sosial Media */}
           <div>
             <h4 className="text-red-600 font-bold tracking-widest mb-6 uppercase text-sm">
               Ikuti Kami
@@ -290,8 +274,23 @@ export default async function Home() {
               >
                 <div>
                   <p className="text-white font-bold text-sm">Instagram</p>
-                  <p className="text-gray-500 text-xs mt-1">@adataxpgindonesia</p>
+                  <p className="text-gray-500 text-xs mt-1">
+                    @adataxpgindonesia
+                  </p>
                 </div>
+                <svg
+                  className="w-4 h-4 text-gray-500 group-hover:text-red-500 transition-colors"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
               </a>
               <a
                 href="https://www.tiktok.com/@adataxpg.id?is_from_webapp=1&sender_device=pc"
@@ -301,6 +300,19 @@ export default async function Home() {
                   <p className="text-white font-bold text-sm">TikTok</p>
                   <p className="text-gray-500 text-xs mt-1">@adataxpgindonesia</p>
                 </div>
+                <svg
+                  className="w-4 h-4 text-gray-500 group-hover:text-red-500 transition-colors"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
               </a>
               <a
                 href="https://www.facebook.com/share/1DvjkLg1Dz/?mibextid=wwXIfr"
@@ -310,34 +322,69 @@ export default async function Home() {
                   <p className="text-white font-bold text-sm">Facebook</p>
                   <p className="text-gray-500 text-xs mt-1">ADATAINDONESIA</p>
                 </div>
+                <svg
+                  className="w-4 h-4 text-gray-500 group-hover:text-red-500 transition-colors"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
               </a>
             </div>
           </div>
 
+          {/* Kolom Kanan: Info Kontes */}
           <div>
             <h4 className="text-red-600 font-bold tracking-widest mb-6 uppercase text-sm">
               Info Kontes
             </h4>
             <div className="flex flex-col gap-3">
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
-                <p className="text-white font-bold text-sm uppercase tracking-wider">TOTAL HADIAH</p>
-                <p className="text-red-500 text-xs mt-1 font-mono tracking-widest">Rp 16.000.000 untuk 32 pemenang</p>
+                <p className="text-white font-bold text-sm uppercase tracking-wider">
+                  TOTAL HADIAH
+                </p>
+                <p className="text-red-500 text-xs mt-1 font-mono tracking-widest">
+                  Rp 16.000.000 untuk 32 pemenang
+                </p>
               </div>
+
+              {/* DUPLIKASI DIHAPUS, TERSISA 1 PESERTA SAJA */}
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
-                <p className="text-white font-bold text-sm uppercase tracking-wider">PESERTA</p>
-                <p className="text-gray-400 text-xs mt-1">5 Modders Profesional</p>
+                <p className="text-white font-bold text-sm uppercase tracking-wider">
+                  PESERTA
+                </p>
+                <p className="text-gray-400 text-xs mt-1">
+                  5 Modders Profesional
+                </p>
               </div>
+
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
-                <p className="text-white font-bold text-sm uppercase tracking-wider">PERIODE VOTING</p>
+                <p className="text-white font-bold text-sm uppercase tracking-wider">
+                  PERIODE VOTING
+                </p>
                 <p className="text-gray-400 text-xs mt-1">7-18 Mei 2026</p>
               </div>
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
-                <p className="text-white font-bold text-sm uppercase tracking-wider">PENGUMUMAN PEMENANG</p>
-                <p className="text-gray-400 text-xs mt-1">25 Mei 2026 di media sosial XPG ADATA</p>
+                <p className="text-white font-bold text-sm uppercase tracking-wider">
+                  PENGUMUMAN PEMENANG
+                </p>
+                <p className="text-gray-400 text-xs mt-1">
+                  25 Mei 2026 di media sosial XPG ADATA
+                </p>
               </div>
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
-                <p className="text-white font-bold text-sm uppercase tracking-wider">SYARAT IKUT HADIAH</p>
-                <p className="text-gray-400 text-xs mt-1">Upload poster bukti voting di Instagram Story dan tag @adataxpgindonesia. Klaim hadiah maksimal 1 bulan setelah pengumuman pemenang.</p>
+                <p className="text-white font-bold text-sm uppercase tracking-wider">
+                  SYARAT IKUT HADIAH
+                </p>
+                <p className="text-gray-400 text-xs mt-1">
+                  Upload poster bukti voting di Instagram Story dan tag @adataxpgindonesia. Klaim hadiah maksimal 1 bulan setelah pengumuman pemenang.
+                </p>
               </div>
             </div>
           </div>
@@ -345,7 +392,8 @@ export default async function Home() {
 
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 gap-4">
           <p className="text-gray-600 text-xs tracking-wider text-center md:text-left">
-            © 2026 XPG ADATA Indonesia. Hak cipta dilindungi undang-undang. Kontes PC Modding.
+            © 2026 XPG ADATA Indonesia. Hak cipta dilindungi undang-undang.
+            Kontes PC Modding.
           </p>
           <div className="flex items-center gap-3">
             <span className="relative flex h-2.5 w-2.5">

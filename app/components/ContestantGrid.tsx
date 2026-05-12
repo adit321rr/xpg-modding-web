@@ -33,12 +33,14 @@ export default function ContestantGrid({
   const [errorMessage, setErrorMessage] = useState("");
   const [showRules, setShowRules] = useState(false);
 
-  // MENGGUNAKAN JUMLAH VOTE ASLI DARI TABEL "votes" (RAW)
   const totalVotes = contestants.reduce(
     (acc, curr) => acc + (curr.vote_count || 0),
     0,
   );
 
+  // =========================================================================
+  // FIX URUTAN: Mengurutkan peserta secara statis sesuai request klien
+  // =========================================================================
   const orderMap: { [key: string]: number } = {
     "wimodz.tech": 1,
     MonsParmodd: 2,
@@ -52,6 +54,7 @@ export default function ContestantGrid({
     const orderB = orderMap[b.name] || 99;
     return orderA - orderB;
   });
+  // =========================================================================
 
   const handleCloseVoteModal = () => {
     setActiveVote(null);
@@ -75,7 +78,7 @@ export default function ContestantGrid({
         "Kamu harus menyetujui persyaratan untuk melanjutkan.",
       );
 
-    // 1. CEK LOCALSTORAGE (Anti-Spam Perangkat)
+      // 1. CEK LOCALSTORAGE (Anti-Spam Perangkat)
     if (typeof window !== "undefined" && localStorage.getItem("xpg_voted")) {
       setErrorMessage("Perangkat ini sudah digunakan untuk voting! 1 Perangkat = 1 Vote.");
       return;
@@ -84,9 +87,9 @@ export default function ContestantGrid({
     const cleanIgUsername = igUsername.replace("@", "").trim().toLowerCase();
 
     try {
-      // 2. CEK DATABASE SUPABASE (Wajib mengecek ke tabel "votes" karena kita akan menyimpan ke "votes")
+      // 2. CEK DATABASE SUPABASE (Apakah akun IG ini sudah pernah dipakai vote?)
       const { data: existingVote } = await supabase
-        .from("votes_v2")  // <--- DIUBAH MENJADI "votes" KEMBALI
+        .from("votes_v2") 
         .select("*")
         .eq("ig_username", cleanIgUsername)
         .single();
@@ -99,9 +102,9 @@ export default function ContestantGrid({
         return;
       }
 
-      // 3. CEK SEARCHAPI.IO (Dibypass di sisi server API karena kuota habis)
-      setErrorMessage("Memverifikasi keaslian akun Instagram..."); 
-      const igCheckRes = await fetch(`/api/verify-xpg-v2-secure?username=${cleanIgUsername}`);
+      // 3. CEK SEARCHAPI.IO (Request dari Klien: Apakah akun IG ini eksis?)
+      setErrorMessage("Memverifikasi keaslian akun Instagram..."); // Kasih tau user kalau lagi loading loading API
+      const igCheckRes = await fetch('/api/verify-xpg-v2-secure?username=${cleanIgUsername}');
       
       if (!igCheckRes.ok) {
         setErrorMessage(
@@ -111,10 +114,10 @@ export default function ContestantGrid({
         return;
       }
 
-      // 4. JIKA LOLOS SEMUA -> SIMPAN VOTE KE SUPABASE TABEL ASLI (VOTE 1)
+      // 4. JIKA LOLOS SEMUA -> SIMPAN VOTE KE SUPABASE
       setErrorMessage("Menyimpan vote...");
       const { error } = await supabase
-        .from("votes_v2") // <--- DIUBAH MENJADI "votes" KEMBALI
+        .from("votes_v2")
         .insert([
           { ig_username: cleanIgUsername, contestant_id: activeVote.id },
         ]);
@@ -136,6 +139,9 @@ export default function ContestantGrid({
     }
   };
 
+  // =========================================================================
+  // FIX VIDEO: Memperbaiki typo dari Supabase & segala format YouTube/IG
+  // =========================================================================
   const handleOpenVideo = (url: string | null) => {
     if (!url) {
       alert("Video belum tersedia untuk peserta ini.");
@@ -143,6 +149,7 @@ export default function ContestantGrid({
     }
     let finalUrl = url;
 
+    // Auto-detect format YouTube dan ubah jadi Embed Resmi
     if (url.includes("youtube.com") || url.includes("youtu.be")) {
       let videoId = "";
       if (url.includes("v=")) {
@@ -154,11 +161,14 @@ export default function ContestantGrid({
       }
 
       if (videoId) {
+        // Otomatis putar (autoplay) kalau videonya youtube
         finalUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
       }
     }
+    // FIX INSTAGRAM TYPO DARI SUPABASE (emabed -> embed)
     else if (url.includes("instagram.com")) {
       finalUrl = url.replace("/emabed", "/embed");
+      // Pastikan selalu ada /embed/ di belakang
       if (!finalUrl.includes("/embed")) {
         finalUrl = finalUrl.replace(/\/$/, "") + "/embed/";
       }
@@ -167,6 +177,9 @@ export default function ContestantGrid({
     setActiveVideo(finalUrl);
   };
 
+  // =========================================================================
+  // FUNGSI BARU: AUTO DOWNLOAD POSTER
+  // =========================================================================
   const triggerAutoDownload = () => {
     if (!activeVote) return;
     
@@ -197,7 +210,7 @@ export default function ContestantGrid({
         ctx.fillText(
           `@${igUsername.replace("@", "")}`,
           canvas.width / 2,
-          630 
+          630 // Pastikan angka ini udah pas dengan layout terbaru Abang
         );
 
         const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
@@ -208,7 +221,7 @@ export default function ContestantGrid({
         link.target = "_blank";
         document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link); 
+        document.body.removeChild(link); // Bersihkan kembali
       });
     };
   };
@@ -421,6 +434,7 @@ export default function ContestantGrid({
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
           >
+            {/* Hide navbar saat modal aktif (khusus untuk mobile yang belum auto-hide) */}
             <style
               dangerouslySetInnerHTML={{
                 __html: `nav { display: none !important; }`,
@@ -658,8 +672,10 @@ export default function ContestantGrid({
                         className="object-cover bg-[#0a0b12]"
                       />
 
+                      {/* Posisi top di-adjust sedikit ke 16.5% biar pas banget di tengah kotak merah barunya */}
                       <div className="absolute top-[37.5%] left-0 w-full text-center z-10 px-3">
                         <p
+                          // NAH INI RAHASIANYA BANG: md:text-sm SAYA GANTI JADI md:text-[11px]
                           className="text-white font-black text-[5px] md:text-[7px] drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] truncate"
                           style={{ fontFamily: "'TT Octosquares', sans-serif" }}
                         >
@@ -687,26 +703,30 @@ export default function ContestantGrid({
                           img.src = activeVote.poster;
 
                           img.onload = () => {
+                            // WAJIB pakai document.fonts.ready agar font TT Octosquares pasti keload
                             document.fonts.ready.then(() => {
                               canvas.width = img.width;
                               canvas.height = img.height;
 
                               ctx.drawImage(img, 0, 0);
 
+                              // 1. UKURAN FONT DIPERKECIL JADI 36px
                               ctx.font =
                                 "bold 30px 'TT Octosquares', sans-serif";
                               ctx.fillStyle = "#ffffff";
                               ctx.textAlign = "center";
 
+                              // Efek bayangan ringan agar teks terbaca walau background terang
                               ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
                               ctx.shadowBlur = 10;
                               ctx.shadowOffsetX = 2;
                               ctx.shadowOffsetY = 2;
 
+                              // UBAH ANGKA 385 DI BAWAH INI UNTUK NAIK/TURUN HASIL DOWNLOAD
                               ctx.fillText(
                                 `@${igUsername.replace("@", "")}`,
                                 canvas.width / 2,
-                                630 
+                                630, // <-- Ganti angka ini pelan-pelan sampai pas di tengah kotak gambar baru
                               );
 
                               const dataUrl = canvas.toDataURL(
@@ -891,6 +911,7 @@ export default function ContestantGrid({
               }}
             />
 
+            {/* Kontainer fleksibel agar tombol selalu pas di atas kiri kotak video */}
             <div
               className={`w-full flex flex-col items-start ${activeVideo.includes("instagram") ? "max-w-[450px]" : "max-w-6xl"}`}
             >
@@ -922,7 +943,7 @@ export default function ContestantGrid({
                 exit={{ scale: 0.9, y: 20 }}
                 className={`w-full bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.4)] border border-red-500/20 relative z-[100000] ${
                   activeVideo.includes("instagram")
-                    ? "h-[75vh] md:h-[85vh]"
+                    ? "h-[75vh] md:h-[85vh]" // Tinggi disesuaikan agar sisa ruang cukup buat tombol
                     : "aspect-video"
                 }`}
                 onClick={(e) => e.stopPropagation()}
