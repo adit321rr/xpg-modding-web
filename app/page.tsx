@@ -52,15 +52,16 @@ export default async function Home() {
     );
   }
 
-  // 1. AMBIL DATA KONTESTAN
+  // 1. AMBIL DATA KONTESTAN 
   const { data: contestants, error } = await supabase
     .from("contestants")
     .select("*");
 
-  // 2. AMBIL DATA BERSIH (Hanya dari tabel votes_v2 untuk TAMPILAN)
+  // 2. AMBIL DATA BERSIH DARI V2 (Tambahkan .limit(10000) agar tidak terpotong di angka 1000)
   const { data: cleanVotes } = await supabase
     .from("votes_v2")
-    .select("contestant_id");
+    .select("contestant_id")
+    .limit(10000); 
 
   // 3. HITUNG JUMLAH VOTE BERSIH SECARA OTOMATIS
   const cleanCounts: { [key: number]: number } = {};
@@ -85,22 +86,22 @@ export default async function Home() {
   };
 
   // =========================================================================
-  // KUNCI RAHASIA TAMPILAN: Ganti vote_count pakai angka bersih (votes_v2)
+  // KUNCI TAMPILAN: Timpa vote_count kontestan dengan hasil hitungan votes_v2
   // =========================================================================
   const displayContestants =
     contestants?.map((c) => ({
       ...c,
-      vote_count: cleanCounts[c.id] || 0, // Timpa angka aslinya
+      vote_count: cleanCounts[c.id] || 0, // Menggunakan angka dari votes_v2
     })) || [];
 
-  // DATA UNTUK CONTESTANT GRID ATAS (Urutan Statis, Angka Bersih)
+  // DATA UNTUK CONTESTANT GRID ATAS (Menggunakan data displayContestants yang angkanya sudah votes_v2)
   const sortedContestants = [...displayContestants].sort((a, b) => {
     const orderA = orderMap[a.name] || 99;
     const orderB = orderMap[b.name] || 99;
     return orderA - orderB;
   });
 
-  // DATA UNTUK LEADERBOARD BAWAH (Urutan Terbanyak, Angka Bersih)
+  // DATA UNTUK LEADERBOARD BAWAH (Menggunakan data displayContestants yang angkanya sudah votes_v2)
   const leaderboardData = [...displayContestants].sort(
     (a, b) => b.vote_count - a.vote_count,
   );
