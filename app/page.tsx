@@ -52,28 +52,33 @@ export default async function Home() {
     );
   }
 
-  // 1. AMBIL DATA KONTESTAN 
+  // 1. AMBIL DATA KONTESTAN MENTAH
   const { data: contestants, error } = await supabase
     .from("contestants")
     .select("*");
 
-  // 2. AMBIL DATA BERSIH DARI V2 (Tambahkan .limit(10000) agar tidak terpotong di angka 1000)
-  const { data: cleanVotes } = await supabase
-    .from("votes_v2")
-    .select("contestant_id")
-    .limit(10000); 
-
-  // 3. HITUNG JUMLAH VOTE BERSIH SECARA OTOMATIS
-  const cleanCounts: { [key: number]: number } = {};
-  if (cleanVotes) {
-    cleanVotes.forEach((v: any) => {
-      cleanCounts[v.contestant_id] = (cleanCounts[v.contestant_id] || 0) + 1;
-    });
-  }
-
   if (error) {
     return (
       <div className="text-white p-10 text-center">Gagal memuat data.</div>
+    );
+  }
+
+  // 2. MINTA SUPABASE MENGHITUNG JUMLAH VOTE_V2 (AKURAT & TANPA LIMIT 1000)
+  const cleanCounts: { [key: number]: number } = {};
+  
+  if (contestants) {
+    // Kita jalankan perhitungan untuk setiap kontestan secara paralel
+    await Promise.all(
+      contestants.map(async (c) => {
+        // Menggunakan opsi { count: 'exact', head: true } agar Supabase 
+        // hanya mereturn jumlah angka, tanpa mendownload baris datanya!
+        const { count } = await supabase
+          .from("votes_v2")
+          .select("*", { count: "exact", head: true })
+          .eq("contestant_id", c.id);
+
+        cleanCounts[c.id] = count || 0;
+      })
     );
   }
 
@@ -91,7 +96,7 @@ export default async function Home() {
   const displayContestants =
     contestants?.map((c) => ({
       ...c,
-      vote_count: cleanCounts[c.id] || 0, // Menggunakan angka dari votes_v2
+      vote_count: cleanCounts[c.id] || 0, // Menggunakan angka pas dari V2 (misal: 1239)
     })) || [];
 
   // DATA UNTUK CONTESTANT GRID ATAS (Menggunakan data displayContestants yang angkanya sudah votes_v2)
