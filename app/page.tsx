@@ -249,6 +249,7 @@ export default async function Home() {
             (posting poster bukti voting di Instagram story dan tag
             @adataxpgindonesia)
           </p>
+          <br />
           <p className="text-gray-500 text-lg">
             Juara PC Modding Contest ditentukan oleh voting dari publik, 
             tim  XPG ADATA, dan WaroQ sebagai juri sekaligus mentor.
