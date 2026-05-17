@@ -182,7 +182,7 @@ export default async function Home() {
               href="#leaderboard-section"
               className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white font-bold py-4 px-10 rounded-xl transition-all active:scale-95 text-center tracking-wide"
             >
-              HASIL LIVE
+              HASIL VOTING
             </a>
           </div>
         </div>
@@ -248,6 +248,10 @@ export default async function Home() {
             Hasil ini hanya menampilkan jumlah voters yang sudah memenuhi syarat
             (posting poster bukti voting di Instagram story dan tag
             @adataxpgindonesia)
+          </p>
+          <p className="text-gray-500 text-lg">
+            Juara PC Modding Contest ditentukan oleh voting dari publik, 
+            tim  XPG ADATA, dan WaroQ sebagai juri sekaligus mentor.
           </p>
         </div>
         <Leaderboard contestants={leaderboardData} />
@@ -347,7 +351,7 @@ export default async function Home() {
               </div>
               <div className="p-4 bg-white/5 border border-white/5 rounded-lg">
                 <p className="text-white font-bold text-sm uppercase tracking-wider">
-                  SYARAT IKUT HADIAH
+                  SYARAT VOTING SAH DAN IKUT UNDIAN HADIAH
                 </p>
                 <p className="text-gray-400 text-xs mt-1">
                   Upload poster bukti voting di Instagram Story dan tag

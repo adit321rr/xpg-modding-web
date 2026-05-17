@@ -376,10 +376,10 @@ export default function ContestantGrid({
                   </div>
                   <div className="ml-3">
                     <div className="text-white text-xs md:text-sm font-bold uppercase tracking-wider">
-                      LIHAT DETAIL PC MOD
+                      TONTON VIDEO
                     </div>
                     <div className="text-gray-500 text-[9px] md:text-[10px] uppercase tracking-widest mt-0.5">
-                      Proses Rakit & Pameran
+                      LIHAT DETAIL PC MOD
                     </div>
                   </div>
                 </button>
