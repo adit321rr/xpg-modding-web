@@ -7,7 +7,7 @@ import Image from "next/image";
 export const revalidate = 0;
 
 export default async function Home() {
-  const isMaintenance = false;
+  const isMaintenance = true;
 
   if (isMaintenance) {
     return (
@@ -20,33 +20,46 @@ export default async function Home() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/40 via-[#050505]/80 to-[#050505]"></div>
         </div>
+
         <div className="relative z-10 text-center flex flex-col items-center max-w-2xl mx-auto mt-[-50px]">
           <img
             src="/images/mte25-logo.webp"
             alt="Logo MTE"
             className="w-[300px] md:w-[450px] mb-8 drop-shadow-[0_0_25px_rgba(220,38,38,0.3)]"
           />
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-yellow-500/50 bg-yellow-500/10 text-yellow-400 text-xs font-bold tracking-[0.2em] mb-6 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
-            UNDER MAINTENANCE
+          
+          {/* BADGE MERAH */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-red-500/50 bg-red-500/10 text-red-400 text-xs font-bold tracking-[0.2em] mb-6 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            VOTING DITUTUP
           </div>
+          
+          {/* JUDUL BESAR */}
           <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-wider mb-6 drop-shadow-xl">
-            Sistem Sedang <span className="text-red-500">Ditingkatkan</span>
+            Periode Voting <br className="md:hidden" /><span className="text-red-500">Telah Berakhir</span>
           </h1>
-          <div className="border border-white/10 bg-white/5 backdrop-blur-sm p-6 md:p-8 rounded-2xl mb-10">
+          
+          {/* KOTAK PESAN */}
+          <div className="border border-white/10 bg-white/5 backdrop-blur-sm p-6 md:p-8 rounded-2xl mb-8">
             <p className="text-gray-300 text-base md:text-lg leading-relaxed">
-              Mohon maaf, platform voting XPG ADATA PC Modding Contest sedang
-              dalam pemeliharaan rutin untuk sinkronisasi dan peningkatan
-              keamanan data. <br />
-              <br />
-              Kami akan kembali beroperasi normal dalam waktu kurang lebih{" "}
-              <strong className="text-white bg-red-600/20 px-2 py-1 rounded">
-                1 hari
-              </strong>
-              . Terima kasih atas kesabaran Anda.
+              Terima kasih atas antusiasme dan puluhan ribu partisipasi suara Anda dalam <strong>XPG ADATA PC Modding Contest 2026</strong>. 
+              <br /><br />
+              Pengumpulan suara resmi ditutup. Nantikan pengumuman pemenang dan undian hadiah pada tanggal <strong className="text-white bg-red-600/20 px-2 py-1 rounded">25 Mei 2026</strong> di media sosial resmi kami.
             </p>
           </div>
-          <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin shadow-[0_0_15px_rgba(220,38,38,0.5)]"></div>
+          
+          {/* TOMBOL KE INSTAGRAM */}
+          <a
+            href="https://www.instagram.com/adataxpgindonesia"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="neon-glow bg-red-600 hover:bg-red-500 text-white font-bold py-4 px-8 rounded-xl transition-all active:scale-95 text-center tracking-wider shadow-2xl flex items-center gap-3"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 1.76-6.985 6.986-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.204 5.221 2.622 6.786 6.985 6.986 1.28.058 1.688.072 4.947.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-1.762 6.986-6.986.058-1.28.072-1.689.072-4.947s-.014-3.667-.072-4.947c-.204-5.22-2.622-6.785-6.986-6.986-1.28-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            CEK INSTAGRAM XPG ADATA
+          </a>
         </div>
       </main>
     );
