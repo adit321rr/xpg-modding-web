@@ -2,6 +2,7 @@ import { supabase } from "../lib/supabase";
 import ContestantGrid from "./components/ContestantGrid";
 import Leaderboard from "./components/Leaderboard";
 import Navbar from "./components/Navbar";
+import PopupAnnouncement from "./components/PopupAnnouncement";
 import Image from "next/image";
 
 export const revalidate = 0;

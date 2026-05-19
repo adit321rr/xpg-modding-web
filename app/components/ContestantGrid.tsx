@@ -384,7 +384,8 @@ export default function ContestantGrid({
                   </div>
                 </button>
 
-                <button
+                {/* TOMBOL VOTE DI-HIDE KARENA PERIODE SUDAH HABIS */}
+                {/* <button
                   onClick={() =>
                     setActiveVote({
                       id: c.id,
@@ -398,6 +399,7 @@ export default function ContestantGrid({
                 >
                   VOTE PESERTA INI
                 </button>
+                */}
               </div>
             </motion.div>
           );
