@@ -127,6 +127,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-600 selection:text-white">
+      <PopupAnnouncement /> {/* Taruh paling atas di dalam main */}
       <Navbar />
 
       <section className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden pt-20">
