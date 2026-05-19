@@ -49,7 +49,7 @@ export default function PopupAnnouncement() {
 
               <div className="text-gray-300 text-sm md:text-base space-y-4 mb-8 leading-relaxed">
                 <p>Voting XPG ADATA PC Modding Contest resmi <strong className="text-red-500">DITUTUP</strong>.</p>
-                <p>Terima kasih untuk puluhan ribu suara yang sudah masuk. Nantikan pengumuman pemenang dan undian hadiah pada tanggal <strong>25 Mei 2026</strong> di media sosial Instagram <span className="text-red-500">@adataxpgindonesia</span>.</p>
+                <p>Terima kasih untuk ribuan suara yang sudah masuk. Nantikan pengumuman pemenang dan undian hadiah pada tanggal <strong>25 Mei 2026</strong> di media sosial Instagram <span className="text-red-500">@adataxpgindonesia</span>.</p>
                 <p className="text-xs text-gray-500 italic mt-4">Klik "Tutup" untuk melihat hasil akhir perolehan suara.</p>
               </div>
 
