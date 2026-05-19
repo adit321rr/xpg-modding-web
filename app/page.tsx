@@ -7,7 +7,7 @@ import Image from "next/image";
 export const revalidate = 0;
 
 export default async function Home() {
-  const isMaintenance = true;
+  const isMaintenance = false;
 
   if (isMaintenance) {
     return (
